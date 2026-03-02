@@ -5,15 +5,25 @@ const ScrollToTop = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Standard window scroll
+    // 1. Reset Lenis smooth-scroll instance (it hijacks native scroll)
+    if (window.__lenis) {
+      window.__lenis.scrollTo(0, { immediate: true });
+    }
+
+    // 2. Force native scroll reset as fallback
     window.scrollTo(0, 0);
-    
-    // Fallback if there's a custom scroll container or smooth scroll interaction
-    document.documentElement.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'instant'
-    });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    // 3. Extra safety — some browsers need a micro-delay after Lenis reset
+    const timer = setTimeout(() => {
+      if (window.__lenis) {
+        window.__lenis.scrollTo(0, { immediate: true });
+      }
+      window.scrollTo(0, 0);
+    }, 50);
+
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   return null;
