@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:5000/api' });
+const API = axios.create({ 
+    baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api' 
+});
 
 // Generate or Retrieve Session ID for tracking
 const getSessionId = () => {
