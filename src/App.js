@@ -1,6 +1,7 @@
 import React from 'react';
 import useLenis from './hooks/useLenis';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 import Layout from './components/Layout';
 import Popup from './components/Popup';
 import Home from './pages/Home';
@@ -45,6 +46,7 @@ function App() {
   useLenis();
   return (
     <Router>
+      <ScrollToTop />
       <Layout>
         <Popup /> 
         <Routes>
