@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import API from '../api';
 import {
   Heart, Search, User, Settings, LogOut, Bed, Bath, Square, Trash2,
-  Bell, MapPin, ArrowRight, Edit, Save
+  Bell, ArrowRight, Edit, Save
 } from 'lucide-react';
 
 const C = {

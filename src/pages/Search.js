@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import API from '../api';
 import { trackBehavior } from '../api';
 import { Link } from 'react-router-dom';
-import { Search, SlidersHorizontal, Grid3X3, List, MapPin, Bed, Bath, Square, Heart, X, ChevronDown } from 'lucide-react';
+import { Search, SlidersHorizontal, Grid3X3, List, Bed, Bath, Square, Heart, X, ChevronDown } from 'lucide-react';
 
 const C = {
   black: '#0a0a0a', cream: '#f5f3ef', midCream: '#ede9e3',
@@ -14,7 +14,7 @@ const C = {
 const SearchPage = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState('list'); // default list = alternating
+  const [view, setView] = useState('list');
   const [filters, setFilters] = useState({ minPrice: '', maxPrice: '', beds: '', baths: '', city: '', propertyType: '' });
   const [showFilters, setShowFilters] = useState(false);
 

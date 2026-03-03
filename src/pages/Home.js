@@ -25,21 +25,17 @@ const Home = () => {
   const [featuredListings, setFeaturedListings] = useState([]);
   const [activeSlide, setActiveSlide] = useState(0);
   const [videoSrc, setVideoSrc] = useState((typeof window !== 'undefined' && window.location.origin) + '/videos/hero.mp4');
-  const [showVideo, setShowVideo] = useState(true);
 
   const heroSlides = [
     {
-      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
       label: "Experience Colorado's Finest Properties",
       title: 'For Those Who\nSeek An Exceptional Life',
     },
     {
-      image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
       label: 'Contemporary Homes for Discerning Buyers',
       title: 'Modern Elegance\nRedefined',
     },
     {
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
       label: 'Your Dream Home Awaits',
       title: 'Mountain Retreats\nBeyond Compare',
     },
@@ -86,32 +82,24 @@ const Home = () => {
 
       {/* ═══ HERO ═══ */}
       <section style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-        {/* Background video (local /videos/hero.mp4 first, then external demo, then image fallback) */}
+        {/* Background video only */}
         <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-          {showVideo ? (
-            <video
-              key={videoSrc}
-              poster={heroSlides[activeSlide].image}
-              autoPlay
-              muted
-              loop
-              playsInline
-              onError={() => {
-                // if local failed, try a remote demo video; if remote fails, hide video
-                const remote = 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4';
-                if (videoSrc.includes('/videos/hero.mp4')) {
-                  setVideoSrc(remote);
-                } else if (videoSrc === remote) {
-                  setShowVideo(false);
-                }
-              }}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            >
-              <source src={videoSrc} type="video/mp4" />
-            </video>
-          ) : (
-            <img src={heroSlides[activeSlide].image} alt="Hero background" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-          )}
+          <video
+            key={videoSrc}
+            autoPlay
+            muted
+            loop
+            playsInline
+            onError={() => {
+              const backupVideo = (typeof window !== 'undefined' && window.location.origin) + '/videos/video.mp4';
+              if (videoSrc.includes('/videos/hero.mp4')) {
+                setVideoSrc(backupVideo);
+              }
+            }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          >
+            <source src={videoSrc} type="video/mp4" />
+          </video>
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(10,10,10,0.06) 0%, rgba(10,10,10,0.08) 40%, rgba(10,10,10,0.12) 100%)' }} />
         </div>
 
