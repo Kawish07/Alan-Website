@@ -85,7 +85,7 @@ const SellBeforeYouBuy = () => {
             <h2 style={{ fontFamily: C.display, fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 300, color: C.black, marginBottom: 20 }}>Why Choose Our Program?</h2>
             <div style={{ width: 48, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+          <div className="resp-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
             {benefits.map((b, i) => (
               <div key={i} className="chf-card" style={{ backgroundColor: C.white, padding: '40px 32px', textAlign: 'center' }}>
                 <div style={{ width: 56, height: 56, backgroundColor: C.black, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
@@ -107,7 +107,7 @@ const SellBeforeYouBuy = () => {
             <h2 style={{ fontFamily: C.display, fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 300, color: C.white, marginBottom: 20 }}>How It Works</h2>
             <div style={{ width: 48, height: 1, backgroundColor: 'rgba(255,255,255,0.2)', margin: '0 auto' }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, backgroundColor: 'rgba(255,255,255,0.05)' }}>
+          <div className="resp-grid-4-dark" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, backgroundColor: 'rgba(255,255,255,0.05)' }}>
             {steps.map((s, i) => (
               <div key={i} style={{ backgroundColor: C.black, padding: '48px 36px', transition: 'background-color 0.3s' }}
                 onMouseEnter={e => e.currentTarget.style.backgroundColor = '#161614'}
@@ -124,7 +124,7 @@ const SellBeforeYouBuy = () => {
 
       {/* Equity Form */}
       <section style={{ padding: '96px 0', backgroundColor: C.cream }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+        <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
           <div>
             <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 16 }}>Get Started</p>
             <h2 style={{ fontFamily: C.display, fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 300, color: C.black, lineHeight: 1.2, marginBottom: 24 }}>

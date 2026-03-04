@@ -30,8 +30,8 @@ const About = () => {
     <div style={{ fontFamily: C.body, backgroundColor: C.white, color: C.black }}>
 
       {/* ── Hero ── */}
-      <section style={{ position: 'relative', height: '85vh', backgroundColor: C.cream, overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
-        <div style={{ position: 'absolute', top: 0, right: 0, width: '55%', height: '100%', overflow: 'hidden' }}>
+      <section className="resp-about-hero" style={{ position: 'relative', height: '85vh', backgroundColor: C.cream, overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+        <div className="resp-about-hero-img" style={{ position: 'absolute', top: 0, right: 0, width: '55%', height: '100%', overflow: 'hidden' }}>
           <img
             src="https://images.unsplash.com/photo-1628745277862-bc0822606566?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
             alt="Luxury Colorado Estate"
@@ -74,7 +74,7 @@ const About = () => {
 
       {/* ── Stats Bar ── */}
       <section style={{ backgroundColor: C.black, position: 'relative', zIndex: 20, marginTop: '-40px', maxWidth: 1200, margin: '-40px auto 0' }}>
-        <div style={{ padding: '0 48px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)' }}>
+        <div className="resp-stats-bar" style={{ padding: '0 48px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)' }}>
           {stats.map((s, i) => (
             <div key={i} style={{ textAlign: 'center', padding: '48px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
               <p style={{ fontFamily: C.display, fontSize: 48, fontWeight: 300, color: C.white, lineHeight: 1, marginBottom: 8 }}>{s.value}</p>
@@ -86,7 +86,7 @@ const About = () => {
 
       {/* ── Our Story ── */}
       <section style={{ padding: '96px 0', backgroundColor: C.cream }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+        <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
 
           <div style={{ position: 'relative' }}>
             <img
@@ -94,11 +94,11 @@ const About = () => {
               alt="Alan Ramirez"
               style={{ width: '100%', height: 580, objectFit: 'cover', display: 'block' }}
             />
-            <div style={{ position: 'absolute', right: -32, bottom: -32, backgroundColor: C.black, color: C.white, padding: '32px 40px' }}>
+            <div className="resp-about-overlay" style={{ position: 'absolute', right: -32, bottom: -32, backgroundColor: C.black, color: C.white, padding: '32px 40px' }}>
               <p style={{ fontFamily: C.display, fontSize: 52, fontWeight: 300, lineHeight: 1, marginBottom: 6 }}>15+</p>
               <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)' }}>Years Experience</p>
             </div>
-            <div style={{ position: 'absolute', top: -16, left: -16, width: 72, height: 72, border: `1px solid ${C.muted}` }} />
+            <div className="resp-hide-tablet" style={{ position: 'absolute', top: -16, left: -16, width: 72, height: 72, border: `1px solid ${C.muted}` }} />
           </div>
 
           <div>
@@ -114,7 +114,7 @@ const About = () => {
               Whether you are a first-time buyer or a seasoned investor, we provide the guidance, negotiation skills, and personalized service you need to succeed in Colorado's competitive market.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 40 }}>
+            <div className="resp-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 40 }}>
               {[
                 [Award, 'Top Producing Team'],
                 [TrendingUp, 'Market Experts'],
@@ -147,7 +147,7 @@ const About = () => {
             <div style={{ width: 48, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, backgroundColor: C.midCream }}>
+          <div className="resp-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, backgroundColor: C.midCream }}>
             {[
               { num: '01', title: 'Expertise', desc: 'Deep knowledge of Colorado\'s neighborhoods, market trends, and legal landscape ensures you always have the most accurate picture.' },
               { num: '02', title: 'Transparency', desc: 'We believe in clear, honest communication at every stage. No surprises, no hidden agendas — just straightforward guidance.' },
@@ -173,7 +173,7 @@ const About = () => {
             <div style={{ width: 60, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
+          <div className="resp-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
             {team.map((member, i) => (
               <div key={i} style={{ overflow: 'hidden', backgroundColor: C.white }}>
                 <div style={{ position: 'relative', overflow: 'hidden' }}>

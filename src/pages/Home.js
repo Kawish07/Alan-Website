@@ -113,7 +113,7 @@ const Home = () => {
 
           {/* Search */}
           <div style={{ width: '100%', maxWidth: 760, backgroundColor: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <div className="resp-hero-search" style={{ display: 'flex', flexWrap: 'wrap' }}>
               <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 24px', borderRight: '1px solid #e8e4de' }}>
                 <MapPin size={18} style={{ color: C.muted, marginRight: 12, flexShrink: 0 }} />
                 <input type="text" placeholder="Search by City, Address, or ZIP..."
@@ -147,7 +147,7 @@ const Home = () => {
 
       {/* ═══ STATS ═══ */}
       <section style={{ backgroundColor: C.cream, borderTop: `1px solid ${C.midCream}`, borderBottom: `1px solid ${C.midCream}` }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+        <div className="resp-grid-4" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
           {stats.map((s, i) => (
             <div key={i} style={{ textAlign: 'center', padding: '48px 24px', borderRight: i < 3 ? `1px solid ${C.midCream}` : 'none' }}>
               <p style={{ fontFamily: C.display, fontSize: 52, fontWeight: 300, color: C.black, lineHeight: 1, marginBottom: 8 }}>{s.value}</p>
@@ -172,6 +172,7 @@ const Home = () => {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {featuredListings.map((p, i) => (
               <Link key={p._id} to={`/property/${p._id}`}
+                className="resp-property-row"
                 style={{ display: 'grid', gridTemplateColumns: i % 2 === 0 ? '60% 40%' : '40% 60%', minHeight: 420, textDecoration: 'none', color: 'inherit' }}>
 
                 {/* Image */}
@@ -233,15 +234,15 @@ const Home = () => {
 
       {/* ═══ ABOUT ═══ */}
       <section style={{ backgroundColor: C.cream, padding: '96px 0' }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+        <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
           <div style={{ position: 'relative' }}>
             <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
               alt="Agent" style={{ width: '100%', height: 560, objectFit: 'cover' }} />
-            <div style={{ position: 'absolute', right: -32, bottom: -32, backgroundColor: C.black, color: C.white, padding: 32 }}>
+            <div className="resp-about-overlay" style={{ position: 'absolute', right: -32, bottom: -32, backgroundColor: C.black, color: C.white, padding: 32 }}>
               <p style={{ fontFamily: C.display, fontSize: 48, fontWeight: 300 }}>15+</p>
               <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)' }}>Years of Excellence</p>
             </div>
-            <div style={{ position: 'absolute', top: -16, left: -16, width: 80, height: 80, border: `1px solid ${C.muted}` }} />
+            <div className="resp-hide-tablet" style={{ position: 'absolute', top: -16, left: -16, width: 80, height: 80, border: `1px solid ${C.muted}` }} />
           </div>
 
           <div>
@@ -281,7 +282,7 @@ const Home = () => {
             <div style={{ width: 60, height: 1, backgroundColor: 'rgba(255,255,255,0.2)', margin: '0 auto' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, backgroundColor: 'rgba(255,255,255,0.07)' }}>
+          <div className="resp-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, backgroundColor: 'rgba(255,255,255,0.07)' }}>
             {[
               { title: 'Buy a Home', desc: 'Discover your dream home with exclusive access to listings and expert guidance through every step.', link: '/first-time-buyers', cta: 'Start Search' },
               { title: 'Sell Your Home', desc: 'Get top dollar with strategic marketing, professional staging, and expert negotiation skills.', link: '/valuation', cta: 'Get Value' },
@@ -312,7 +313,7 @@ const Home = () => {
             <div style={{ width: 60, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
+          <div className="resp-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
             {teamMembers.map((m, i) => (
               <div key={i} style={{ overflow: 'hidden' }}>
                 <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 20 }}>
@@ -355,7 +356,7 @@ const Home = () => {
             <div style={{ width: 60, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+          <div className="resp-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
             {[
               { quote: '"Alan made the home buying process seamless. His knowledge of the Colorado market is unmatched, and he negotiated $20,000 off our dream home. We couldn\'t be happier!"', name: 'Sarah & Michael Johnson', location: 'Denver, CO', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80' },
               { quote: '"Professional, responsive, and truly cares about his clients. Alan sold our home in just 3 days above asking price. Highly recommend Colorado Home Finder!"', name: 'David Thompson', location: 'Boulder, CO', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80' },
@@ -383,7 +384,7 @@ const Home = () => {
       <section style={{ padding: '64px 0', backgroundColor: C.white, borderTop: `1px solid ${C.midCream}`, borderBottom: `1px solid ${C.midCream}` }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
           <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 32 }}>Trusted Affiliations & Reviews</p>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 56, flexWrap: 'wrap' }}>
+          <div className="resp-trust-badges" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 56, flexWrap: 'wrap' }}>
             {['NAR', 'CAR', 'DMAR', 'MLS'].map(badge => (
               <div key={badge} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
                 <div style={{ width: 64, height: 64, borderRadius: '50%', border: `1px solid ${C.midCream}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -410,7 +411,7 @@ const Home = () => {
             <h2 style={{ fontFamily: C.display, fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 300, color: C.black, marginBottom: 20 }}>Free Homebuyer Tools</h2>
             <div style={{ width: 60, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+          <div className="resp-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
             {[
               { icon: Key, title: 'First-Time Buyer Guide', desc: 'Step-by-step guide to purchasing your first home in Colorado.', link: '/first-time-buyers', cta: 'Download Guide' },
               { icon: DollarSign, title: 'Cash Offer Program', desc: 'Get a guaranteed cash offer on your property within 24 hours.', link: '/cash-offer', cta: 'Get Your Offer' },
@@ -446,7 +447,7 @@ const Home = () => {
           <p style={{ fontFamily: C.body, fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.8, marginBottom: 48 }}>
             Let's discuss your real estate goals today. No obligation, just expert advice from Colorado's top team.
           </p>
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="resp-cta-buttons" style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/valuation"
               style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.white, textDecoration: 'none', backgroundColor: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.25)', padding: '16px 40px', display: 'inline-block', backdropFilter: 'blur(8px)' }}>
               Get Home Value

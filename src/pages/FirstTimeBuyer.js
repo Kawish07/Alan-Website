@@ -57,7 +57,7 @@ const FirstTimeBuyer = () => {
 
       {/* ── Benefits Bar ── */}
       <section style={{ backgroundColor: C.black }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+        <div className="resp-grid-4-dark" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
           {[
             ['Down Payment Assistance', 'Programs available for qualifying buyers'],
             ['Pre-Approval Help', 'Connect with trusted local lenders'],
@@ -77,7 +77,7 @@ const FirstTimeBuyer = () => {
 
       {/* ── Intro + Form ── */}
       <section style={{ padding: '96px 0', backgroundColor: C.cream }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
+        <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
 
           {/* Left */}
           <div>
@@ -93,7 +93,7 @@ const FirstTimeBuyer = () => {
               From securing financing to closing day, we walk alongside you every step of the way — ensuring you feel informed, empowered, and never alone in the process.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, padding: '32px', backgroundColor: C.white }}>
+            <div className="resp-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, padding: '32px', backgroundColor: C.white }}>
               {[
                 ['Avg. Savings', '$18,400'],
                 ['Days to Close', '28'],
@@ -170,7 +170,7 @@ const FirstTimeBuyer = () => {
             <div style={{ width: 48, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, backgroundColor: C.midCream }}>
+          <div className="resp-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, backgroundColor: C.midCream }}>
             {steps.map((item, i) => (
               <div key={i} style={{ backgroundColor: i % 2 === 0 ? C.white : C.cream, padding: '48px 36px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 }}>

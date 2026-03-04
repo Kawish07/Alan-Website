@@ -24,7 +24,7 @@ const Valuation = () => {
     <div style={{ fontFamily: C.body, minHeight: '100vh', backgroundColor: C.white, position: 'relative', overflow: 'hidden' }}>
 
       {/* Split Layout */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '100vh' }}>
+      <div className="resp-hero-split" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '100vh' }}>
 
         {/* Left: Image + Content */}
         <div style={{ position: 'relative', overflow: 'hidden' }}>
@@ -32,7 +32,7 @@ const Valuation = () => {
             alt="Luxury Home" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.6) 100%)' }} />
 
-          <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 72px' }}>
+          <div className="resp-hero-split-panel" style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 72px' }}>
             <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.45)', marginBottom: 20 }}>
               Free Evaluation
             </p>
@@ -60,7 +60,7 @@ const Valuation = () => {
             </div>
 
             {/* Stats */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 56, paddingTop: 40, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <div className="resp-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginTop: 56, paddingTop: 40, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
               {[['$2B+', 'Career Sales'], ['#1', 'Colorado Team']].map(([val, label], i) => (
                 <div key={i}>
                   <p style={{ fontFamily: C.display, fontSize: 40, fontWeight: 300, color: C.white, lineHeight: 1, marginBottom: 6 }}>{val}</p>
@@ -72,7 +72,7 @@ const Valuation = () => {
         </div>
 
         {/* Right: Form */}
-        <div style={{ backgroundColor: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 64px' }}>
+        <div className="resp-hero-split-panel" style={{ backgroundColor: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 64px' }}>
           <div style={{ width: '100%', maxWidth: 480 }}>
 
             {/* Step indicator */}

@@ -91,7 +91,7 @@ const LoanApplication = () => {
 
       {/* Benefits */}
       <section style={{ backgroundColor: C.black }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
+        <div className="resp-grid-4-dark" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
           {benefits.map((b, i) => (
             <div key={i} style={{ textAlign: 'center', padding: '40px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none', transition: 'background-color 0.3s' }}
               onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(201,169,110,0.08)'}
@@ -114,7 +114,7 @@ const LoanApplication = () => {
           </div>
 
           {/* Progress Steps */}
-          <div style={{ display: 'flex', justifyContent: 'center', gap: 40, marginBottom: 48 }}>
+          <div className="resp-progress-steps" style={{ display: 'flex', justifyContent: 'center', gap: 40, marginBottom: 48 }}>
             {['Contact Info', 'Loan Details', 'Financial Info'].map((s, i) => (
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                 <div style={{ width: 32, height: 32, borderRadius: '50%', backgroundColor: step > i ? C.black : step === i + 1 ? C.gold : C.midCream, color: step >= i + 1 ? C.white : C.muted, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: C.body, fontSize: 12, fontWeight: 500, transition: 'all 0.3s' }}>
@@ -131,7 +131,7 @@ const LoanApplication = () => {
               {step === 1 && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                   <h3 style={{ fontFamily: C.display, fontSize: 24, fontWeight: 300, color: C.black, marginBottom: 8 }}>Contact Information</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                     <div>
                       <label style={labelStyle}>Full Name</label>
                       <input type="text" placeholder="John Doe" required value={formData.name}
@@ -172,7 +172,7 @@ const LoanApplication = () => {
                       <option value="not-sure">Not Sure</option>
                     </select>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                     <div>
                       <label style={labelStyle}>Purchase Price</label>
                       <input type="text" placeholder="$500,000" required value={formData.purchasePrice}
@@ -190,7 +190,7 @@ const LoanApplication = () => {
               {step === 3 && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
                   <h3 style={{ fontFamily: C.display, fontSize: 24, fontWeight: 300, color: C.black, marginBottom: 8 }}>Financial Information</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                     <div>
                       <label style={labelStyle}>Employment Status</label>
                       <select value={formData.employmentStatus} onChange={e => setFormData({ ...formData, employmentStatus: e.target.value })} required

@@ -70,7 +70,7 @@ const SearchPage = () => {
       {/* ── Filter Bar ── */}
       <div style={{ backgroundColor: C.white, borderBottom: `1px solid ${C.midCream}`, position: 'sticky', top: 60, zIndex: 40 }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          <form onSubmit={handleSearch} style={{ display: 'flex', alignItems: 'center', gap: 0, flexWrap: 'wrap' }}>
+          <form onSubmit={handleSearch} className="resp-filter-bar" style={{ display: 'flex', alignItems: 'center', gap: 0, flexWrap: 'wrap' }}>
 
             {/* Search input */}
             <div style={{ flex: 1, minWidth: 260, display: 'flex', alignItems: 'center', gap: 12, padding: '18px 0', borderRight: `1px solid ${C.midCream}`, paddingRight: 24 }}>
@@ -81,7 +81,7 @@ const SearchPage = () => {
             </div>
 
             {/* Neighborhood */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '18px 24px', borderRight: `1px solid ${C.midCream}`, cursor: 'pointer', minWidth: 200 }}>
+            <div className="resp-filter-hide-mobile" style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '18px 24px', borderRight: `1px solid ${C.midCream}`, cursor: 'pointer', minWidth: 200 }}>
               <span style={{ fontFamily: C.body, fontSize: 13, color: C.black }}>Select neighborhood</span>
               <ChevronDown size={16} style={{ color: C.muted }} />
             </div>
@@ -206,6 +206,7 @@ const PropertyRow = ({ property: p, index: i }) => {
 
   return (
     <Link to={`/property/${p._id}`}
+      className="resp-property-row"
       style={{ display: 'grid', gridTemplateColumns: i % 2 === 0 ? '55% 45%' : '45% 55%', minHeight: 400, textDecoration: 'none', color: 'inherit', borderBottom: `1px solid ${C.midCream}` }}>
 
       {/* Image */}

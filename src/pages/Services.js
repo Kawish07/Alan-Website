@@ -103,6 +103,7 @@ const Services = () => {
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
           {services.map((svc, i) => (
             <div key={i}
+              className="resp-service-row"
               style={{ display: 'grid', gridTemplateColumns: i % 2 === 0 ? '1fr 1fr' : '1fr 1fr', minHeight: 480, borderBottom: `1px solid ${C.midCream}` }}
               onMouseEnter={() => setHoveredIdx(i)} onMouseLeave={() => setHoveredIdx(null)}>
 
@@ -146,7 +147,7 @@ const Services = () => {
             <div style={{ width: 48, height: 1, backgroundColor: 'rgba(255,255,255,0.15)', margin: '0 auto' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, backgroundColor: 'rgba(255,255,255,0.05)' }}>
+          <div className="resp-grid-4-dark" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, backgroundColor: 'rgba(255,255,255,0.05)' }}>
             {[
               { val: '$2B+', label: 'Career Sales', desc: 'Proven track record across all price points' },
               { val: '#1', label: 'Colorado Team', desc: 'Ranked top large team on Compass' },
@@ -174,7 +175,7 @@ const Services = () => {
           <p style={{ fontFamily: C.body, fontSize: 14, color: C.muted, lineHeight: 1.8, marginBottom: 40 }}>
             Whether you're buying, selling, or exploring options, our team is here to help. Schedule a consultation and let's discuss your goals.
           </p>
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
+          <div className="resp-cta-buttons" style={{ display: 'flex', gap: 16, justifyContent: 'center' }}>
             <Link to="/contact"
               style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.white, textDecoration: 'none', backgroundColor: C.black, padding: '16px 40px', display: 'inline-block' }}>
               Contact Us

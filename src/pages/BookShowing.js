@@ -73,7 +73,7 @@ const BookShowing = () => {
 
       {/* Form Section */}
       <section style={{ padding: '96px 0', backgroundColor: C.cream }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }}>
+        <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }}>
 
           {/* Left - Info */}
           <div>
@@ -127,7 +127,7 @@ const BookShowing = () => {
                   style={{ width: '100%', padding: '14px 16px', border: `1px solid ${C.midCream}`, fontFamily: C.body, fontSize: 13, color: C.black, outline: 'none', boxSizing: 'border-box' }} />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                 <div>
                   <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Preferred Date</label>
                   <input type="date" required value={formData.preferredDate}
@@ -153,7 +153,7 @@ const BookShowing = () => {
 
               <div style={{ height: 1, backgroundColor: C.midCream, margin: '8px 0' }} />
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                 <div>
                   <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Full Name</label>
                   <input type="text" placeholder="Your name" required value={formData.name}

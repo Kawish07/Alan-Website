@@ -128,8 +128,8 @@ const PropertyDetails = () => {
         </div>
 
         {/* Content Overlay */}
-        <div style={{ position: 'relative', zIndex: 10, height: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 60 }}>
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%' }}>
+        <div className="resp-property-hero-inner" style={{ position: 'relative', zIndex: 10, height: '100%', maxWidth: 1400, margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', paddingBottom: 60 }}>
+          <div className="resp-property-hero-content" style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%' }}>
             <div style={{ color: C.white }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
                 <span style={{ backgroundColor: C.gold, color: C.white, padding: '4px 12px', borderRadius: 4, fontFamily: C.body, fontSize: 10, letterSpacing: '0.1em', fontWeight: 600 }}>{property.status}</span>
@@ -138,7 +138,7 @@ const PropertyDetails = () => {
               <h1 style={{ fontFamily: C.display, fontSize: 'clamp(40px, 6vw, 84px)', fontWeight: 300, lineHeight: 0.9, marginBottom: 20, letterSpacing: '-0.02em', textShadow: '0 2px 20px rgba(0,0,0,0.3)' }}>
                 {property.address}
               </h1>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 24, paddingLeft: 4 }}>
+              <div className="resp-property-stats" style={{ display: 'flex', alignItems: 'center', gap: 24, paddingLeft: 4 }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <Bed size={18} strokeWidth={1} />
                   <span style={{ fontSize: 18, fontFamily: C.display }}>{property.beds} <small style={{ fontSize: 11, fontFamily: C.body, textTransform: 'uppercase', letterSpacing: '0.1em', opacity: 0.8 }}>Beds</small></span>
@@ -154,7 +154,7 @@ const PropertyDetails = () => {
               </div>
             </div>
 
-            <div style={{ textAlign: 'right', color: C.white, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+            <div className="resp-property-hero-price" style={{ textAlign: 'right', color: C.white, display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
               <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.3em', textTransform: 'uppercase', marginBottom: 8, opacity: 0.8 }}>Listing Price</p>
               <p style={{ fontFamily: C.display, fontSize: 'clamp(36px, 4vw, 56px)', fontWeight: 300, lineHeight: 1 }}>
                 ${property.price.toLocaleString()}
@@ -188,7 +188,7 @@ const PropertyDetails = () => {
 
       {/* ── Key Metrics Section ── */}
       <section style={{ backgroundColor: C.cream, borderBottom: `1px solid ${C.midCream}` }}>
-        <div style={{ maxWidth: 1400, margin: '0 auto', padding: '40px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div className="resp-metrics-bar" style={{ maxWidth: 1400, margin: '0 auto', padding: '40px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', gap: 40 }}>
             <div>
               <p style={{ fontFamily: C.body, fontSize: 10, color: C.muted, letterSpacing: '0.2em', textTransform: 'uppercase', marginBottom: 4 }}>MLS ID</p>
@@ -215,7 +215,7 @@ const PropertyDetails = () => {
       </section>
 
       {/* ── Sticky Tab Nav ── */}
-      <div style={{ position: 'sticky', top: 60, zIndex: 40, backgroundColor: C.white, borderTop: `1px solid ${C.midCream}`, borderBottom: `1px solid ${C.midCream}` }}>
+      <div className="resp-tab-nav" style={{ position: 'sticky', top: 60, zIndex: 40, backgroundColor: C.white, borderTop: `1px solid ${C.midCream}`, borderBottom: `1px solid ${C.midCream}` }}>
         <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex' }}>
             {tabs.map(tab => (
@@ -233,7 +233,7 @@ const PropertyDetails = () => {
       </div>
 
       {/* ── Main Content + Sidebar ── */}
-      <div style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 48, alignItems: 'start', paddingTop: 64, paddingBottom: 80 }}>
+      <div className="resp-sidebar-layout" style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 48, alignItems: 'start', paddingTop: 64, paddingBottom: 80 }}>
 
         {/* Left Content */}
         <div>
@@ -242,7 +242,7 @@ const PropertyDetails = () => {
             <h2 style={{ fontFamily: C.display, fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 300, color: C.black, letterSpacing: '0.05em', marginBottom: 40, textTransform: 'uppercase' }}>
               Property Description
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
+            <div className="resp-desc-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48 }}>
               <p style={{ fontFamily: C.body, fontSize: 13, lineHeight: 2, color: '#5a5248' }}>
                 {property.description}
               </p>

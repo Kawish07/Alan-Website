@@ -43,8 +43,9 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .chf-nav.scrolled .chf-logo-text { color: #0a0a0a; }
     .chf-nav.scrolled .chf-logo-sub  { color: #9a8c7e; }
 
-    /* nav links */
-    .nav-links { display: flex; gap: 36px; align-items: center; }
+    /* nav links — hidden on mobile, shown on desktop */
+    .nav-links { display: none; gap: 36px; align-items: center; }
+    @media (min-width: 1024px) { .nav-links { display: flex; } }
     .nav-link {
       font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.18em;
       text-transform: uppercase; font-weight: 400; text-decoration: none;
@@ -83,9 +84,104 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .chf-admin-link:hover { color: var(--accent) !important; transform: translateY(-3px); background: linear-gradient(90deg, rgba(201,169,110,0.08), rgba(255,210,140,0.02)); box-shadow: 0 10px 30px rgba(0,0,0,0.14); border-color: rgba(201,169,110,0.18); }
     .chf-admin-link:hover .chf-admin-icon { transform: translateY(-2px) rotate(-6deg); }
 
-    /* mobile toggle */
-    .chf-mobile-toggle { background: none; border: none; cursor: pointer; color: #ffffff; padding: 4px; transition: color .5s cubic-bezier(.22,1,.36,1) !important; }
+    /* desktop CTA — hidden on mobile, shown on desktop */
+    .chf-desktop-cta { display: none; align-items: center; gap: 16px; }
+    @media (min-width: 1024px) { .chf-desktop-cta { display: flex; } }
+
+    /* mobile toggle — shown on mobile, hidden on desktop */
+    .chf-mobile-toggle { background: none; border: none; cursor: pointer; color: #ffffff; padding: 4px; display: flex; align-items: center; justify-content: center; transition: color .5s cubic-bezier(.22,1,.36,1) !important; }
     .chf-nav.scrolled .chf-mobile-toggle { color: #0a0a0a; }
+    @media (min-width: 1024px) { .chf-mobile-toggle { display: none; } }
+
+    /* ── SIDE DRAWER ── */
+    .chf-drawer-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,0); pointer-events: none;
+      transition: background .4s cubic-bezier(.22,1,.36,1);
+    }
+    .chf-drawer-overlay.open {
+      background: rgba(0,0,0,0.55); pointer-events: all;
+      backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    }
+    .chf-drawer {
+      position: fixed; top: 0; right: 0; z-index: 101;
+      width: 340px; max-width: 85vw; height: 100vh;
+      background: linear-gradient(180deg, #0d0d0d 0%, #0a0a0a 100%);
+      transform: translateX(100%);
+      transition: transform .45s cubic-bezier(.22,1,.36,1);
+      display: flex; flex-direction: column;
+      box-shadow: -20px 0 60px rgba(0,0,0,0.5);
+      overflow-y: auto;
+    }
+    .chf-drawer.open { transform: translateX(0); }
+    .chf-drawer-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 28px 20px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .chf-drawer-close {
+      background: none; border: 1px solid rgba(255,255,255,0.12); color: #fff;
+      width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all .25s cubic-bezier(.22,1,.36,1);
+    }
+    .chf-drawer-close:hover { border-color: var(--accent); color: var(--accent); transform: rotate(90deg); }
+    .chf-drawer-body { flex: 1; padding: 24px 28px; }
+    .chf-drawer-link {
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: 'Jost', sans-serif; font-size: 14px; letter-spacing: 0.14em;
+      text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none;
+      padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+      opacity: 0; transform: translateX(30px);
+      transition: color .22s, transform .22s, opacity .35s cubic-bezier(.22,1,.36,1);
+    }
+    .chf-drawer.open .chf-drawer-link {
+      opacity: 1; transform: translateX(0);
+    }
+    .chf-drawer.open .chf-drawer-link:nth-child(1) { transition-delay: .08s; }
+    .chf-drawer.open .chf-drawer-link:nth-child(2) { transition-delay: .13s; }
+    .chf-drawer.open .chf-drawer-link:nth-child(3) { transition-delay: .18s; }
+    .chf-drawer.open .chf-drawer-link:nth-child(4) { transition-delay: .23s; }
+    .chf-drawer.open .chf-drawer-link:nth-child(5) { transition-delay: .28s; }
+    .chf-drawer.open .chf-drawer-link:nth-child(6) { transition-delay: .33s; }
+    .chf-drawer.open .chf-drawer-link:nth-child(7) { transition-delay: .38s; }
+    .chf-drawer-link:hover { color: var(--accent); transform: translateX(6px); }
+    .chf-drawer-link.active { color: var(--accent); font-weight: 500; }
+    .chf-drawer-link .chf-drawer-arrow {
+      font-size: 18px; transition: transform .22s; color: rgba(255,255,255,0.2);
+    }
+    .chf-drawer-link:hover .chf-drawer-arrow { transform: translateX(4px); color: var(--accent); }
+    .chf-drawer-footer {
+      padding: 24px 28px; border-top: 1px solid rgba(255,255,255,0.06);
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .4s cubic-bezier(.22,1,.36,1) .35s, transform .4s cubic-bezier(.22,1,.36,1) .35s;
+    }
+    .chf-drawer.open .chf-drawer-footer { opacity: 1; transform: translateY(0); }
+    .chf-drawer-cta {
+      display: block; text-align: center; padding: 16px 0;
+      font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.18em;
+      text-transform: uppercase; font-weight: 500; color: #0a0a0a;
+      background: linear-gradient(90deg, #c9a96e, #e8c88a); text-decoration: none;
+      border-radius: 6px; margin-bottom: 16px;
+      transition: transform .25s, box-shadow .25s;
+    }
+    .chf-drawer-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,169,110,0.3); }
+    .chf-drawer-login {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 0; color: rgba(255,255,255,0.5);
+      font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.14em;
+      text-transform: uppercase; text-decoration: none;
+      transition: color .22s;
+    }
+    .chf-drawer-login:hover { color: #ffffff; }
+    .chf-drawer-socials {
+      display: flex; justify-content: center; gap: 14px; margin-top: 24px;
+    }
+    .chf-drawer-social {
+      width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.4);
+      transition: all .22s cubic-bezier(.22,1,.36,1); text-decoration: none;
+    }
+    .chf-drawer-social:hover { color: #fff; border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
 
     /* footer & social */
     .chf-social { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition: all .22s cubic-bezier(.22,1,.36,1); color: rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.15); }
@@ -361,7 +457,7 @@ const Layout = ({ children }) => {
             </Link>
 
             {/* Desktop Nav */}
-            <div className="hidden lg:flex nav-links">
+            <div className="nav-links">
               {navLinks.map(link => (
                 <Link key={link.name} to={link.path}
                   className={`nav-link${location.pathname === link.path ? ' active' : ''}`}>
@@ -370,8 +466,8 @@ const Layout = ({ children }) => {
               ))}
             </div>
 
-            {/* CTA */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16 }} className="hidden lg:flex">
+            {/* Desktop CTA */}
+            <div className="chf-desktop-cta">
               <Link to="/contact" className="chf-cta">
                 Contact Us <span style={{ width: 32, height: 1, backgroundColor: 'currentColor', display: 'inline-block' }} />
               </Link>
@@ -383,25 +479,51 @@ const Layout = ({ children }) => {
 
             {/* Mobile Toggle */}
             <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden chf-mobile-toggle">
+              className="chf-mobile-toggle">
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
 
-          {/* Mobile Menu */}
-          {mobileMenuOpen && (
-            <div style={{ backgroundColor: '#0a0a0a', padding: '24px 32px 32px' }}>
+        </nav>
+      )}
+
+      {/* SIDE DRAWER MENU */}
+      {!isAdminRoute && (
+        <>
+          <div className={`chf-drawer-overlay${mobileMenuOpen ? ' open' : ''}`} onClick={() => setMobileMenuOpen(false)} />
+          <div className={`chf-drawer${mobileMenuOpen ? ' open' : ''}`}>
+            <div className="chf-drawer-header">
+              <div>
+                <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 16, fontWeight: 500, letterSpacing: '0.12em', color: '#ffffff' }}>COLORADO HOME FINDER</span>
+                <span style={{ display: 'block', fontSize: 8, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginTop: 2 }}>Luxury Real Estate</span>
+              </div>
+              <button className="chf-drawer-close" onClick={() => setMobileMenuOpen(false)}>
+                <X size={18} />
+              </button>
+            </div>
+            <div className="chf-drawer-body">
               {navLinks.map(link => (
-                <Link key={link.name} to={link.path} className="chf-mobile-link">
+                <Link key={link.name} to={link.path}
+                  className={`chf-drawer-link${location.pathname === link.path ? ' active' : ''}`}
+                  onClick={() => setMobileMenuOpen(false)}>
                   {link.name}
+                  <span className="chf-drawer-arrow">&#8250;</span>
                 </Link>
               ))}
-              <Link to="/contact" className="chf-cta" style={{ display: 'inline-block', marginTop: 20, color: '#ffffff', border: '1px solid rgba(255,255,255,0.4)', padding: '12px 28px' }}>
-                Contact Us
-              </Link>
             </div>
-          )}
-        </nav>
+            <div className="chf-drawer-footer">
+              <Link to="/contact" className="chf-drawer-cta" onClick={() => setMobileMenuOpen(false)}>Contact Us</Link>
+              <Link to="/login" className="chf-drawer-login" onClick={() => setMobileMenuOpen(false)}>
+                <LogIn size={15} /> Login
+              </Link>
+              <div className="chf-drawer-socials">
+                {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
+                  <a key={i} href="#" className="chf-drawer-social"><Icon size={15} /></a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
       )}
 
       {/* MAIN */}
@@ -410,7 +532,7 @@ const Layout = ({ children }) => {
       {/* FOOTER */}
       {!isAdminRoute && <footer style={{ backgroundColor: '#0a0a0a', color: '#ffffff', paddingTop: 80, paddingBottom: 40 }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 48, marginBottom: 64 }}>
+          <div className="resp-footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 48, marginBottom: 64 }}>
 
             {/* Brand */}
             <div>
@@ -468,7 +590,7 @@ const Layout = ({ children }) => {
           </div>
 
           {/* Newsletter Signup */}
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 48, paddingBottom: 48, marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
+          <div className="resp-newsletter" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 48, paddingBottom: 48, marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
             <div>
               <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 300, color: '#ffffff', marginBottom: 8 }}>Stay Connected</p>
               <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>Get early access to luxury listings & market insights.</p>
@@ -482,7 +604,7 @@ const Layout = ({ children }) => {
           </div>
 
           {/* Bottom */}
-          <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+          <div className="resp-footer-bottom" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
             <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.05em' }}>
               © {new Date().getFullYear()} Colorado Home Finder LLC. All rights reserved. | License #XXX-XXX-XXXX
             </p>

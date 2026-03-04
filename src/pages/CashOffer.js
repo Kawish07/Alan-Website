@@ -32,7 +32,7 @@ const CashOffer = () => {
     <div style={{ fontFamily: C.body, backgroundColor: C.white, color: C.black, minHeight: '100vh' }}>
 
       {/* ── Hero / Split ── */}
-      <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '100vh' }}>
+      <section className="resp-hero-split" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', minHeight: '100vh' }}>
 
         {/* Left: Dark panel */}
         <div style={{ position: 'relative', overflow: 'hidden', backgroundColor: C.black }}>
@@ -41,7 +41,7 @@ const CashOffer = () => {
             alt="Home"
             style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, opacity: 0.35 }}
           />
-          <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 72px' }}>
+          <div className="resp-hero-split-panel" style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 72px' }}>
             <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>
               Guaranteed Offer
             </p>
@@ -74,7 +74,7 @@ const CashOffer = () => {
             </div>
 
             {/* Stats row */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0, marginTop: 64, paddingTop: 40, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+            <div className="resp-grid-3" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0, marginTop: 64, paddingTop: 40, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
               {[['24hrs', 'To Offer'], ['7 days', 'To Close'], ['0%', 'Commission']].map(([val, lbl], i) => (
                 <div key={i} style={{ textAlign: 'center', paddingRight: i < 2 ? 24 : 0, borderRight: i < 2 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
                   <p style={{ fontFamily: C.display, fontSize: 32, fontWeight: 300, color: C.white, lineHeight: 1, marginBottom: 6 }}>{val}</p>
@@ -86,7 +86,7 @@ const CashOffer = () => {
         </div>
 
         {/* Right: Form */}
-        <div style={{ backgroundColor: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 64px' }}>
+        <div className="resp-hero-split-panel" style={{ backgroundColor: C.cream, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 64px' }}>
           <div style={{ width: '100%', maxWidth: 480 }}>
             {submitted ? (
               <div style={{ textAlign: 'center' }}>
@@ -120,7 +120,7 @@ const CashOffer = () => {
                       onChange={e => setFormData({ ...formData, address: e.target.value })} />
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
                     <div>
                       <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Your Name</label>
                       <input type="text" required placeholder="Full name"
@@ -171,7 +171,7 @@ const CashOffer = () => {
             <div style={{ width: 48, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, backgroundColor: C.midCream }}>
+          <div className="resp-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, backgroundColor: C.midCream }}>
             {[
               { step: '01', title: 'Submit Your Address', desc: 'Fill out our simple form with your property details. It takes less than 2 minutes.' },
               { step: '02', title: 'Receive Your Offer', desc: 'Our team reviews your property and sends a competitive all-cash offer within 24 hours.' },

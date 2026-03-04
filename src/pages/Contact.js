@@ -56,7 +56,7 @@ const Contact = () => {
             <p style={{ fontFamily: C.body, fontSize: 13, color: 'rgba(255,255,255,0.45)', lineHeight: 1.9, letterSpacing: '0.04em', maxWidth: 440, marginBottom: 48 }}>
               Whether you are ready to sell your luxury estate or finding your next home in Colorado, our team is standing by to provide expert guidance.
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+            <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
               <div>
                 <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.gold, marginBottom: 16 }}>Call Us</p>
                 <p style={{ fontFamily: C.display, fontSize: 24, fontWeight: 300, color: C.white }}>(303) 555-0123</p>
@@ -75,7 +75,7 @@ const Contact = () => {
 
       {/* ── Contact Info Strip ── */}
       <section style={{ backgroundColor: C.white, position: 'relative', zIndex: 20, marginTop: '-60px' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', backgroundColor: C.white, boxShadow: '0 25px 60px -15px rgba(0,0,0,0.1)' }}>
+        <div className="resp-contact-strip" style={{ maxWidth: 1200, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', backgroundColor: C.white, boxShadow: '0 25px 60px -15px rgba(0,0,0,0.1)' }}>
           {contactItems.map(({ Icon, label, value, href }, i) => (
             <div key={i} style={{ padding: '48px 24px', borderRight: i < 3 ? '1px solid #f0ede8' : 'none', textAlign: 'center' }}>
               <Icon size={20} style={{ color: C.gold, margin: '0 auto 16px' }} />
@@ -92,7 +92,7 @@ const Contact = () => {
 
       {/* ── Main Content ── */}
       <section style={{ padding: '96px 0', backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96, alignItems: 'start' }}>
+        <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96, alignItems: 'start' }}>
 
           {/* Left: Info */}
           <div>
@@ -149,7 +149,7 @@ const Contact = () => {
                       onChange={e => setFormData({ ...formData, name: e.target.value })} />
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
                     <div>
                       <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Email</label>
                       <input type="email" required placeholder="your@email.com"
