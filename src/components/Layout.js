@@ -635,8 +635,8 @@ const Layout = ({ children }) => {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                 {[
                   [MapPin, '123 Real Estate Ave, Denver, CO 80000'],
-                  [Phone, '(303) 555-0123'],
-                  [Mail, 'info@coloradohomefinder.com'],
+                  [Phone, '+1 (773) 818-0444'],
+                  [Mail, 'AmRamz79@gmail.com'],
                 ].map(([Icon, text], i) => (
                   <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
                     <Icon size={15} style={{ color: 'rgba(255,255,255,0.4)', marginTop: 2, flexShrink: 0 }} />

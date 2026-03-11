@@ -250,12 +250,12 @@ const LoanApplication = () => {
 
           <div style={{ textAlign: 'center', marginTop: 32 }}>
             <p style={{ fontFamily: C.body, fontSize: 12, color: C.muted, lineHeight: 1.6 }}>
-              Questions? Call <a href="tel:3035550123" style={{ color: C.black, textDecoration: 'none', fontWeight: 500, transition: 'color 0.3s' }}
+              Questions? Call <a href="tel:+17738180444" style={{ color: C.black, textDecoration: 'none', fontWeight: 500, transition: 'color 0.3s' }}
                 onMouseEnter={e => e.currentTarget.style.color = C.gold}
-                onMouseLeave={e => e.currentTarget.style.color = C.black}>(303) 555-0123</a> or email{' '}
-              <a href="mailto:info@coloradohomefinder.com" style={{ color: C.black, textDecoration: 'none', fontWeight: 500, transition: 'color 0.3s' }}
+                onMouseLeave={e => e.currentTarget.style.color = C.black}>(773) 818-0444</a> or email{' '}
+              <a href="mailto:AmRamz79@gmail.com" style={{ color: C.black, textDecoration: 'none', fontWeight: 500, transition: 'color 0.3s' }}
                 onMouseEnter={e => e.currentTarget.style.color = C.gold}
-                onMouseLeave={e => e.currentTarget.style.color = C.black}>info@coloradohomefinder.com</a>
+                onMouseLeave={e => e.currentTarget.style.color = C.black}>AmRamz79@gmail.com</a>
             </p>
           </div>
         </div>

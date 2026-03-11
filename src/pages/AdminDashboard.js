@@ -626,7 +626,7 @@ const AdminDashboard = () => {
                     <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.black }}>Profile Information</p>
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
-                    {[['Full Name', 'text', 'Alan Ramirez'], ['Email', 'email', 'admin@coloradohomefinder.com'], ['Phone', 'tel', '(303) 555-0123'], ['License #', 'text', 'FA.1234567']].map(([label, type, val]) => (
+                    {[['Full Name', 'text', 'Alan Ramirez'], ['Email', 'email', 'AmRamz79@gmail.com'], ['Phone', 'tel', '(773) 818-0444'], ['License #', 'text', 'FA.1234567']].map(([label, type, val]) => (
                       <div key={label}>
                         <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>{label}</label>
                         <input type={type} defaultValue={val}

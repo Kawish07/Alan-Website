@@ -29,8 +29,8 @@ const Contact = () => {
   });
 
   const contactItems = [
-    { Icon: Phone, label: 'Phone', value: '(303) 555-0123', href: 'tel:3035550123' },
-    { Icon: Mail, label: 'Email', value: 'info@coloradohomefinder.com', href: 'mailto:info@coloradohomefinder.com' },
+    { Icon: Phone, label: 'Phone', value: '+1 (773) 818-0444', href: 'tel:+17738180444' },
+    { Icon: Mail, label: 'Email', value: 'AmRamz79@gmail.com', href: 'mailto:AmRamz79@gmail.com' },
     { Icon: MapPin, label: 'Office', value: '123 Real Estate Ave, Denver, CO 80000', href: null },
     { Icon: Clock, label: 'Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM', href: null },
   ];
@@ -59,11 +59,11 @@ const Contact = () => {
             <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
               <div>
                 <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.gold, marginBottom: 16 }}>Call Us</p>
-                <p style={{ fontFamily: C.display, fontSize: 24, fontWeight: 300, color: C.white }}>(303) 555-0123</p>
+                <p style={{ fontFamily: C.display, fontSize: 24, fontWeight: 300, color: C.white }}>+1 (773) 818-0444</p>
               </div>
               <div>
                 <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.gold, marginBottom: 16 }}>Email Us</p>
-                <p style={{ fontFamily: C.display, fontSize: 24, fontWeight: 300, color: C.white }}>info@colorado.com</p>
+                <p style={{ fontFamily: C.display, fontSize: 24, fontWeight: 300, color: C.white }}>AmRamz79@gmail.com</p>
               </div>
             </div>
           </div>

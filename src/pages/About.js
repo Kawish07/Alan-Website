@@ -11,7 +11,7 @@ const C = {
 
 const About = () => {
   const team = [
-    { name: 'Alan Ramirez', role: 'Founder & Lead Agent', bio: 'With over 15 years in Colorado real estate, Alan has built a reputation for delivering exceptional results through market expertise and unwavering client dedication.', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
+    { name: 'Alan Ramirez', role: 'Founder & Lead Agent', bio: 'With over 15 years in Colorado real estate, Alan has built a reputation for delivering exceptional results through market expertise and unwavering client dedication.', image: '/alan.png' },
     { name: 'Sarah Jenkins', role: 'Buyer Specialist', bio: 'Sarah\'s deep knowledge of Colorado\'s neighborhoods and her meticulous approach to buyer representation have made her a trusted guide for hundreds of clients.', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
     { name: 'Michael Stone', role: 'Listing Manager', bio: 'Michael combines strategic marketing with sophisticated staging to present properties at their finest, consistently achieving above-asking results.', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
     { name: 'Emily Clarke', role: 'Luxury Property Advisor', bio: 'Emily specializes in Colorado\'s ultra-luxury segment, bringing a refined sensibility and extensive network to every transaction she handles.', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
@@ -90,7 +90,7 @@ const About = () => {
 
           <div style={{ position: 'relative' }}>
             <img
-              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+              src="/alan.png"
               alt="Alan Ramirez"
               style={{ width: '100%', height: 580, objectFit: 'cover', display: 'block' }}
             />

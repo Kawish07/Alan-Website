@@ -136,7 +136,7 @@ const SellBeforeYouBuy = () => {
             </p>
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 32 }}>
               <Phone size={18} style={{ color: C.gold }} />
-              <span style={{ fontFamily: C.body, fontSize: 14, color: C.black }}>Questions? Call (303) 555-0123</span>
+              <span style={{ fontFamily: C.body, fontSize: 14, color: C.black }}>Questions? Call (773) 818-0444</span>
             </div>
           </div>
 

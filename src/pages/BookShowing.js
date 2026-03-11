@@ -108,8 +108,8 @@ const BookShowing = () => {
 
             <div style={{ marginTop: 48, padding: '24px 28px', backgroundColor: C.white, border: `1px solid ${C.midCream}` }}>
               <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.muted, marginBottom: 8 }}>Prefer to Call?</p>
-              <a href="tel:3035550123" style={{ display: 'flex', alignItems: 'center', gap: 10, fontFamily: C.body, fontSize: 16, color: C.black, textDecoration: 'none', fontWeight: 500 }}>
-                <Phone size={18} style={{ color: C.gold }} /> (303) 555-0123
+              <a href="tel:+17738180444" style={{ display: 'flex', alignItems: 'center', gap: 10, fontFamily: C.body, fontSize: 16, color: C.black, textDecoration: 'none', fontWeight: 500 }}>
+                <Phone size={18} style={{ color: C.gold }} /> (773) 818-0444
               </a>
             </div>
           </div>

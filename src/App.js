@@ -21,6 +21,7 @@ import LoanApplication from './pages/LoanApplication';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import UserDashboard from './pages/UserDashboard';
+import NotFound from './pages/NotFound';
 import { AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
@@ -83,6 +84,9 @@ function App() {
           <Route path="/admin/marketing" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/admin/analytics" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/admin/settings" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
+
+          {/* Catch-all for invalid URLs */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </Router>

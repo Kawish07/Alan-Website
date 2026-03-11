@@ -49,7 +49,7 @@ const Home = () => {
   ];
 
   const teamMembers = [
-    { name: 'Luke Andrews', role: 'Partner & Director of New Development', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80' },
+    { name: 'Alan Ramirez', role: 'Founder & Lead Agent', image: '/alan.png' },
     { name: 'Maria Coukoulis', role: 'Chief Operating Officer', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80' },
     { name: "John D'Amico", role: 'Luxury Real Estate Advisor', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80' },
   ];
@@ -236,8 +236,8 @@ const Home = () => {
       <section style={{ backgroundColor: C.cream, padding: '96px 0' }}>
         <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
           <div style={{ position: 'relative' }}>
-            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-              alt="Agent" style={{ width: '100%', height: 560, objectFit: 'cover' }} />
+            <img src="/alan.png"
+              alt="Alan Ramirez" style={{ width: '100%', height: 560, objectFit: 'cover' }} />
             <div className="resp-about-overlay" style={{ position: 'absolute', right: -32, bottom: -32, backgroundColor: C.black, color: C.white, padding: 32 }}>
               <p style={{ fontFamily: C.display, fontSize: 48, fontWeight: 300 }}>15+</p>
               <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)' }}>Years of Excellence</p>
@@ -452,9 +452,9 @@ const Home = () => {
               style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.white, textDecoration: 'none', backgroundColor: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.25)', padding: '16px 40px', display: 'inline-block', backdropFilter: 'blur(8px)' }}>
               Get Home Value
             </Link>
-            <a href="tel:3035550123"
+            <a href="tel:+17738180444"
               style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.black, textDecoration: 'none', backgroundColor: C.white, padding: '16px 40px', display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-              <Phone size={14} /> Call (303) 555-0123
+              <Phone size={14} /> Call (773) 818-0444
             </a>
           </div>
         </div>
