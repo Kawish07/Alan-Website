@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CheckCircle, ArrowRight, Clock, DollarSign, Shield } from 'lucide-react';
-import { submitLead, trackBehavior } from '../api';
+import { submitLead, trackBehavior, trackPageView } from '../api';
 
 const C = {
   black: '#0a0a0a', cream: '#f5f3ef', midCream: '#ede9e3',
@@ -13,6 +13,8 @@ const CashOffer = () => {
   const [formData, setFormData] = useState({ address: '', name: '', phone: '', email: '' });
   const [submitted, setSubmitted] = useState(false);
   const [focused, setFocused] = useState('');
+
+  useEffect(() => { trackPageView('CashOffer'); }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

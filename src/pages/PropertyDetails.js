@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import API from '../api';
-import { trackBehavior, submitLead } from '../api';
+import { trackBehavior, submitLead, trackPageView, saveProperty, unsaveProperty } from '../api';
+import { AuthContext } from '../context/AuthContext';
 import {
   Bed, Bath, Square, MapPin, Heart, Share2, ArrowLeft, ArrowRight,
-  ChevronDown, ChevronUp, Phone, Mail, Calendar, CheckCircle
+  ChevronDown, ChevronUp, Phone, Mail, Calendar, CheckCircle, Check
 } from 'lucide-react';
 
 const C = {
@@ -46,6 +47,8 @@ const DataRow = ({ label, value }) => (
 
 const PropertyDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useContext(AuthContext);
   const [property, setProperty] = useState(null);
   const [activeTab, setActiveTab] = useState('description');
   const [inquiry, setInquiry] = useState({ name: '', email: '', phone: '', message: '' });
@@ -53,28 +56,31 @@ const PropertyDetails = () => {
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isSaved, setIsSaved] = useState(false);
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     const fetchProperty = async () => {
       try {
         const res = await API.get(`/properties/${id}`);
         setProperty(res.data);
+        trackPageView('PropertyDetails');
         trackBehavior('PROPERTY_VIEW', { propertyId: id, address: res.data.address });
       } catch {
         setProperty({
-          _id: id, price: 15950000, address: '5673 W County Highway',
-          city: 'Santa Rosa Beach', state: 'FL', zipCode: '32459',
-          beds: 8, baths: 9, sqft: 6944, status: 'FOR SALE',
-          mlsId: '987246', yearBuilt: 2026, propertyType: 'Residential',
-          neighborhood: 'Dune Allen Beach', waterFrontage: 'Gulf',
-          stories: 3, pool: 'Pool - In-Ground, Pool Type',
-          parking: 'Garage', architectureStyle: 'Contemporary',
-          description: 'Designed by the acclaimed Geoff Chick & Associates and expertly constructed by Cogent Building Group, this newly completed Gulf-front estate at 5673 W County Highway 30A represents one of the most compelling offerings along Florida\'s iconic 30A corridor.',
-          description2: 'Encompassing approximately 6,944 square feet across three thoughtfully curated levels, the residence delivers eight bedrooms and nine bathrooms, pairing architectural sophistication with a lifestyle defined by effortless luxury.',
-          description3: 'From the moment you enter, expansive, light-filled living spaces frame uninterrupted Gulf vistas, creating a sense of connection to the coastline that is both immediate and profound.',
-          features: ['Elevator', 'Fireplace', 'Washer/Dryer Hookup', 'Central Vacuum', 'Ice Machine', 'Wine Refrigerator', 'Summer Kitchen', 'Balcony'],
-          appliances: ['Auto Garage Door Opener', 'Central Vacuum', 'Dishwasher', 'Disposal', 'Dryer', 'Ice Machine', 'Microwave', 'Refrigerator W/Ice Maker', 'Smoke Detector', 'Washer', 'Wine Refrigerator'],
-          agent: { name: 'Luke Andrews', phone: '850-978-0545', email: 'luke.andrews@compass.com', image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80' },
+          _id: id, price: 1295000, address: '5673 E Colfax Ave',
+          city: 'Denver', state: 'CO', zipCode: '80220',
+          beds: 5, baths: 4, sqft: 3800, status: 'FOR SALE',
+          mlsId: '165065183', yearBuilt: 2022, propertyType: 'Residential',
+          neighborhood: 'East Colfax', waterFrontage: '',
+          stories: 2, pool: 'None',
+          parking: '2-Car Garage', architectureStyle: 'Contemporary',
+          description: 'Beautifully renovated Denver home featuring a modern open floor plan with vaulted ceilings and floor-to-ceiling windows that capture stunning mountain views.',
+          description2: 'Spanning approximately 3,800 square feet across two thoughtfully designed levels, the residence delivers five bedrooms and four bathrooms, pairing modern sophistication with Colorado\'s effortless indoor-outdoor lifestyle.',
+          description3: 'From the moment you enter, expansive light-filled living spaces frame panoramic Front Range vistas, creating a sense of connection to the Colorado landscape that is both immediate and profound.',
+          features: ['Smart Home System', 'Fireplace', 'Washer/Dryer', 'Hardwood Floors', 'Quartz Countertops', 'Wine Refrigerator', 'Outdoor Kitchen', 'Mountain Views'],
+          appliances: ['Auto Garage Door Opener', 'Dishwasher', 'Disposal', 'Dryer', 'Microwave', 'Refrigerator W/Ice Maker', 'Smoke Detector', 'Washer', 'Wine Refrigerator'],
+          agent: { name: 'Alan Ramirez', phone: '(773) 818-0444', email: 'AmRamz79@gmail.com', image: '/alan.png' },
           images: [
             'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
             'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
@@ -86,7 +92,39 @@ const PropertyDetails = () => {
       }
     };
     fetchProperty();
+    // Check if user already saved this property
+    if (isAuthenticated && user?.role === 'user') {
+      API.get('/users/me').then(res => {
+        const ids = (res.data.savedHomes || []).map(h => typeof h === 'string' ? h : h._id);
+        setIsSaved(ids.includes(id));
+      }).catch(() => {});
+    }
   }, [id]);
+
+  const showToast = (msg, type = 'success') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 2500);
+  };
+
+  const toggleSave = async () => {
+    if (!isAuthenticated || user?.role !== 'user') {
+      navigate('/login');
+      return;
+    }
+    try {
+      if (isSaved) {
+        await unsaveProperty(id);
+        setIsSaved(false);
+        showToast('Removed from favorites');
+      } else {
+        await saveProperty(id);
+        setIsSaved(true);
+        showToast('Saved to favorites!');
+      }
+    } catch {
+      showToast('Could not save property', 'error');
+    }
+  };
 
   const handleInquiry = async (e) => {
     e.preventDefault();
@@ -104,6 +142,15 @@ const PropertyDetails = () => {
 
   return (
     <div style={{ fontFamily: C.body, backgroundColor: C.white }}>
+
+      {/* Toast */}
+      {toast && (
+        <div style={{ position: 'fixed', bottom: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 9999, backgroundColor: toast.type === 'error' ? '#ef4444' : C.black, color: C.white, padding: '14px 32px', borderRadius: 8, fontFamily: C.body, fontSize: 13, letterSpacing: '0.04em', display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(0,0,0,0.25)', animation: 'pdToastIn 0.3s ease' }}>
+          {toast.type !== 'error' && <Check size={16} style={{ color: C.gold }} />}
+          {toast.msg}
+        </div>
+      )}
+      <style>{`@keyframes pdToastIn { from { opacity:0; transform:translateX(-50%) translateY(16px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }`}</style>
 
       {/* ── Immersive Hero Section ── */}
       <section style={{ position: 'relative', height: '95vh', minHeight: 700, overflow: 'hidden', backgroundColor: C.black }}>
@@ -204,8 +251,10 @@ const PropertyDetails = () => {
             </div>
           </div>
           <div style={{ display: 'flex', gap: 12 }}>
-            <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 28px', border: `1px solid ${C.midCream}`, background: C.white, cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.1em', borderRadius: 40, transition: 'all 0.2s' }}>
-              <Heart size={14} /> Save Property
+            <button onClick={toggleSave} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 28px', border: `1px solid ${isSaved ? '#ef4444' : C.midCream}`, background: isSaved ? '#fef2f2' : C.white, cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.1em', borderRadius: 40, transition: 'all 0.2s', color: isSaved ? '#ef4444' : C.black }}
+              onMouseEnter={e => { if (!isSaved) { e.currentTarget.style.borderColor = C.gold; } }}
+              onMouseLeave={e => { if (!isSaved) { e.currentTarget.style.borderColor = C.midCream; } }}>
+              <Heart size={14} fill={isSaved ? '#ef4444' : 'none'} /> {isSaved ? 'Saved' : 'Save Property'}
             </button>
             <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 28px', border: `1px solid ${C.midCream}`, background: C.white, cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.1em', borderRadius: 40, transition: 'all 0.2s' }}>
               <Share2 size={14} /> Share
@@ -284,19 +333,19 @@ const PropertyDetails = () => {
             <Accordion title="Area & Lot" icon={MapPin} defaultOpen={true}>
               <div style={{ marginTop: 8 }}>
                 <DataRow label="Total Area" value={`${property.sqft?.toLocaleString()} Sq.Ft.`} />
-                <DataRow label="Neighborhood" value={property.neighborhood || 'Dune Allen Beach'} />
+                <DataRow label="Neighborhood" value={property.neighborhood || 'East Colfax'} />
                 <DataRow label="Architecture Styles" value={property.architectureStyle || 'Contemporary'} />
-                <DataRow label="Water Frontage" value={property.waterFrontage || 'Gulf'} />
-                <DataRow label="View Description" value="Gulf" />
+                {property.waterFrontage && <DataRow label="Water Frontage" value={property.waterFrontage} />}
+                <DataRow label="View Description" value={property.viewDescription || 'Mountain Views'} />
               </div>
             </Accordion>
 
             <Accordion title="Interior & Exterior" icon={Bed} defaultOpen={false}>
               <div style={{ marginTop: 8 }}>
-                <DataRow label="Stories" value={property.stories || '3'} />
+                <DataRow label="Stories" value={property.stories || '2'} />
                 <DataRow label="Utilities" value="Public Water" />
-                <DataRow label="Pool" value={property.pool || 'Pool - In-Ground, Pool Type'} />
-                <DataRow label="Parking" value={property.parking || 'Garage'} />
+                <DataRow label="Pool" value={property.pool || 'None'} />
+                <DataRow label="Parking" value={property.parking || '2-Car Garage'} />
                 <DataRow label="Appliances" value={property.appliances ? property.appliances.join(', ') : 'Auto Garage Door Opn, Central Vacuum, Dishwasher'} />
                 <DataRow label="Other Interior Features" value={property.features ? property.features.slice(0, 3).join(', ') : 'Elevator, Fireplace, Washer/Dryer Hookup'} />
                 <DataRow label="Security Features" value="Fire Alarm/Sprinkler" />

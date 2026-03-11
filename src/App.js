@@ -1,9 +1,11 @@
 import React from 'react';
+import { useEffect } from 'react';
 import useLenis from './hooks/useLenis';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Layout from './components/Layout';
 import Popup from './components/Popup';
+import { trackListingAlertClick } from './api';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import PropertyDetails from './pages/PropertyDetails';
@@ -26,25 +28,30 @@ import { AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 
-// Protected Route Component for Users
+// Protected Route — Users ONLY (blocks admin)
 const UserRoute = ({ children }) => {
   const { user, isAuthenticated, loading } = useContext(AuthContext);
-  if (loading) return null; // Or a simple spinner
-  // Admin is allowed to visit user dashboard too
+  if (loading) return null;
   if (!isAuthenticated) return <Navigate to="/login" />;
+  if (user?.role === 'admin') return <Navigate to="/admin" />;
   return children;
 };
 
-// Protected Route Component for Admins ONLY
+// Protected Route — Admins ONLY (blocks users)
 const AdminRoute = ({ children }) => {
   const { user, isAuthenticated, loading } = useContext(AuthContext);
   if (loading) return null;
-  if (!isAuthenticated || user?.role !== 'admin') return <Navigate to="/admin/login" />;
+  if (!isAuthenticated) return <Navigate to="/admin/login" />;
+  if (user?.role !== 'admin') return <Navigate to="/dashboard" />;
   return children;
 };
 
 function App() {
   useLenis();
+
+  // Detect listing alert email clicks via UTM parameters
+  useEffect(() => { trackListingAlertClick(); }, []);
+
   return (
     <Router>
       <ScrollToTop />

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { submitLead, trackBehavior } from '../api';
+import { submitLead, trackBehavior, trackPageView } from '../api';
 import { CheckCircle, ArrowRight, Home, DollarSign, TrendingUp, Shield, Phone } from 'lucide-react';
 
 const C = {
@@ -14,6 +14,8 @@ const SellBeforeYouBuy = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', address: '', estimatedValue: '', timeline: '' });
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => { trackPageView('SellBeforeYouBuy'); }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -55,29 +55,32 @@ const AdminDashboard = () => {
   const [noteText, setNoteText] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [focusedNote, setFocusedNote] = useState(false);
+  const [behaviorAnalytics, setBehaviorAnalytics] = useState(null);
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { fetchData(); fetchAnalytics(); }, []);
+  useEffect(() => { if (activeTab === 'analytics') fetchAnalytics(); }, [activeTab]);
+
+  const fetchAnalytics = async () => {
+    try {
+      const res = await API.get('/behavior/analytics/summary');
+      setBehaviorAnalytics(res.data);
+    } catch {
+      setBehaviorAnalytics(null);
+    }
+  };
 
   const fetchData = async () => {
     try {
       const leadsRes = await API.get('/leads');
       setLeads(leadsRes.data);
+    } catch {
+      setLeads([]);
+    }
+    try {
       const propsRes = await API.get('/properties');
       setProperties(propsRes.data);
     } catch {
-      // Use mock data
-      setLeads([
-        { _id: '1', name: 'Sarah Johnson', email: 'sarah@example.com', phone: '303-555-0101', intent: 'Buyer', source: 'Home Valuation Page', createdAt: new Date().toISOString(), notes: [] },
-        { _id: '2', name: 'David Thompson', email: 'david@example.com', phone: '303-555-0102', intent: 'Seller', source: 'Property Inquiry: 5673 W County Highway', createdAt: new Date(Date.now() - 86400000).toISOString(), notes: [{ text: 'Interested in selling by Q2' }] },
-        { _id: '3', name: 'Emily Clarke', email: 'emily@example.com', phone: '303-555-0103', intent: 'Buyer', source: 'Cash Offer Page', createdAt: new Date(Date.now() - 172800000).toISOString(), notes: [] },
-        { _id: '4', name: 'James Whitfield', email: 'james@example.com', phone: '303-555-0104', intent: 'Seller', source: 'Contact Page', createdAt: new Date(Date.now() - 259200000).toISOString(), notes: [] },
-        { _id: '5', name: 'Maria Santos', email: 'maria@example.com', phone: '303-555-0105', intent: 'Buyer', source: 'First Time Buyer Page', createdAt: new Date(Date.now() - 345600000).toISOString(), notes: [] },
-      ]);
-      setProperties([
-        { _id: '1', address: '5673 W County Highway', city: 'Santa Rosa Beach', price: 15950000, beds: 8, baths: 9, sqft: 6944, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400'] },
-        { _id: '2', address: '3504 E County Hwy 30A', city: 'Santa Rosa Beach', price: 19245000, beds: 9, baths: 10, sqft: 8524, status: 'PENDING', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400'] },
-        { _id: '3', address: '123 Mountain Vista Dr', city: 'Denver', price: 2150000, beds: 5, baths: 4, sqft: 4200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400'] },
-      ]);
+      setProperties([]);
     }
   };
 
@@ -96,7 +99,7 @@ const AdminDashboard = () => {
     { label: 'Total Leads', value: leads.length, sub: 'All time', accent: C.gold },
     { label: 'Buyer Leads', value: leads.filter(l => l.intent === 'Buyer').length, sub: 'Active prospects', accent: '#3b82f6' },
     { label: 'Seller Leads', value: leads.filter(l => l.intent === 'Seller').length, sub: 'Active prospects', accent: '#10b981' },
-    { label: 'Active Listings', value: properties.length, sub: 'Published', accent: '#8b5cf6' },
+    { label: 'Site Visitors', value: behaviorAnalytics?.uniqueSessions?.toLocaleString() || '0', sub: 'Unique sessions', accent: '#8b5cf6' },
   ];
 
   const navItems = [
@@ -195,8 +198,18 @@ const AdminDashboard = () => {
           {activeTab === 'dashboard' && (
             <div>
               {/* Stats */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 40 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 20 }}>
                 {stats.map((s, i) => <StatCard key={i} {...s} />)}
+              </div>
+
+              {/* Traffic row */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 40 }}>
+                {[
+                  { label: 'Page Views', value: behaviorAnalytics?.byEventType?.find(e => e._id === 'PAGE_VIEW')?.count || 0, sub: 'All time', accent: '#06b6d4' },
+                  { label: 'Property Views', value: behaviorAnalytics?.byEventType?.find(e => e._id === 'PROPERTY_VIEW')?.count || 0, sub: 'Listing impressions', accent: '#f97316' },
+                  { label: 'Form Submissions', value: behaviorAnalytics?.byEventType?.find(e => e._id === 'FORM_SUBMIT')?.count || 0, sub: 'Conversions', accent: '#10b981' },
+                  { label: 'Active Listings', value: properties.length, sub: 'Published', accent: '#8b5cf6' },
+                ].map((s, i) => <StatCard key={i} {...s} />)}
               </div>
 
               {/* Two column */}
@@ -248,6 +261,35 @@ const AdminDashboard = () => {
                       </div>
                     ))}
                   </div>
+                </div>
+              </div>
+
+              {/* Top Pages on Dashboard */}
+              <div style={{ backgroundColor: C.white, border: `1px solid ${C.midCream}`, marginTop: 24 }}>
+                <div style={{ padding: '20px 24px', borderBottom: `1px solid ${C.midCream}`, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <p style={{ fontFamily: C.display, fontSize: 20, fontWeight: 300, color: C.black }}>Top Pages This Period</p>
+                  <button onClick={() => setActiveTab('analytics')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.gold }}>
+                    Full Analytics
+                  </button>
+                </div>
+                <div style={{ padding: '8px 24px' }}>
+                  {behaviorAnalytics?.topPages?.length > 0 ? behaviorAnalytics.topPages.slice(0, 5).map((page, i) => {
+                    const maxCount = behaviorAnalytics.topPages[0]?.count || 1;
+                    return (
+                      <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '12px 0', borderBottom: i < Math.min(behaviorAnalytics.topPages.length, 5) - 1 ? `1px solid ${C.midCream}` : 'none' }}>
+                        <span style={{ fontFamily: C.display, fontSize: 18, fontWeight: 300, color: C.muted, width: 24, textAlign: 'center' }}>{i + 1}</span>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <p style={{ fontFamily: C.body, fontSize: 12, color: C.black, marginBottom: 6, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{page._id || '/'}</p>
+                          <div style={{ width: '100%', height: 4, backgroundColor: C.cream, borderRadius: 2 }}>
+                            <div style={{ width: `${Math.round((page.count / maxCount) * 100)}%`, height: '100%', backgroundColor: C.gold, borderRadius: 2 }} />
+                          </div>
+                        </div>
+                        <span style={{ fontFamily: C.body, fontSize: 12, fontWeight: 500, color: C.black, minWidth: 40, textAlign: 'right' }}>{page.count}</span>
+                      </div>
+                    );
+                  }) : (
+                    <p style={{ fontFamily: C.body, fontSize: 13, color: C.muted, padding: '20px 0' }}>No visitor data yet. Analytics will appear as users browse the site.</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -522,94 +564,91 @@ const AdminDashboard = () => {
           {activeTab === 'analytics' && (
             <div>
               <div style={{ marginBottom: 28 }}>
-                <p style={{ fontFamily: C.display, fontSize: 22, fontWeight: 300, color: C.black }}>Analytics & Reports</p>
-                <p style={{ fontFamily: C.body, fontSize: 12, color: C.muted, marginTop: 2 }}>Traffic sources, property popularity, and conversion rates</p>
+                <p style={{ fontFamily: C.display, fontSize: 22, fontWeight: 300, color: C.black }}>Analytics & Behavior Tracking</p>
+                <p style={{ fontFamily: C.body, fontSize: 12, color: C.muted, marginTop: 2 }}>Real-time visitor behavior, property popularity, and conversion insights</p>
               </div>
 
-              {/* Quick KPIs */}
+              {/* Quick KPIs from real data */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20, marginBottom: 32 }}>
                 {[
-                  { label: 'Page Views', value: '12,483', sub: '+18% vs last month', accent: C.gold },
-                  { label: 'Unique Visitors', value: '3,216', sub: '+12% vs last month', accent: '#3b82f6' },
-                  { label: 'Lead Conversions', value: '89', sub: '2.8% conversion rate', accent: '#10b981' },
-                  { label: 'Avg. Session', value: '3m 42s', sub: '+22s vs last month', accent: '#8b5cf6' },
+                  { label: 'Total Events', value: behaviorAnalytics?.totalEvents?.toLocaleString() || '—', sub: 'All time tracked', accent: C.gold },
+                  { label: 'Last 30 Days', value: behaviorAnalytics?.last30Days?.toLocaleString() || '—', sub: 'Recent events', accent: '#3b82f6' },
+                  { label: 'Last 7 Days', value: behaviorAnalytics?.last7Days?.toLocaleString() || '—', sub: 'This week', accent: '#10b981' },
+                  { label: 'Unique Sessions', value: behaviorAnalytics?.uniqueSessions?.toLocaleString() || '—', sub: 'Unique visitors', accent: '#8b5cf6' },
                 ].map((s, i) => <StatCard key={i} {...s} />)}
               </div>
 
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
-                {/* Traffic Sources */}
+                {/* Event Type Breakdown */}
                 <div style={{ backgroundColor: C.white, border: `1px solid ${C.midCream}`, padding: 32 }}>
-                  <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.black, marginBottom: 24 }}>Traffic Sources</p>
-                  {[
-                    { source: 'Google Organic', pct: 42, color: '#3b82f6' },
-                    { source: 'Direct', pct: 28, color: C.gold },
-                    { source: 'Social Media', pct: 18, color: '#10b981' },
-                    { source: 'Referral', pct: 8, color: '#8b5cf6' },
-                    { source: 'Paid Ads', pct: 4, color: '#ef4444' },
-                  ].map((s, i) => (
-                    <div key={i} style={{ marginBottom: 16 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
-                        <span style={{ fontFamily: C.body, fontSize: 12, color: C.black }}>{s.source}</span>
-                        <span style={{ fontFamily: C.body, fontSize: 12, color: C.muted }}>{s.pct}%</span>
+                  <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.black, marginBottom: 24 }}>Event Type Breakdown</p>
+                  {behaviorAnalytics?.byEventType?.length > 0 ? behaviorAnalytics.byEventType.map((evt, i) => {
+                    const total = behaviorAnalytics.totalEvents || 1;
+                    const pct = Math.round((evt.count / total) * 100);
+                    const colors = ['#3b82f6', C.gold, '#10b981', '#8b5cf6', '#ef4444', '#f97316', '#06b6d4', '#ec4899', '#84cc16'];
+                    return (
+                      <div key={i} style={{ marginBottom: 16 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                          <span style={{ fontFamily: C.body, fontSize: 12, color: C.black }}>{evt._id}</span>
+                          <span style={{ fontFamily: C.body, fontSize: 12, color: C.muted }}>{evt.count} ({pct}%)</span>
+                        </div>
+                        <div style={{ width: '100%', height: 6, backgroundColor: C.cream, borderRadius: 3 }}>
+                          <div style={{ width: `${pct}%`, height: '100%', backgroundColor: colors[i % colors.length], borderRadius: 3, transition: 'width 0.5s' }} />
+                        </div>
                       </div>
-                      <div style={{ width: '100%', height: 6, backgroundColor: C.cream, borderRadius: 3 }}>
-                        <div style={{ width: `${s.pct}%`, height: '100%', backgroundColor: s.color, borderRadius: 3, transition: 'width 0.5s' }} />
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  }) : (
+                    <p style={{ fontFamily: C.body, fontSize: 13, color: C.muted }}>No behavior data yet. Events will appear as visitors interact with the site.</p>
+                  )}
                 </div>
 
-                {/* Top Properties */}
+                {/* Top Pages */}
                 <div style={{ backgroundColor: C.white, border: `1px solid ${C.midCream}`, padding: 32 }}>
-                  <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.black, marginBottom: 24 }}>Most Viewed Properties</p>
-                  {properties.slice(0, 5).map((prop, i) => (
-                    <div key={prop._id} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '12px 0', borderBottom: i < Math.min(properties.length, 5) - 1 ? `1px solid ${C.midCream}` : 'none' }}>
+                  <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.black, marginBottom: 24 }}>Top Pages Visited</p>
+                  {behaviorAnalytics?.topPages?.length > 0 ? behaviorAnalytics.topPages.map((page, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '12px 0', borderBottom: i < behaviorAnalytics.topPages.length - 1 ? `1px solid ${C.midCream}` : 'none' }}>
                       <span style={{ fontFamily: C.display, fontSize: 20, fontWeight: 300, color: C.muted, width: 28 }}>{i + 1}</span>
-                      <img src={prop.images?.[0]} alt="" style={{ width: 48, height: 36, objectFit: 'cover', borderRadius: 2, flexShrink: 0 }} />
                       <div style={{ flex: 1, minWidth: 0 }}>
-                        <p style={{ fontFamily: C.body, fontSize: 12, color: C.black, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{prop.address}</p>
-                        <p style={{ fontFamily: C.body, fontSize: 11, color: C.muted }}>${prop.price?.toLocaleString()}</p>
+                        <p style={{ fontFamily: C.body, fontSize: 12, color: C.black, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{page._id || 'Unknown'}</p>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                         <Eye size={12} style={{ color: C.muted }} />
-                        <span style={{ fontFamily: C.body, fontSize: 11, color: C.muted }}>{Math.floor(Math.random() * 500 + 100)}</span>
+                        <span style={{ fontFamily: C.body, fontSize: 11, color: C.muted }}>{page.count}</span>
                       </div>
                     </div>
-                  ))}
+                  )) : (
+                    <p style={{ fontFamily: C.body, fontSize: 13, color: C.muted }}>No page view data yet.</p>
+                  )}
                 </div>
               </div>
 
-              {/* Conversion by Page */}
+              {/* Top Properties Viewed */}
               <div style={{ backgroundColor: C.white, border: `1px solid ${C.midCream}`, padding: 32 }}>
-                <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.black, marginBottom: 24 }}>Conversion by Landing Page</p>
-                <div style={{ overflowX: 'auto' }}>
-                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                      <tr style={{ backgroundColor: C.cream }}>
-                        {['Page', 'Visitors', 'Leads', 'Conv. Rate', 'Trend'].map(h => (
-                          <th key={h} style={{ padding: '12px 20px', textAlign: 'left', fontFamily: C.body, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.muted, fontWeight: 500 }}>{h}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {[
-                        { page: 'Home Valuation', visitors: '1,842', leads: '62', rate: '3.4%', trend: '+0.6%' },
-                        { page: 'Cash Offer', visitors: '1,205', leads: '48', rate: '4.0%', trend: '+1.2%' },
-                        { page: 'First-Time Buyers', visitors: '987', leads: '31', rate: '3.1%', trend: '-0.2%' },
-                        { page: 'Contact Page', visitors: '2,341', leads: '28', rate: '1.2%', trend: '+0.1%' },
-                        { page: 'Sell Before You Buy', visitors: '654', leads: '19', rate: '2.9%', trend: '+0.8%' },
-                      ].map((row, i) => (
-                        <tr key={i} style={{ borderTop: `1px solid ${C.midCream}` }}>
-                          <td style={{ padding: '14px 20px', fontFamily: C.body, fontSize: 13, color: C.black }}>{row.page}</td>
-                          <td style={{ padding: '14px 20px', fontFamily: C.body, fontSize: 13, color: C.muted }}>{row.visitors}</td>
-                          <td style={{ padding: '14px 20px', fontFamily: C.body, fontSize: 13, color: C.black, fontWeight: 500 }}>{row.leads}</td>
-                          <td style={{ padding: '14px 20px', fontFamily: C.body, fontSize: 13, color: C.black }}>{row.rate}</td>
-                          <td style={{ padding: '14px 20px', fontFamily: C.body, fontSize: 13, color: row.trend.startsWith('+') ? '#10b981' : '#ef4444' }}>{row.trend}</td>
+                <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.black, marginBottom: 24 }}>Most Viewed Properties</p>
+                {behaviorAnalytics?.topProperties?.length > 0 ? (
+                  <div style={{ overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                      <thead>
+                        <tr style={{ backgroundColor: C.cream }}>
+                          {['#', 'Property ID', 'Views'].map(h => (
+                            <th key={h} style={{ padding: '12px 20px', textAlign: 'left', fontFamily: C.body, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.muted, fontWeight: 500 }}>{h}</th>
+                          ))}
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody>
+                        {behaviorAnalytics.topProperties.map((prop, i) => (
+                          <tr key={i} style={{ borderTop: `1px solid ${C.midCream}` }}>
+                            <td style={{ padding: '14px 20px', fontFamily: C.display, fontSize: 18, color: C.muted }}>{i + 1}</td>
+                            <td style={{ padding: '14px 20px', fontFamily: C.body, fontSize: 13, color: C.black }}>{prop._id}</td>
+                            <td style={{ padding: '14px 20px', fontFamily: C.body, fontSize: 13, fontWeight: 500, color: C.black }}>{prop.count}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : (
+                  <p style={{ fontFamily: C.body, fontSize: 13, color: C.muted }}>No property view data yet. Views will appear as visitors browse listings.</p>
+                )}
               </div>
             </div>
           )}
@@ -626,7 +665,7 @@ const AdminDashboard = () => {
                     <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.black }}>Profile Information</p>
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
-                    {[['Full Name', 'text', 'Alan Ramirez'], ['Email', 'email', 'AmRamz79@gmail.com'], ['Phone', 'tel', '(773) 818-0444'], ['License #', 'text', 'FA.1234567']].map(([label, type, val]) => (
+                    {[['Full Name', 'text', 'Alan Ramirez'], ['Email', 'email', 'AmRamz79@gmail.com'], ['Phone', 'tel', '(773) 818-0444'], ['License #', 'text', 'FA100104608']].map(([label, type, val]) => (
                       <div key={label}>
                         <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>{label}</label>
                         <input type={type} defaultValue={val}

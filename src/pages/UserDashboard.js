@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import API from '../api';
+import { AuthContext } from '../context/AuthContext';
+import { unsaveProperty, deleteSavedSearch } from '../api';
 import {
   Heart, Search, User, Settings, LogOut, Bed, Bath, Square, Trash2,
   Bell, ArrowRight, Edit, Save
@@ -14,6 +16,7 @@ const C = {
 };
 
 const UserDashboard = () => {
+  const { user, isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('favorites');
   const [userData, setUserData] = useState(null);
@@ -23,53 +26,47 @@ const UserDashboard = () => {
   const [editingProfile, setEditingProfile] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('userToken');
+    // Block non-users
+    if (!isAuthenticated) { navigate('/login'); return; }
+    if (user?.role === 'admin') { navigate('/admin'); return; }
     const data = localStorage.getItem('userData');
-    if (!token) { navigate('/login'); return; }
     if (data) {
       const parsed = JSON.parse(data);
       setUserData(parsed);
       setProfile({ name: parsed.name || '', email: parsed.email || '', phone: parsed.phone || '' });
     }
     fetchSavedData();
-  }, [navigate]);
+  }, [navigate, isAuthenticated, user]);
 
   const fetchSavedData = async () => {
     try {
-      const res = await API.get('/auth/user-data');
+      const res = await API.get('/users/me');
       setSavedHomes(res.data.savedHomes || []);
       setSavedSearches(res.data.savedSearches || []);
     } catch {
-      // Mock data
-      setSavedHomes([
-        { _id: '1', address: '5673 W County Highway', city: 'Santa Rosa Beach', price: 15950000, beds: 8, baths: 9, sqft: 6944, images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400'] },
-        { _id: '2', address: '123 Mountain Vista Dr', city: 'Denver', price: 2150000, beds: 5, baths: 4, sqft: 4200, images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400'] },
-        { _id: '3', address: '4845 W County Hwy 30A', city: 'Boulder', price: 1595000, beds: 6, baths: 5, sqft: 4500, images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400'] },
-      ]);
-      setSavedSearches([
-        { id: 1, name: 'Denver Homes Under $1M', filters: { city: 'Denver', maxPrice: 1000000, beds: 3 }, newListings: 4, createdAt: '2026-01-15' },
-        { id: 2, name: 'Boulder Luxury', filters: { city: 'Boulder', minPrice: 1500000, beds: 4 }, newListings: 2, createdAt: '2026-02-20' },
-      ]);
+      setSavedHomes([]);
+      setSavedSearches([]);
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('userToken');
-    localStorage.removeItem('userData');
-    delete API.defaults.headers.common['x-auth-token'];
+    logout();
     navigate('/login');
   };
 
   const handleSaveProfile = async () => {
     try {
-      await API.put('/auth/user-profile', profile);
+      await API.put('/users/me', profile);
       localStorage.setItem('userData', JSON.stringify({ ...userData, ...profile }));
     } catch {}
     setEditingProfile(false);
   };
 
-  const handleRemoveFavorite = (id) => {
-    setSavedHomes(prev => prev.filter(h => h._id !== id));
+  const handleRemoveFavorite = async (id) => {
+    try {
+      await unsaveProperty(id);
+      setSavedHomes(prev => prev.filter(h => h._id !== id));
+    } catch {}
   };
 
   const tabs = [
@@ -219,7 +216,7 @@ const UserDashboard = () => {
                         style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.black, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 6, borderBottom: `1px solid ${C.black}`, paddingBottom: 2 }}>
                         View <ArrowRight size={12} />
                       </Link>
-                      <button onClick={() => setSavedSearches(prev => prev.filter(s => s.id !== search.id))}
+                      <button onClick={async () => { try { await deleteSavedSearch(search._id); setSavedSearches(prev => prev.filter(s => s._id !== search._id)); } catch {} }}
                         style={{ width: 32, height: 32, border: `1px solid ${C.midCream}`, background: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.muted }}>
                         <Trash2 size={14} />
                       </button>

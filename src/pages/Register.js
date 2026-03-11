@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import API from '../api';
+import { AuthContext } from '../context/AuthContext';
 import { Eye, EyeOff, Mail, Lock, User, Phone, ArrowRight } from 'lucide-react';
 
 const C = {
@@ -11,11 +11,18 @@ const C = {
 };
 
 const Register = () => {
+  const { userRegister, isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', password: '', confirmPassword: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(user?.role === 'admin' ? '/admin' : '/dashboard');
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,13 +37,7 @@ const Register = () => {
     }
     setLoading(true);
     try {
-      const res = await API.post('/users/register', {
-        name: formData.name, email: formData.email,
-        phone: formData.phone, password: formData.password
-      });
-      localStorage.setItem('userToken', res.data.token);
-      localStorage.setItem('userData', JSON.stringify(res.data.user));
-      API.defaults.headers.common['x-auth-token'] = res.data.token;
+      await userRegister(formData.name, formData.email, formData.password, formData.phone);
       navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.msg || 'Registration failed. Please try again.');

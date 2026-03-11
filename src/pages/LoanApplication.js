@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { submitLead, trackBehavior } from '../api';
+import { submitLead, trackBehavior, trackPageView } from '../api';
 import { CheckCircle, ArrowRight, DollarSign, Shield, Clock, FileText, Phone } from 'lucide-react';
 
 const C = {
@@ -19,6 +19,8 @@ const LoanApplication = () => {
     propertyAddress: '', message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => { trackPageView('LoanApplication'); }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

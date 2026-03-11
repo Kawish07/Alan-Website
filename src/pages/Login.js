@@ -1,7 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import API from '../api';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 
 const C = {
@@ -12,27 +11,29 @@ const C = {
 };
 
 const Login = () => {
-  const { login: adminLogin } = useContext(AuthContext);
+  const { userLogin, isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated && user?.role === 'user') navigate('/dashboard');
+    if (isAuthenticated && user?.role === 'admin') navigate('/admin');
+  }, [isAuthenticated, user, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
-    try {
-      const res = await API.post('/auth/user-login', formData);
-      localStorage.setItem('userToken', res.data.token);
-      localStorage.setItem('userData', JSON.stringify(res.data.user));
-      API.defaults.headers.common['x-auth-token'] = res.data.token;
+    const result = await userLogin(formData.email, formData.password);
+    setLoading(false);
+    if (result.success) {
       navigate('/dashboard');
-    } catch (err) {
-      setError(err.response?.data?.msg || 'Invalid credentials. Please try again.');
-    } finally {
-      setLoading(false);
+    } else {
+      setError(result.msg || 'Invalid credentials. Please try again.');
     }
   };
 

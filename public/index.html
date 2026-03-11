@@ -7,22 +7,33 @@
     <meta name="theme-color" content="#0a0a0a" />
     <meta
       name="description"
-      content="Colorado Home Finder — Luxury real estate in Colorado led by Alan Ramirez. Search homes, get instant cash offers, free home valuations, and first-time buyer guidance."
+      content="Alan Ramirez — Your Local Denver Real Estate Agent. Search MLS listings, get instant cash offers, free home valuations, and expert guidance for buyers and sellers in Colorado."
     />
-    <meta name="keywords" content="Colorado real estate, luxury homes, Denver homes for sale, Alan Ramirez realtor, home valuation, cash offer, first-time buyers" />
-    <meta name="author" content="Alan Ramirez — Colorado Home Finder" />
+    <meta name="keywords" content="Denver real estate, Colorado homes for sale, Alan Ramirez realtor, local agent Denver, home valuation Denver, cash offer Colorado, first-time home buyers Denver, MLS listings Denver, reColorado, Colorado Home Finder" />
+    <meta name="author" content="Alan Ramirez — Colorado Home Finder LLC" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://localagentdenver.com" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Colorado Home Finder | Luxury Real Estate" />
-    <meta property="og:description" content="Discover luxury homes in Colorado. Expert guidance from Alan Ramirez and the #1 real estate team." />
+    <meta property="og:title" content="Alan Ramirez | Local Agent Denver — Colorado Real Estate" />
+    <meta property="og:description" content="Search Denver MLS listings, get free home valuations, cash offers, and expert real estate guidance from Alan Ramirez." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://coloradohomefinder.com" />
+    <meta property="og:url" content="https://localagentdenver.com" />
     <meta property="og:image" content="%PUBLIC_URL%/og-image.jpg" />
+    <meta property="og:site_name" content="Local Agent Denver" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Colorado Home Finder | Luxury Real Estate" />
-    <meta name="twitter:description" content="Search luxury Colorado homes. Cash offers, valuations, and expert guidance." />
+    <meta name="twitter:title" content="Alan Ramirez | Local Agent Denver" />
+    <meta name="twitter:description" content="Search Denver MLS listings. Cash offers, valuations, and expert real estate guidance." />
+    <meta name="twitter:image" content="%PUBLIC_URL%/og-image.jpg" />
+
+    <!-- Geo Tags for Local SEO -->
+    <meta name="geo.region" content="US-CO" />
+    <meta name="geo.placename" content="Denver" />
+    <meta name="geo.position" content="39.7392;-104.9903" />
+    <meta name="ICBM" content="39.7392, -104.9903" />
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
@@ -32,7 +43,71 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
-    <title>Colorado Home Finder | Luxury Real Estate by Alan Ramirez</title>
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- Facebook Pixel -->
+    <script>
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window, document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', 'XXXXXXXXXXXXXXXXX');
+      fbq('track', 'PageView');
+    </script>
+    <noscript>
+      <img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXXXX&ev=PageView&noscript=1" alt="" />
+    </noscript>
+
+    <!-- Structured Data (JSON-LD) for Local Business SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "RealEstateAgent",
+      "name": "Alan Ramirez — Colorado Home Finder LLC",
+      "image": "%PUBLIC_URL%/alan.png",
+      "url": "https://localagentdenver.com",
+      "telephone": "+1-773-818-0444",
+      "email": "AmRamz79@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Denver",
+        "addressRegion": "CO",
+        "addressCountry": "US"
+      },
+      "sameAs": [
+        "https://www.zillow.com/profile/alain%20ramirez3",
+        "https://www.realtor.com/realestateagents/66287142c789e4cbc7224e7b",
+        "https://www.sold.com/agent-profile/Alain-Ramirez-228234"
+      ],
+      "knowsLanguage": ["English", "Filipino", "Japanese"],
+      "memberOf": [
+        {"@type": "Organization", "name": "National Association of Realtors"},
+        {"@type": "Organization", "name": "Colorado Association of Realtors"},
+        {"@type": "Organization", "name": "Denver Metro Association of Realtors"},
+        {"@type": "Organization", "name": "Asian Real Estate Association of America"}
+      ],
+      "hasCredential": {
+        "@type": "EducationalOccupationalCredential",
+        "credentialCategory": "Real Estate License",
+        "recognizedBy": {"@type": "Organization", "name": "Colorado DORA"},
+        "identifier": "FA100104608"
+      }
+    }
+    </script>
+
+    <title>Alan Ramirez | Local Agent Denver — Colorado Real Estate</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

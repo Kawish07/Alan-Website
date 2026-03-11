@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { trackPageView } from '../api';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -22,6 +23,9 @@ const ScrollToTop = () => {
       }
       window.scrollTo(0, 0);
     }, 50);
+
+    // 4. Track page view on every route change
+    trackPageView(pathname);
 
     return () => clearTimeout(timer);
   }, [pathname]);

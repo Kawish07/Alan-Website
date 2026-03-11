@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { Eye, EyeOff, ArrowRight } from 'lucide-react';
@@ -16,19 +16,25 @@ const AdminLogin = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [focused, setFocused] = useState('');
-  const { login } = useContext(AuthContext);
+  const { adminLogin, isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Redirect if already logged in as admin
+  useEffect(() => {
+    if (isAuthenticated && user?.role === 'admin') navigate('/admin');
+    if (isAuthenticated && user?.role === 'user') navigate('/dashboard');
+  }, [isAuthenticated, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    const success = await login(formData.email, formData.password);
+    const result = await adminLogin(formData.email, formData.password);
     setLoading(false);
-    if (success) {
+    if (result.success) {
       navigate('/admin');
     } else {
-      setError('Invalid email or password. Please try again.');
+      setError(result.msg || 'Invalid email or password. Please try again.');
     }
   };
 

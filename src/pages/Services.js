@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Home, DollarSign, Key, FileText, ArrowRight, Users, TrendingUp } from 'lucide-react';
+import { trackPageView } from '../api';
 
 const C = {
   black: '#0a0a0a', cream: '#f5f3ef', midCream: '#ede9e3',
@@ -11,6 +12,8 @@ const C = {
 
 const Services = () => {
   const [hoveredIdx, setHoveredIdx] = useState(null);
+
+  useEffect(() => { trackPageView('Services'); }, []);
 
   const services = [
     {
@@ -150,7 +153,7 @@ const Services = () => {
           <div className="resp-grid-4-dark" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1, backgroundColor: 'rgba(255,255,255,0.05)' }}>
             {[
               { val: '$2B+', label: 'Career Sales', desc: 'Proven track record across all price points' },
-              { val: '#1', label: 'Colorado Team', desc: 'Ranked top large team on Compass' },
+              { val: '#1', label: 'Colorado Team', desc: 'Ranked top local agent in Denver metro' },
               { val: '500+', label: 'Families Served', desc: 'Trusted by clients across every neighborhood' },
               { val: '98%', label: 'Satisfaction Rate', desc: 'Consistently rated 5 stars by our clients' },
             ].map((item, i) => (

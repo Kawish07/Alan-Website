@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import API from '../api';
-import { trackBehavior } from '../api';
-import { Link } from 'react-router-dom';
-import { Search, SlidersHorizontal, Grid3X3, List, Bed, Bath, Square, Heart, X, ChevronDown } from 'lucide-react';
+import { trackBehavior, trackListingClick, saveProperty, unsaveProperty } from '../api';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
+import { Search, SlidersHorizontal, Grid3X3, List, Bed, Bath, Square, Heart, X, ChevronDown, Check } from 'lucide-react';
 
 const C = {
   black: '#0a0a0a', cream: '#f5f3ef', midCream: '#ede9e3',
@@ -12,15 +13,26 @@ const C = {
 };
 
 const SearchPage = () => {
+  const { isAuthenticated, user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState('list');
   const [filters, setFilters] = useState({ minPrice: '', maxPrice: '', beds: '', baths: '', city: '', propertyType: '' });
   const [showFilters, setShowFilters] = useState(false);
+  const [savedIds, setSavedIds] = useState(new Set());
+  const [toast, setToast] = useState(null);
 
   useEffect(() => {
     trackBehavior('PAGE_VIEW', { page: 'Search' });
     fetchProperties();
+    // Load user's saved homes
+    if (isAuthenticated && user?.role === 'user') {
+      API.get('/users/me').then(res => {
+        const ids = (res.data.savedHomes || []).map(h => typeof h === 'string' ? h : h._id);
+        setSavedIds(new Set(ids));
+      }).catch(() => {});
+    }
   }, []);
 
   const fetchProperties = async () => {
@@ -31,10 +43,10 @@ const SearchPage = () => {
       setProperties(res.data);
     } catch {
       setProperties([
-        { _id: '1', price: 15950000, address: '5673 W County Highway', city: 'Santa Rosa Beach', beds: 8, baths: 9, sqft: 6944, status: 'FOR SALE', description: 'Designed by acclaimed architects, this newly completed Gulf-front estate represents one of the most compelling offerings along Florida\'s iconic 30A corridor.', images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900'] },
-        { _id: '2', price: 19245000, address: '3504 E County Hwy 30A', city: 'Santa Rosa Beach', beds: 9, baths: 10, sqft: 8524, status: 'PENDING', description: 'The pinnacle of Gulf front residential living primely located in Seagrove Beach along scenic County Highway 30A, this pristine new construction yields exceptional resort style amenities.', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900'] },
-        { _id: '3', price: 2150000, address: '789 Luxury Lane', city: 'Denver', beds: 5, baths: 4, sqft: 4200, status: 'FOR SALE', description: 'Stunning modern masterpiece in the heart of Denver. Features panoramic mountain views, smart home integration, and a private backyard oasis.', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900'] },
-        { _id: '4', price: 1595000, address: '4845 W County Hwy 30A', city: 'Boulder', beds: 6, baths: 5, sqft: 4500, status: 'FOR SALE', description: 'Exceptional contemporary residence offering the finest in luxury living with sweeping views and premier finishes throughout.', images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=900'] },
+        { _id: '1', price: 1295000, address: '5673 E Colfax Ave', city: 'Denver', beds: 5, baths: 4, sqft: 3800, status: 'FOR SALE', description: 'Beautifully renovated Denver home featuring a modern open floor plan, chef\'s kitchen with quartz countertops, and a private backyard with mountain views.', images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900'] },
+        { _id: '2', price: 875000, address: '1204 S Pearl St', city: 'Denver', beds: 4, baths: 3, sqft: 2850, status: 'FOR SALE', description: 'Charming Platt Park bungalow with modern upgrades throughout. Walking distance to South Pearl Street shops, restaurants, and Washington Park.', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900'] },
+        { _id: '3', price: 2150000, address: '123 Mountain Vista Dr', city: 'Boulder', beds: 5, baths: 4, sqft: 4200, status: 'FOR SALE', description: 'Stunning modern masterpiece in the heart of Boulder. Features panoramic Flatiron views, smart home integration, and a private backyard oasis.', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900'] },
+        { _id: '4', price: 725000, address: '4845 W Alameda Ave', city: 'Lakewood', beds: 3, baths: 2, sqft: 2200, status: 'FOR SALE', description: 'Move-in ready Lakewood gem with updated kitchen, hardwood floors, and a spacious lot. Easy access to Green Mountain trails and Red Rocks.', images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=900'] },
       ]);
     } finally { setLoading(false); }
   };
@@ -46,8 +58,43 @@ const SearchPage = () => {
     setShowFilters(false);
   };
 
+  const showToast = (msg, type = 'success') => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 2500);
+  };
+
+  const toggleSave = async (e, propertyId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isAuthenticated || user?.role !== 'user') {
+      navigate('/login');
+      return;
+    }
+    try {
+      if (savedIds.has(propertyId)) {
+        await unsaveProperty(propertyId);
+        setSavedIds(prev => { const n = new Set(prev); n.delete(propertyId); return n; });
+        showToast('Removed from favorites');
+      } else {
+        await saveProperty(propertyId);
+        setSavedIds(prev => new Set(prev).add(propertyId));
+        showToast('Saved to favorites!');
+      }
+    } catch {
+      showToast('Please log in to save properties', 'error');
+    }
+  };
+
   return (
     <div style={{ fontFamily: C.body, backgroundColor: C.white, minHeight: '100vh' }}>
+
+      {/* Toast */}
+      {toast && (
+        <div style={{ position: 'fixed', bottom: 32, left: '50%', transform: 'translateX(-50%)', zIndex: 9999, backgroundColor: toast.type === 'error' ? '#ef4444' : C.black, color: C.white, padding: '14px 32px', borderRadius: 8, fontFamily: C.body, fontSize: 13, letterSpacing: '0.04em', display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 32px rgba(0,0,0,0.25)', animation: 'fadeInUp 0.3s ease' }}>
+          {toast.type !== 'error' && <Check size={16} style={{ color: C.gold }} />}
+          {toast.msg}
+        </div>
+      )}
 
       {/* ── Hero Banner ── */}
       <section style={{ position: 'relative', height: 480, overflow: 'hidden' }}>
@@ -179,13 +226,13 @@ const SearchPage = () => {
           /* ── Alternating List ── */
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {properties.map((p, i) => (
-              <PropertyRow key={p._id} property={p} index={i} />
+              <PropertyRow key={p._id} property={p} index={i} savedIds={savedIds} onToggleSave={toggleSave} />
             ))}
           </div>
         ) : (
           /* ── Grid ── */
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 32 }}>
-            {properties.map(p => <PropertyGridCard key={p._id} property={p} />)}
+            {properties.map(p => <PropertyGridCard key={p._id} property={p} savedIds={savedIds} onToggleSave={toggleSave} />)}
           </div>
         )}
       </div>
@@ -195,19 +242,26 @@ const SearchPage = () => {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.5; }
         }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateX(-50%) translateY(16px); }
+          to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
       `}</style>
     </div>
   );
 };
 
 /* ─── Alternating Row Card ─── */
-const PropertyRow = ({ property: p, index: i }) => {
+const PropertyRow = ({ property: p, index: i, savedIds, onToggleSave }) => {
   const [hovered, setHovered] = useState(false);
+  const isSaved = savedIds.has(p._id);
 
   return (
-    <Link to={`/property/${p._id}`}
-      className="resp-property-row"
-      style={{ display: 'grid', gridTemplateColumns: i % 2 === 0 ? '55% 45%' : '45% 55%', minHeight: 400, textDecoration: 'none', color: 'inherit', borderBottom: `1px solid ${C.midCream}` }}>
+    <div style={{ position: 'relative' }}>
+      <Link to={`/property/${p._id}`}
+        onClick={() => trackListingClick(p._id, p.address)}
+        className="resp-property-row"
+        style={{ display: 'grid', gridTemplateColumns: i % 2 === 0 ? '55% 45%' : '45% 55%', minHeight: 400, textDecoration: 'none', color: 'inherit', borderBottom: `1px solid ${C.midCream}` }}>
 
       {/* Image */}
       <div style={{ order: i % 2 === 0 ? 0 : 1, position: 'relative', overflow: 'hidden' }}
@@ -254,15 +308,25 @@ const PropertyRow = ({ property: p, index: i }) => {
         </span>
       </div>
     </Link>
+    {/* Heart button outside the Link to prevent navigation */}
+    <button onClick={(e) => onToggleSave(e, p._id)}
+      style={{ position: 'absolute', top: 20, right: i % 2 === 0 ? 'auto' : 20, left: i % 2 === 0 ? 20 : 'auto', zIndex: 10, width: 40, height: 40, backgroundColor: 'rgba(255,255,255,0.9)', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 8px rgba(0,0,0,0.12)', transition: 'transform 0.2s' }}
+      onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.12)'}
+      onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+      <Heart size={16} fill={isSaved ? '#ef4444' : 'none'} color={isSaved ? '#ef4444' : C.black} />
+    </button>
+    </div>
   );
 };
 
 /* ─── Grid Card ─── */
-const PropertyGridCard = ({ property: p }) => {
+const PropertyGridCard = ({ property: p, savedIds, onToggleSave }) => {
   const [hovered, setHovered] = useState(false);
+  const isSaved = savedIds.has(p._id);
 
   return (
     <Link to={`/property/${p._id}`}
+      onClick={() => trackListingClick(p._id, p.address)}
       style={{ textDecoration: 'none', color: 'inherit', display: 'block', backgroundColor: C.white }}>
       <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 16 }}
         onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
@@ -271,8 +335,10 @@ const PropertyGridCard = ({ property: p }) => {
         <span style={{ position: 'absolute', top: 16, left: 16, backgroundColor: C.black, color: C.white, fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', padding: '6px 16px', borderRadius: 40 }}>
           {p.status || 'For Sale'}
         </span>
-        <button style={{ position: 'absolute', top: 16, right: 16, width: 36, height: 36, backgroundColor: 'rgba(255,255,255,0.85)', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: hovered ? 1 : 0, transition: 'opacity 0.2s' }}>
-          <Heart size={15} />
+        <button onClick={(e) => onToggleSave(e, p._id)} style={{ position: 'absolute', top: 16, right: 16, width: 36, height: 36, backgroundColor: 'rgba(255,255,255,0.85)', border: 'none', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: isSaved ? 1 : (hovered ? 1 : 0), transition: 'opacity 0.2s, transform 0.2s' }}
+          onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.15)'}
+          onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+          <Heart size={15} fill={isSaved ? '#ef4444' : 'none'} color={isSaved ? '#ef4444' : C.black} />
         </button>
       </div>
       <div>

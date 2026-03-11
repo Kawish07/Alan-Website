@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Clock, ArrowRight } from 'lucide-react';
-import { submitLead } from '../api';
+import { submitLead, trackPhoneClick, trackEmailClick, trackPageView } from '../api';
 
 const C = {
   black: '#0a0a0a', cream: '#f5f3ef', midCream: '#ede9e3',
@@ -10,13 +10,15 @@ const C = {
 };
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '', intent: 'Buyer' });
   const [submitted, setSubmitted] = useState(false);
   const [focused, setFocused] = useState('');
 
+  useEffect(() => { trackPageView('Contact'); }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await submitLead({ ...formData, source: 'Contact Page', intent: 'Other' });
+    await submitLead({ ...formData, source: 'Contact Page' });
     setSubmitted(true);
   };
 
@@ -31,7 +33,7 @@ const Contact = () => {
   const contactItems = [
     { Icon: Phone, label: 'Phone', value: '+1 (773) 818-0444', href: 'tel:+17738180444' },
     { Icon: Mail, label: 'Email', value: 'AmRamz79@gmail.com', href: 'mailto:AmRamz79@gmail.com' },
-    { Icon: MapPin, label: 'Office', value: '123 Real Estate Ave, Denver, CO 80000', href: null },
+    { Icon: MapPin, label: 'Office', value: 'Denver, CO — Serving the Greater Denver Metro', href: null },
     { Icon: Clock, label: 'Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM', href: null },
   ];
 
@@ -81,7 +83,7 @@ const Contact = () => {
               <Icon size={20} style={{ color: C.gold, margin: '0 auto 16px' }} />
               <p style={{ fontFamily: C.body, fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: C.muted, fontWeight: 600, marginBottom: 12 }}>{label}</p>
               {href ? (
-                <a href={href} style={{ fontFamily: C.body, fontSize: 13, color: C.black, textDecoration: 'none', fontWeight: 400 }}>{value}</a>
+                <a href={href} onClick={() => href.startsWith('tel:') ? trackPhoneClick('Contact') : trackEmailClick('Contact')} style={{ fontFamily: C.body, fontSize: 13, color: C.black, textDecoration: 'none', fontWeight: 400 }}>{value}</a>
               ) : (
                 <p style={{ fontFamily: C.body, fontSize: 13, color: C.black, lineHeight: 1.5, fontWeight: 400 }}>{value}</p>
               )}
@@ -117,6 +119,14 @@ const Contact = () => {
                 <MapPin size={14} style={{ color: C.gold }} />
                 <span style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.05em' }}>Denver, Colorado</span>
               </div>
+            </div>
+
+            {/* License Info */}
+            <div style={{ marginTop: 24, padding: '20px 24px', backgroundColor: C.cream, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.gold, fontWeight: 600, marginBottom: 4 }}>Agent Information</p>
+              <p style={{ fontFamily: C.body, fontSize: 13, color: C.black }}>Alan Ramirez — Colorado Home Finder LLC</p>
+              <p style={{ fontFamily: C.body, fontSize: 12, color: C.muted }}>License #FA100104608 | reColorado MLS ID: 165065183</p>
+              <p style={{ fontFamily: C.body, fontSize: 12, color: C.muted }}>Languages: English, Filipino, Japanese</p>
             </div>
           </div>
 
@@ -172,6 +182,26 @@ const Contact = () => {
                       style={{ ...inputStyle('message'), resize: 'none', paddingTop: 12 }}
                       onFocus={() => setFocused('message')} onBlur={() => setFocused('')}
                       onChange={e => setFormData({ ...formData, message: e.target.value })} />
+                  </div>
+
+                  {/* Buyer / Seller Intent */}
+                  <div>
+                    <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 12 }}>I Am A</label>
+                    <div style={{ display: 'flex', gap: 12 }}>
+                      {['Buyer', 'Seller', 'Both'].map(opt => (
+                        <button key={opt} type="button" onClick={() => setFormData({ ...formData, intent: opt })}
+                          style={{
+                            flex: 1, padding: '12px 16px',
+                            border: `1px solid ${formData.intent === opt ? C.black : C.midCream}`,
+                            backgroundColor: formData.intent === opt ? C.black : 'transparent',
+                            color: formData.intent === opt ? C.white : C.muted,
+                            fontFamily: C.body, fontSize: 11, letterSpacing: '0.15em',
+                            textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s',
+                          }}>
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { submitLead, trackBehavior } from '../api';
+import React, { useState, useEffect } from 'react';
+import { submitLead, trackBehavior, trackPageView } from '../api';
 import { Home, ArrowRight, TrendingUp, Clock, Shield, CheckCircle } from 'lucide-react';
 
 const C = {
@@ -12,6 +12,8 @@ const C = {
 const Valuation = () => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', address: '' });
+
+  useEffect(() => { trackPageView('Valuation'); }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { submitLead, trackBehavior } from '../api';
+import { submitLead, trackBehavior, trackPageView } from '../api';
 import { CheckCircle, Calendar, Clock, MapPin, Phone, ArrowRight } from 'lucide-react';
 
 const C = {
@@ -16,6 +16,8 @@ const BookShowing = () => {
     preferredDate: '', preferredTime: '', alternateDate: '', message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => { trackPageView('BookShowing'); }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Award, TrendingUp, Shield, Users, Instagram, Linkedin, ArrowRight } from 'lucide-react';
+import { Award, TrendingUp, Shield, Users, Instagram, Linkedin, ArrowRight, Globe, Star, ExternalLink } from 'lucide-react';
+import { trackPageView } from '../api';
 
 const C = {
   black: '#0a0a0a', cream: '#f5f3ef', midCream: '#ede9e3',
@@ -10,8 +11,10 @@ const C = {
 };
 
 const About = () => {
+  useEffect(() => { trackPageView('About'); }, []);
+
   const team = [
-    { name: 'Alan Ramirez', role: 'Founder & Lead Agent', bio: 'With over 15 years in Colorado real estate, Alan has built a reputation for delivering exceptional results through market expertise and unwavering client dedication.', image: '/alan.png' },
+    { name: 'Alan Ramirez', role: 'Founder & Lead Agent', bio: 'With extensive experience in Colorado real estate, Alan has built a reputation for delivering exceptional results through market expertise and unwavering client dedication. Licensed in Colorado (FA100104608), fluent in English, Filipino, and Japanese.', image: '/alan.png' },
     { name: 'Sarah Jenkins', role: 'Buyer Specialist', bio: 'Sarah\'s deep knowledge of Colorado\'s neighborhoods and her meticulous approach to buyer representation have made her a trusted guide for hundreds of clients.', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
     { name: 'Michael Stone', role: 'Listing Manager', bio: 'Michael combines strategic marketing with sophisticated staging to present properties at their finest, consistently achieving above-asking results.', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
     { name: 'Emily Clarke', role: 'Luxury Property Advisor', bio: 'Emily specializes in Colorado\'s ultra-luxury segment, bringing a refined sensibility and extensive network to every transaction she handles.', image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80' },
@@ -24,6 +27,19 @@ const About = () => {
     { value: '#1', label: 'Large Team in Colorado' },
     { value: '500+', label: 'Families Served' },
     { value: '15+', label: 'Years of Excellence' },
+  ];
+
+  const memberships = [
+    { name: 'National Association of Realtors', abbr: 'NAR' },
+    { name: 'Colorado Association of Realtors', abbr: 'CAR' },
+    { name: 'Denver Metro Association of Realtors', abbr: 'DMAR' },
+    { name: 'Asian Real Estate Association of America', abbr: 'AREAA' },
+  ];
+
+  const profiles = [
+    { name: 'Zillow', status: 'Preferred Agent', url: 'https://www.zillow.com/profile/alain%20ramirez3' },
+    { name: 'Realtor.com', status: 'Preferred Agent', url: 'https://www.realtor.com/realestateagents/66287142c789e4cbc7224e7b' },
+    { name: 'SOLD.com', status: 'Verified Agent', url: 'https://www.sold.com/agent-profile/Alain-Ramirez-228234' },
   ];
 
   return (
@@ -110,9 +126,32 @@ const About = () => {
             <p style={{ fontFamily: C.body, fontSize: 14, lineHeight: 1.9, color: '#5a5248', marginBottom: 20 }}>
               Colorado Home Finder was founded on the principle that every client deserves an exceptional real estate experience. Led by Alan Ramirez, our team combines deep local market knowledge with cutting-edge technology to deliver results that exceed expectations.
             </p>
-            <p style={{ fontFamily: C.body, fontSize: 14, lineHeight: 1.9, color: '#5a5248', marginBottom: 40 }}>
+            <p style={{ fontFamily: C.body, fontSize: 14, lineHeight: 1.9, color: '#5a5248', marginBottom: 24 }}>
               Whether you are a first-time buyer or a seasoned investor, we provide the guidance, negotiation skills, and personalized service you need to succeed in Colorado's competitive market.
             </p>
+
+            {/* Agent Credentials */}
+            <div style={{ backgroundColor: C.cream, padding: '24px 28px', marginBottom: 32 }}>
+              <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: C.gold, marginBottom: 16, fontWeight: 600 }}>Agent Credentials</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${C.midCream}`, paddingBottom: 8 }}>
+                  <span style={{ fontFamily: C.body, fontSize: 12, color: C.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>License #</span>
+                  <span style={{ fontFamily: C.body, fontSize: 13, color: C.black, fontWeight: 500 }}>FA100104608</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${C.midCream}`, paddingBottom: 8 }}>
+                  <span style={{ fontFamily: C.body, fontSize: 12, color: C.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>reColorado MLS ID</span>
+                  <span style={{ fontFamily: C.body, fontSize: 13, color: C.black, fontWeight: 500 }}>165065183</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: `1px solid ${C.midCream}`, paddingBottom: 8 }}>
+                  <span style={{ fontFamily: C.body, fontSize: 12, color: C.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Agency</span>
+                  <span style={{ fontFamily: C.body, fontSize: 13, color: C.black, fontWeight: 500 }}>Colorado Home Finder LLC</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontFamily: C.body, fontSize: 12, color: C.muted, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Languages</span>
+                  <span style={{ fontFamily: C.body, fontSize: 13, color: C.black, fontWeight: 500 }}>English, Filipino, Japanese</span>
+                </div>
+              </div>
+            </div>
 
             <div className="resp-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 40 }}>
               {[
@@ -199,6 +238,87 @@ const About = () => {
                   <p style={{ fontFamily: C.body, fontSize: 13, lineHeight: 1.8, color: '#5a5248' }}>{member.bio}</p>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Memberships & Associations ── */}
+      <section style={{ padding: '80px 0', backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
+          <div style={{ textAlign: 'center', marginBottom: 56 }}>
+            <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 16 }}>Professional Affiliations</p>
+            <h2 style={{ fontFamily: C.display, fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 300, color: C.black, marginBottom: 20 }}>Memberships & Associations</h2>
+            <div style={{ width: 60, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
+          </div>
+
+          <div className="resp-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24, marginBottom: 48 }}>
+            {memberships.map((m, i) => (
+              <div key={i} style={{ textAlign: 'center', padding: '36px 20px', backgroundColor: C.cream, transition: 'transform 0.3s, box-shadow 0.3s' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.08)'; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+                <p style={{ fontFamily: C.display, fontSize: 32, fontWeight: 300, color: C.gold, marginBottom: 8 }}>{m.abbr}</p>
+                <p style={{ fontFamily: C.body, fontSize: 12, color: C.muted, lineHeight: 1.6 }}>{m.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Agent Profiles / Social Proof ── */}
+      <section style={{ padding: '80px 0', backgroundColor: C.cream }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
+          <div style={{ textAlign: 'center', marginBottom: 56 }}>
+            <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 16 }}>Verified Profiles</p>
+            <h2 style={{ fontFamily: C.display, fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 300, color: C.black, marginBottom: 8 }}>Find Me On</h2>
+            <p style={{ fontFamily: C.body, fontSize: 13, color: C.muted }}>Preferred Agent on Zillow & Realtor.com</p>
+            <div style={{ width: 60, height: 1, backgroundColor: C.black, margin: '20px auto 0' }} />
+          </div>
+
+          <div className="resp-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
+            {profiles.map((p, i) => (
+              <a key={i} href={p.url} target="_blank" rel="noopener noreferrer"
+                style={{ textDecoration: 'none', display: 'block', padding: '48px 32px', backgroundColor: C.white, textAlign: 'center', transition: 'transform 0.3s, box-shadow 0.3s' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.08)'; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+                <p style={{ fontFamily: C.display, fontSize: 28, fontWeight: 400, color: C.black, marginBottom: 8 }}>{p.name}</p>
+                <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.gold, fontWeight: 500, marginBottom: 16 }}>{p.status}</p>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: C.muted, fontFamily: C.body, fontSize: 12 }}>
+                  <span>View Profile</span>
+                  <ExternalLink size={12} />
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Trusted By / Logos ── */}
+      <section style={{ padding: '64px 0', backgroundColor: C.white, borderTop: `1px solid ${C.midCream}`, borderBottom: `1px solid ${C.midCream}` }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
+          <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 40 }}>Trusted By & Affiliated With</p>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '36px 56px' }}>
+            {[
+              { name: 'NAR', src: '/R-logo.png', url: 'https://www.nar.realtor' },
+              { name: 'reColorado MLS', src: '/Recolorado_Logo.jpg', url: 'https://www.recolorado.com' },
+              { name: 'Zillow', src: 'https://www.zillowstatic.com/s3/pfs/static/z-logo-default-visual-refresh.svg', url: 'https://www.zillow.com/profile/alain%20ramirez3' },
+              { name: 'Realtor.com', src: 'https://static.rdc.moveaws.com/rdc-ui/logos/logo-brand.svg', url: 'https://www.realtor.com/realestateagents/66287142c789e4cbc7224e7b' },
+              { name: 'SOLD.com', src: null, url: 'https://www.sold.com/agent-profile/Alain-Ramirez-228234' },
+              { name: 'Colorado Home Finder LLC', src: '/CHFR_Logo.png', url: 'https://www.coloradohomefinder.com' },
+              { name: 'AREAA', src: '/areaa-logo.png', url: 'https://www.areaa.org' },
+            ].map((logo, i) => (
+              <a key={i} href={logo.url} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.6, transition: 'opacity 0.3s, transform 0.3s', textDecoration: 'none' }}
+                onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.05)'; }}
+                onMouseLeave={e => { e.currentTarget.style.opacity = '0.6'; e.currentTarget.style.transform = 'scale(1)'; }}>
+                {logo.src ? (
+                  <img src={logo.src} alt={logo.name} style={{ height: 48, maxWidth: 140, objectFit: 'contain', filter: 'grayscale(100%)', transition: 'filter 0.3s' }}
+                    onMouseEnter={e => e.target.style.filter = 'grayscale(0%)'}
+                    onMouseLeave={e => e.target.style.filter = 'grayscale(100%)'} />
+                ) : (
+                  <span style={{ fontFamily: C.display, fontSize: 22, fontWeight: 500, color: C.black, letterSpacing: '0.02em' }}>{logo.name}</span>
+                )}
+              </a>
             ))}
           </div>
         </div>

@@ -6,7 +6,7 @@ import {
   Home as HomeIcon, DollarSign, BarChart3, Key
 } from 'lucide-react';
 import API from '../api';
-import { trackBehavior } from '../api';
+import { trackBehavior, trackPhoneClick, trackPageView } from '../api';
 
 /* ─── style constants ─── */
 const C = {
@@ -22,9 +22,18 @@ const C = {
 
 const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [mlsCity, setMlsCity] = useState('');
+  const [mlsMinPrice, setMlsMinPrice] = useState('');
+  const [mlsMaxPrice, setMlsMaxPrice] = useState('');
+  const [mlsBeds, setMlsBeds] = useState('');
+  const [mlsType, setMlsType] = useState('buy');
   const [featuredListings, setFeaturedListings] = useState([]);
+  const [mlsListings, setMlsListings] = useState([]);
+  const [mlsLoading, setMlsLoading] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
   const [videoSrc, setVideoSrc] = useState((typeof window !== 'undefined' && window.location.origin) + '/videos/hero.mp4');
+
+  useEffect(() => { trackPageView('Home'); }, []);
 
   const heroSlides = [
     {
@@ -42,10 +51,10 @@ const Home = () => {
   ];
 
   const stats = [
-    { value: '#1', label: 'Large Team', sub: 'Compass Florida' },
+    { value: '#1', label: 'Local Agent', sub: 'Denver, Colorado' },
     { value: '$2B+', label: 'Career Sales', sub: 'Volume' },
-    { value: '#1', label: 'ECAR MLS', sub: 'Top Selling Team' },
-    { value: '1.5B+', label: '2024 Global', sub: 'Media Impressions' },
+    { value: '500+', label: 'Families Served', sub: 'And Counting' },
+    { value: '15+', label: 'Years', sub: 'Of Excellence' },
   ];
 
   const teamMembers = [
@@ -61,20 +70,52 @@ const Home = () => {
         if (res.data?.length > 0) { setFeaturedListings(res.data); return; }
       } catch {}
       setFeaturedListings([
-        { _id: '1', price: 15950000, address: '5673 W County Highway', city: 'Santa Rosa Beach', beds: 8, baths: 9, sqft: 6944, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-        { _id: '2', price: 19245000, address: '3504 E County Hwy 30A', city: 'Santa Rosa Beach', beds: 9, baths: 10, sqft: 8524, status: 'PENDING', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-        { _id: '3', price: 2150000, address: '123 Mountain Vista Dr', city: 'Denver', beds: 5, baths: 4, sqft: 4200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-        { _id: '4', price: 1924500, address: '4845 W County Hwy 30A', city: 'Boulder', beds: 6, baths: 5, sqft: 4500, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+        { _id: '1', price: 1295000, address: '5673 E Colfax Ave', city: 'Denver', beds: 5, baths: 4, sqft: 3800, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+        { _id: '2', price: 875000, address: '1204 S Pearl St', city: 'Denver', beds: 4, baths: 3, sqft: 2850, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+        { _id: '3', price: 2150000, address: '123 Mountain Vista Dr', city: 'Boulder', beds: 5, baths: 4, sqft: 4200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+        { _id: '4', price: 725000, address: '4845 W Alameda Ave', city: 'Lakewood', beds: 3, baths: 2, sqft: 2200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
       ]);
     };
+    const fetchMlsFeed = async () => {
+      setMlsLoading(true);
+      try {
+        const res = await API.get('/properties?limit=12');
+        if (res.data?.length > 0) { setMlsListings(res.data); } else { setMlsDefaultListings(); }
+      } catch { setMlsDefaultListings(); }
+      setMlsLoading(false);
+    };
     fetchListings();
+    fetchMlsFeed();
     const t = setInterval(() => setActiveSlide(p => (p + 1) % heroSlides.length), 5000);
     return () => clearInterval(t);
   }, []);
 
+  const setMlsDefaultListings = () => {
+    setMlsListings([
+      { _id: '1', price: 1295000, address: '5673 E Colfax Ave', city: 'Denver', beds: 5, baths: 4, sqft: 3800, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: '2', price: 875000, address: '1204 S Pearl St', city: 'Denver', beds: 4, baths: 3, sqft: 2850, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: '3', price: 2150000, address: '123 Mountain Vista Dr', city: 'Boulder', beds: 5, baths: 4, sqft: 4200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: '4', price: 725000, address: '4845 W Alameda Ave', city: 'Lakewood', beds: 3, baths: 2, sqft: 2200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: '5', price: 549000, address: '789 Columbine St', city: 'Denver', beds: 3, baths: 2, sqft: 1850, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: '6', price: 1750000, address: '456 Mapleton Ave', city: 'Boulder', beds: 4, baths: 3, sqft: 3400, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: '7', price: 425000, address: '321 Elm St', city: 'Aurora', beds: 3, baths: 2, sqft: 1600, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: '8', price: 985000, address: '1010 Highlands Dr', city: 'Denver', beds: 4, baths: 3, sqft: 2900, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+    ]);
+  };
+
   const handleSearch = () => {
     trackBehavior('SEARCH_FILTER', { query: searchQuery });
-    window.location.href = `/search?location=${searchQuery}`;
+    window.location.href = `/search?city=${encodeURIComponent(searchQuery)}`;
+  };
+
+  const handleMlsSearch = () => {
+    const params = new URLSearchParams();
+    if (mlsCity) params.set('city', mlsCity);
+    if (mlsMinPrice) params.set('minPrice', mlsMinPrice);
+    if (mlsMaxPrice) params.set('maxPrice', mlsMaxPrice);
+    if (mlsBeds) params.set('beds', mlsBeds);
+    trackBehavior('SEARCH_FILTER', { city: mlsCity, minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, type: mlsType });
+    window.location.href = `/search?${params.toString()}`;
   };
 
   return (
@@ -252,10 +293,10 @@ const Home = () => {
             </h2>
             <div style={{ width: 48, height: 1, backgroundColor: C.black, marginBottom: 32 }} />
             <p style={{ fontSize: 14, lineHeight: 1.9, color: '#5a5248', marginBottom: 16 }}>
-              Jonathan entered college early at just 16 years old, majoring in Business Finance. By 19, he earned his Bachelor's Degree in Business Administration, setting the foundation for an exceptional career in real estate.
+              Alan Ramirez brings over 15 years of dedicated real estate experience to the Denver market. Fluent in English, Filipino, and Japanese, he connects with a diverse range of clients across Colorado's dynamic housing landscape.
             </p>
             <p style={{ fontSize: 14, lineHeight: 1.9, color: '#5a5248', marginBottom: 36 }}>
-              Today, Alan Ramirez leads Colorado Home Finder with the same dedication and excellence. With over $2 billion in career sales and recognition as the #1 Large Team in Colorado, we deliver exceptional results for every client.
+              As the founder of Colorado Home Finder LLC, Alan delivers exceptional results with a client-first approach. Licensed in Colorado (FA100104608) and backed by memberships in NAR, CAR, DMAR, and AREAA, his commitment to excellence speaks for itself.
             </p>
             <div style={{ display: 'flex', gap: 32, marginBottom: 40 }}>
               {[[Award, 'Award Winning'], [TrendingUp, 'Top Producer'], [Shield, 'Trusted Expert']].map(([Icon, label], i) => (
@@ -383,22 +424,33 @@ const Home = () => {
       {/* ═══ TRUST SECTION ═══ */}
       <section style={{ padding: '64px 0', backgroundColor: C.white, borderTop: `1px solid ${C.midCream}`, borderBottom: `1px solid ${C.midCream}` }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
-          <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 32 }}>Trusted Affiliations & Reviews</p>
-          <div className="resp-trust-badges" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 56, flexWrap: 'wrap' }}>
-            {['NAR', 'CAR', 'DMAR', 'MLS'].map(badge => (
-              <div key={badge} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-                <div style={{ width: 64, height: 64, borderRadius: '50%', border: `1px solid ${C.midCream}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Shield size={24} style={{ color: C.gold }} />
-                </div>
-                <span style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted }}>{badge}</span>
-              </div>
+          <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 40 }}>Trusted Affiliations & Reviews</p>
+          <div className="resp-trust-badges" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 48, flexWrap: 'wrap' }}>
+            {[
+              { name: 'NAR', src: '/R-logo.png', url: 'https://www.nar.realtor' },
+              { name: 'reColorado MLS', src: '/Recolorado_Logo.jpg', url: 'https://www.recolorado.com' },
+              { name: 'Zillow', src: 'https://www.zillowstatic.com/s3/pfs/static/z-logo-default-visual-refresh.svg', url: 'https://www.zillow.com/profile/alain%20ramirez3' },
+              { name: 'Realtor.com', src: 'https://static.rdc.moveaws.com/rdc-ui/logos/logo-brand.svg', url: 'https://www.realtor.com/realestateagents/66287142c789e4cbc7224e7b' },
+              { name: 'Colorado Home Finder LLC', src: '/CHFR_Logo.png', url: 'https://www.coloradohomefinder.com' },
+              { name: 'AREAA', src: '/areaa-logo.png', url: 'https://www.areaa.org' },
+            ].map((logo, i) => (
+              <a key={i} href={logo.url} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.5, transition: 'opacity 0.3s, transform 0.3s', textDecoration: 'none' }}
+                onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.transform = 'scale(1.08)'; }}
+                onMouseLeave={e => { e.currentTarget.style.opacity = '0.5'; e.currentTarget.style.transform = 'scale(1)'; }}>
+                <img src={logo.src} alt={logo.name} style={{ height: 44, maxWidth: 120, objectFit: 'contain', filter: 'grayscale(100%)', transition: 'filter 0.3s' }}
+                  onMouseEnter={e => e.target.style.filter = 'grayscale(0%)'}
+                  onMouseLeave={e => e.target.style.filter = 'grayscale(100%)'} />
+              </a>
             ))}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+            <a href="https://www.zillow.com/profile/alain%20ramirez3" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8, textDecoration: 'none', opacity: 0.7, transition: 'opacity 0.3s' }}
+              onMouseEnter={e => e.currentTarget.style.opacity = '1'}
+              onMouseLeave={e => e.currentTarget.style.opacity = '0.7'}>
               <div style={{ display: 'flex', gap: 4 }}>
                 {[...Array(5)].map((_, i) => <Star key={i} size={16} style={{ fill: C.gold, color: C.gold }} />)}
               </div>
               <span style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.muted }}>Zillow 5-Star Reviews</span>
-            </div>
+            </a>
           </div>
         </div>
       </section>
@@ -453,6 +505,7 @@ const Home = () => {
               Get Home Value
             </Link>
             <a href="tel:+17738180444"
+              onClick={() => trackPhoneClick('Home')}
               style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.black, textDecoration: 'none', backgroundColor: C.white, padding: '16px 40px', display: 'inline-flex', alignItems: 'center', gap: 10 }}>
               <Phone size={14} /> Call (773) 818-0444
             </a>

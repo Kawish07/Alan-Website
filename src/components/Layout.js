@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Home, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Menu, X, LogIn
+  Home, Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Menu, X, LogIn, ArrowRight, LogOut, User as UserIcon, Shield
 } from 'lucide-react';
+import { submitLead, trackBehavior } from '../api';
+import { AuthContext } from '../context/AuthContext';
 
 /* ── Google Fonts injection ── */
 if (typeof document !== 'undefined' && !document.getElementById('spears-fonts')) {
@@ -236,10 +238,12 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .chf-drawer-social:hover { color: #fff; border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
 
     /* footer & social */
-    .chf-social { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition: all .22s cubic-bezier(.22,1,.36,1); color: rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.15); }
-    .chf-social:hover { color: #ffffff; transform: translateY(-4px) scale(1.06); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); box-shadow: 0 6px 20px rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.28); }
-    .chf-footer-link { color: rgba(255,255,255,0.6); text-decoration: none; transition: color .22s, transform .22s; display:block; padding:6px 0; }
-    .chf-footer-link:hover { color: #ffffff; transform: translateX(6px); }
+    .chf-social { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition: all .3s cubic-bezier(.22,1,.36,1) !important; color: rgba(255,255,255,0.6); border:1px solid rgba(255,255,255,0.15); }
+    .chf-social:hover { color: #ffffff !important; transform: translateY(-4px) scale(1.06) !important; background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); box-shadow: 0 6px 20px rgba(0,0,0,0.35); border-color: rgba(255,255,255,0.28) !important; }
+    .chf-footer-link { color: rgba(255,255,255,0.6); text-decoration: none !important; transition: color .3s ease, transform .3s ease !important; display:block; padding:6px 0; position: relative; }
+    .chf-footer-link:hover { color: #ffffff !important; transform: translateX(6px) !important; }
+    .chf-footer-link::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:rgba(255,255,255,0.3); transition: width .3s ease; }
+    .chf-footer-link:hover::after { width:100%; }
     .chf-mobile-link { display:block; font-family:'Jost', sans-serif; font-size:13px; letter-spacing:0.2em; text-transform:uppercase; color:#ffffff; text-decoration:none; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08); transition: color .22s; }
     .chf-mobile-link:hover { color: var(--accent); }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
@@ -407,7 +411,6 @@ const navLinks = [
   { name: 'Services', path: '/services' },
   { name: 'Home Valuation', path: '/valuation' },
   { name: 'About', path: '/about' },
-  { name: 'Contact', path: '/contact' },
 ];
 
 /* ── Page Loader Component ── */
@@ -457,6 +460,8 @@ const PageLoader = ({ show, loaderKey }) => {
 };
 
 const Layout = ({ children }) => {
+  const { user, isAuthenticated, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
@@ -524,15 +529,45 @@ const Layout = ({ children }) => {
               ))}
             </div>
 
-            {/* Desktop CTA */}
+            {/* Desktop CTA + Auth */}
             <div className="chf-desktop-cta">
               <Link to="/contact" className="chf-cta">
                 Contact Us <span style={{ width: 32, height: 1, backgroundColor: 'currentColor', display: 'inline-block' }} />
               </Link>
-              <Link to="/login" className="chf-admin-link">
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>Login</span>
-                <LogIn size={18} className="chf-admin-icon" />
-              </Link>
+              {isAuthenticated && user?.role === 'user' ? (
+                <>
+                  <Link to="/dashboard" className="chf-admin-link">
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>My Dashboard</span>
+                    <UserIcon size={18} className="chf-admin-icon" />
+                  </Link>
+                  <button onClick={() => { logout(); navigate('/'); }} className="chf-admin-link" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', padding: 0 }}>
+                    <LogOut size={16} className="chf-admin-icon" />
+                  </button>
+                </>
+              ) : isAuthenticated && user?.role === 'admin' ? (
+                <>
+                  <Link to="/admin" className="chf-admin-link">
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>Admin Panel</span>
+                  </Link>
+                  <button onClick={() => { logout(); navigate('/'); }} className="chf-admin-link" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', padding: 0 }}>
+                    <LogOut size={16} className="chf-admin-icon" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="chf-admin-link">
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>Login</span>
+                    <LogIn size={18} className="chf-admin-icon" />
+                  </Link>
+                  <Link to="/register" className="chf-admin-link" style={{ marginLeft: 4 }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>Sign Up</span>
+                  </Link>
+                  <Link to="/admin/login" className="chf-admin-link" style={{ marginLeft: 4, opacity: 0.7 }}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>Admin</span>
+                    <Shield size={16} className="chf-admin-icon" />
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Mobile Toggle */}
@@ -571,9 +606,37 @@ const Layout = ({ children }) => {
             </div>
             <div className="chf-drawer-footer">
               <Link to="/contact" className="chf-drawer-cta" onClick={() => setMobileMenuOpen(false)}>Contact Us</Link>
-              <Link to="/login" className="chf-drawer-login" onClick={() => setMobileMenuOpen(false)}>
-                <LogIn size={15} /> Login
-              </Link>
+              {isAuthenticated && user?.role === 'user' ? (
+                <>
+                  <Link to="/dashboard" className="chf-drawer-login" onClick={() => setMobileMenuOpen(false)}>
+                    <UserIcon size={15} /> My Dashboard
+                  </Link>
+                  <button className="chf-drawer-login" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', width: '100%', textAlign: 'left' }} onClick={() => { logout(); navigate('/'); setMobileMenuOpen(false); }}>
+                    <LogOut size={15} /> Logout
+                  </button>
+                </>
+              ) : isAuthenticated && user?.role === 'admin' ? (
+                <>
+                  <Link to="/admin" className="chf-drawer-login" onClick={() => setMobileMenuOpen(false)}>
+                    <UserIcon size={15} /> Admin Panel
+                  </Link>
+                  <button className="chf-drawer-login" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', width: '100%', textAlign: 'left' }} onClick={() => { logout(); navigate('/'); setMobileMenuOpen(false); }}>
+                    <LogOut size={15} /> Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="chf-drawer-login" onClick={() => setMobileMenuOpen(false)}>
+                    <LogIn size={15} /> Login
+                  </Link>
+                  <Link to="/register" className="chf-drawer-login" onClick={() => setMobileMenuOpen(false)}>
+                    <UserIcon size={15} /> Sign Up
+                  </Link>
+                  <Link to="/admin/login" className="chf-drawer-login" style={{ opacity: 0.5, fontSize: 10, marginTop: 8 }} onClick={() => setMobileMenuOpen(false)}>
+                    <Shield size={13} /> Admin Login
+                  </Link>
+                </>
+              )}
               <div className="chf-drawer-socials">
                 {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
                   <a key={i} href="#" className="chf-drawer-social"><Icon size={15} /></a>
@@ -588,93 +651,183 @@ const Layout = ({ children }) => {
       <main>{children}</main>
 
       {/* FOOTER */}
-      {!isAdminRoute && <footer style={{ backgroundColor: '#0a0a0a', color: '#ffffff', paddingTop: 80, paddingBottom: 40 }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          <div className="resp-footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 48, marginBottom: 64 }}>
+      {!isAdminRoute && <Footer />}
+    </div>
+  );
+};
 
-            {/* Brand */}
-            <div>
-              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 400, letterSpacing: '0.1em', marginBottom: 16 }}>
-                COLORADO<br />HOME FINDER
-              </p>
-              <p style={{ fontSize: 13, lineHeight: 1.8, color: 'rgba(255,255,255,0.5)', marginBottom: 24 }}>
-                Your trusted partner in Colorado Real Estate. Helping buyers and sellers achieve their dreams since 2010.
-              </p>
-              <div style={{ display: 'flex', gap: 12 }}>
-                {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
-                  <a key={i} href="#" className="chf-social">
-                    <Icon size={15} />
-                  </a>
-                ))}
-              </div>
-            </div>
+/* ── Inline Lead Form Component ── */
+const InlineLeadForm = () => {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', intent: 'Buyer' });
+  const [submitted, setSubmitted] = useState(false);
 
-            {/* Quick Links */}
-            <div>
-              <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Quick Links</p>
-              {navLinks.map(link => (
-                <Link key={link.name} to={link.path} className="chf-footer-link" style={{ fontSize: 13, padding: '6px 0', letterSpacing: '0.05em' }}>
-                  {link.name}
-                </Link>
-              ))}
-            </div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await submitLead({ ...form, source: 'Footer Lead Form' });
+    trackBehavior('FORM_SUBMIT', { source: 'Footer Lead Form', intent: form.intent });
+    setSubmitted(true);
+  };
 
-            {/* Services */}
-            <div>
-              <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Services</p>
-              {[['First-Time Buyers', '/first-time-buyers'], ['Cash Offers', '/cash-offer'], ['Sell Before You Buy', '/sell-before-you-buy'], ['Home Valuation', '/valuation'], ['Loan Application', '/loan-application'], ['Book a Showing', '/book-showing']].map(([name, path]) => (
-                <Link key={name} to={path} className="chf-footer-link" style={{ fontSize: 13, padding: '6px 0', letterSpacing: '0.05em' }}>
-                  {name}
-                </Link>
-              ))}
-            </div>
+  if (submitted) {
+    return (
+      <div style={{ textAlign: 'center', padding: '24px 0' }}>
+        <div style={{ width: 48, height: 48, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, color: '#ffffff' }}>✓</span>
+        </div>
+        <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 14, color: '#ffffff', marginBottom: 4 }}>Thank you!</p>
+        <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>We'll be in touch within 24 hours.</p>
+      </div>
+    );
+  }
 
-            {/* Contact */}
-            <div>
-              <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Contact</p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-                {[
-                  [MapPin, '123 Real Estate Ave, Denver, CO 80000'],
-                  [Phone, '+1 (773) 818-0444'],
-                  [Mail, 'AmRamz79@gmail.com'],
-                ].map(([Icon, text], i) => (
-                  <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                    <Icon size={15} style={{ color: 'rgba(255,255,255,0.4)', marginTop: 2, flexShrink: 0 }} />
-                    <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>{text}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+  return (
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <input type="text" placeholder="Full Name" required value={form.name}
+        onChange={e => setForm({ ...form, name: e.target.value })}
+        style={{ fontFamily: "'Jost', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+      <input type="tel" placeholder="Phone Number" required value={form.phone}
+        onChange={e => setForm({ ...form, phone: e.target.value })}
+        style={{ fontFamily: "'Jost', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+      <input type="email" placeholder="Email" required value={form.email}
+        onChange={e => setForm({ ...form, email: e.target.value })}
+        style={{ fontFamily: "'Jost', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+      <div style={{ display: 'flex', gap: 8 }}>
+        {['Buyer', 'Seller'].map(opt => (
+          <button key={opt} type="button" onClick={() => setForm({ ...form, intent: opt })}
+            style={{ flex: 1, padding: '10px', border: `1px solid ${form.intent === opt ? '#c9a96e' : 'rgba(255,255,255,0.12)'}`, backgroundColor: form.intent === opt ? '#c9a96e' : 'transparent', color: form.intent === opt ? '#0a0a0a' : 'rgba(255,255,255,0.6)', fontFamily: "'Jost', sans-serif", fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s' }}>
+            {opt}
+          </button>
+        ))}
+      </div>
+      <button type="submit"
+        style={{ padding: '14px', backgroundColor: '#c9a96e', color: '#0a0a0a', border: 'none', cursor: 'pointer', fontFamily: "'Jost', sans-serif", fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s' }}>
+        Get Started <ArrowRight size={13} />
+      </button>
+    </form>
+  );
+};
 
-          {/* Newsletter Signup */}
-          <div className="resp-newsletter" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 48, paddingBottom: 48, marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
-            <div>
-              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 300, color: '#ffffff', marginBottom: 8 }}>Stay Connected</p>
-              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>Get early access to luxury listings & market insights.</p>
-            </div>
-            <form onSubmit={e => e.preventDefault()} style={{ display: 'flex', gap: 0 }}>
-              <input type="email" placeholder="Enter your email" style={{ fontFamily: "'Jost', sans-serif", fontSize: 13, padding: '14px 20px', border: '1px solid rgba(255,255,255,0.15)', borderRight: 'none', backgroundColor: 'transparent', color: '#ffffff', outline: 'none', minWidth: 260 }} />
-              <button type="submit" style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, padding: '14px 28px', backgroundColor: '#c9a96e', color: '#0a0a0a', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}>
-                Subscribe
-              </button>
-            </form>
-          </div>
+/* ── Footer Component ── */
+const Footer = () => {
+  return (
+    <footer style={{ backgroundColor: '#0a0a0a', color: '#ffffff', paddingTop: 80, paddingBottom: 40 }}>
+      <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
+        <div className="resp-footer-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 48, marginBottom: 64 }}>
 
-          {/* Bottom */}
-          <div className="resp-footer-bottom" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
-            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.05em' }}>
-              © {new Date().getFullYear()} Colorado Home Finder LLC. All rights reserved. | License #XXX-XXX-XXXX
+          {/* Brand */}
+          <div>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 22, fontWeight: 400, letterSpacing: '0.1em', marginBottom: 16 }}>
+              COLORADO<br />HOME FINDER
             </p>
-            <div style={{ display: 'flex', gap: 20 }}>
-              {['NAR', 'DMAR', 'Realtor'].map(b => (
-                <span key={b} style={{ fontSize: 10, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.25)', textTransform: 'uppercase' }}>{b}</span>
+            <p style={{ fontSize: 13, lineHeight: 1.8, color: 'rgba(255,255,255,0.5)', marginBottom: 16 }}>
+              Your trusted partner in Colorado Real Estate. Led by Alan Ramirez — expert guidance for buyers and sellers across Denver and beyond.
+            </p>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginBottom: 16, lineHeight: 1.8 }}>
+              <p>License #FA100104608</p>
+              <p>reColorado MLS ID: 165065183</p>
+            </div>
+            <div style={{ display: 'flex', gap: 12 }}>
+              {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
+                <a key={i} href="#" className="chf-social">
+                  <Icon size={15} />
+                </a>
               ))}
             </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Quick Links</p>
+            {navLinks.map(link => (
+              <Link key={link.name} to={link.path} className="chf-footer-link" style={{ fontSize: 13, padding: '6px 0', letterSpacing: '0.05em' }}>
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
+          {/* Services */}
+          <div>
+            <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Services</p>
+            {[['First-Time Buyers', '/first-time-buyers'], ['Cash Offers', '/cash-offer'], ['Sell Before You Buy', '/sell-before-you-buy'], ['Home Valuation', '/valuation'], ['Loan Application', '/loan-application'], ['Book a Showing', '/book-showing']].map(([name, path]) => (
+              <Link key={name} to={path} className="chf-footer-link" style={{ fontSize: 13, padding: '6px 0', letterSpacing: '0.05em' }}>
+                {name}
+              </Link>
+            ))}
+          </div>
+
+          {/* Lead Form (on every page) */}
+          <div>
+            <p style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20 }}>Get in Touch</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 24 }}>
+              {[
+                [MapPin, 'Denver, Colorado'],
+                [Phone, '+1 (773) 818-0444'],
+                [Mail, 'AmRamz79@gmail.com'],
+              ].map(([Icon, text], i) => (
+                <div key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+                  <Icon size={15} style={{ color: 'rgba(255,255,255,0.4)', marginTop: 2, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6 }}>{text}</span>
+                </div>
+              ))}
+            </div>
+            <InlineLeadForm />
           </div>
         </div>
-      </footer>}
-    </div>
+
+        {/* Trusted Logos Bar */}
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 32, paddingBottom: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '16px 32px' }}>
+          {[
+            { name: 'NAR' },
+            { name: 'CAR' },
+            { name: 'DMAR' },
+            { name: 'AREAA' },
+            { name: 'reColorado' },
+            { name: 'Zillow', url: 'https://www.zillow.com/profile/alain%20ramirez3' },
+            { name: 'Realtor.com', url: 'https://www.realtor.com/realestateagents/66287142c789e4cbc7224e7b' },
+            { name: 'SOLD.com', url: 'https://www.sold.com/agent-profile/Alain-Ramirez-228234' },
+          ].map((logo, i) => logo.url ? (
+            <a key={i} href={logo.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', textTransform: 'uppercase', fontFamily: "'Jost', sans-serif", textDecoration: 'none', transition: 'color 0.2s' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.2)'}>{logo.name}</a>
+          ) : (
+            <span key={i} style={{ fontSize: 9, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', textTransform: 'uppercase', fontFamily: "'Jost', sans-serif" }}>{logo.name}</span>
+          ))}
+        </div>
+
+        {/* Newsletter Signup */}
+        <div className="resp-newsletter" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 48, paddingBottom: 48, marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
+          <div>
+            <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: 28, fontWeight: 300, color: '#ffffff', marginBottom: 8 }}>Stay Connected</p>
+            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>Get early access to new listings & market insights.</p>
+          </div>
+          <form onSubmit={e => e.preventDefault()} style={{ display: 'flex', gap: 0 }}>
+            <input type="email" placeholder="Enter your email" style={{ fontFamily: "'Jost', sans-serif", fontSize: 13, padding: '14px 20px', border: '1px solid rgba(255,255,255,0.15)', borderRight: 'none', backgroundColor: 'transparent', color: '#ffffff', outline: 'none', minWidth: 260 }} />
+            <button type="submit" style={{ fontFamily: "'Jost', sans-serif", fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 500, padding: '14px 28px', backgroundColor: '#c9a96e', color: '#0a0a0a', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}>
+              Subscribe
+            </button>
+          </form>
+        </div>
+
+        {/* Bottom */}
+        <div className="resp-footer-bottom" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+          <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.05em' }}>
+            © {new Date().getFullYear()} Colorado Home Finder LLC. All rights reserved. | License #FA100104608
+          </p>
+          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            {[
+              { name: 'NAR', src: '/R-logo.png' },
+              { name: 'reColorado', src: '/Recolorado_Logo.jpg' },
+              { name: 'AREAA', src: '/areaa-logo.png' },
+              { name: 'CHF', src: '/CHFR_Logo.png' },
+            ].map(b => (
+              <img key={b.name} src={b.src} alt={b.name} style={{ height: 24, objectFit: 'contain', opacity: 0.35, filter: 'brightness(2) grayscale(100%)', transition: 'opacity 0.3s' }}
+                onMouseEnter={e => e.target.style.opacity = '0.7'}
+                onMouseLeave={e => e.target.style.opacity = '0.35'} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 };
 
