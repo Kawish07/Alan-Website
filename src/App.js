@@ -1,32 +1,31 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useContext, lazy, Suspense } from 'react';
 import useLenis from './hooks/useLenis';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop';
 import Layout from './components/Layout';
 import Popup from './components/Popup';
 import { trackListingAlertClick } from './api';
-import Home from './pages/Home';
-import Search from './pages/Search';
-import PropertyDetails from './pages/PropertyDetails';
-import Valuation from './pages/Valuation';
-import AdminDashboard from './pages/AdminDashboard';
-import AdminLogin from './pages/AdminLogin';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Services from './pages/Services';
-import FirstTimeBuyer from './pages/FirstTimeBuyer';
-import CashOffer from './pages/CashOffer';
-import SellBeforeYouBuy from './pages/SellBeforeYouBuy';
-import BookShowing from './pages/BookShowing';
-import LoanApplication from './pages/LoanApplication';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import UserDashboard from './pages/UserDashboard';
-import NotFound from './pages/NotFound';
 import { AuthContext } from './context/AuthContext';
-import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+
+// Code-split all page components
+const Home = lazy(() => import('./pages/Home'));
+const Search = lazy(() => import('./pages/Search'));
+const PropertyDetails = lazy(() => import('./pages/PropertyDetails'));
+const Valuation = lazy(() => import('./pages/Valuation'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
+const About = lazy(() => import('./pages/About'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Services = lazy(() => import('./pages/Services'));
+const FirstTimeBuyer = lazy(() => import('./pages/FirstTimeBuyer'));
+const CashOffer = lazy(() => import('./pages/CashOffer'));
+const SellBeforeYouBuy = lazy(() => import('./pages/SellBeforeYouBuy'));
+const BookShowing = lazy(() => import('./pages/BookShowing'));
+const LoanApplication = lazy(() => import('./pages/LoanApplication'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const UserDashboard = lazy(() => import('./pages/UserDashboard'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Protected Route — Users ONLY (blocks admin)
 const UserRoute = ({ children }) => {
@@ -57,6 +56,7 @@ function App() {
       <ScrollToTop />
       <Layout>
         <Popup /> 
+        <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0a0a0a' }} />}>
         <Routes>
           {/* Public Core */}
           <Route path="/" element={<Home />} />
@@ -95,6 +95,7 @@ function App() {
           {/* Catch-all for invalid URLs */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        </Suspense>
       </Layout>
     </Router>
   );

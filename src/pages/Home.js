@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Search, MapPin, ArrowRight, Phone, Award, TrendingUp, Shield,
-  Star, Quote, Bed, Bath, Square, Instagram, Linkedin, ChevronDown,
+  Star, Quote, Bed, Bath, Square,
   Home as HomeIcon, DollarSign, BarChart3, Key
 } from 'lucide-react';
 import API from '../api';
@@ -21,7 +21,6 @@ const C = {
 };
 
 const Home = () => {
-  const [searchQuery, setSearchQuery] = useState('');
   const [mlsCity, setMlsCity] = useState('');
   const [mlsMinPrice, setMlsMinPrice] = useState('');
   const [mlsMaxPrice, setMlsMaxPrice] = useState('');
@@ -48,19 +47,6 @@ const Home = () => {
       label: 'Your Dream Home Awaits',
       title: 'Mountain Retreats\nBeyond Compare',
     },
-  ];
-
-  const stats = [
-    { value: '#1', label: 'Local Agent', sub: 'Denver, Colorado' },
-    { value: '$2B+', label: 'Career Sales', sub: 'Volume' },
-    { value: '500+', label: 'Families Served', sub: 'And Counting' },
-    { value: '15+', label: 'Years', sub: 'Of Excellence' },
-  ];
-
-  const teamMembers = [
-    { name: 'Alan Ramirez', role: 'Founder & Lead Agent', image: '/alan.png' },
-    { name: 'Maria Coukoulis', role: 'Chief Operating Officer', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80' },
-    { name: "John D'Amico", role: 'Luxury Real Estate Advisor', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80' },
   ];
 
   useEffect(() => {
@@ -101,11 +87,6 @@ const Home = () => {
       { _id: '7', price: 425000, address: '321 Elm St', city: 'Aurora', beds: 3, baths: 2, sqft: 1600, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
       { _id: '8', price: 985000, address: '1010 Highlands Dr', city: 'Denver', beds: 4, baths: 3, sqft: 2900, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
     ]);
-  };
-
-  const handleSearch = () => {
-    trackBehavior('SEARCH_FILTER', { query: searchQuery });
-    window.location.href = `/search?city=${encodeURIComponent(searchQuery)}`;
   };
 
   const handleMlsSearch = () => {
