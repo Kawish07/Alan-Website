@@ -123,7 +123,7 @@ const Home = () => {
 
       {/* ═══ HERO ═══ */}
       <section style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-        {/* Background video only */}
+        {/* Background video */}
         <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
           <video
             key={videoSrc}
@@ -141,33 +141,113 @@ const Home = () => {
           >
             <source src={videoSrc} type="video/mp4" />
           </video>
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(10,10,10,0.06) 0%, rgba(10,10,10,0.08) 40%, rgba(10,10,10,0.12) 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(10,10,10,0.08) 0%, rgba(10,10,10,0.15) 50%, rgba(10,10,10,0.25) 100%)' }} />
         </div>
 
         <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '0 24px' }}>
           <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: 20 }}>
             {heroSlides[activeSlide].label}
           </p>
-          <h1 style={{ fontFamily: C.display, fontSize: 'clamp(48px, 7vw, 90px)', fontWeight: 300, color: C.white, lineHeight: 1.1, marginBottom: 48, whiteSpace: 'pre-line' }}>
+          <h1 style={{ fontFamily: C.display, fontSize: 'clamp(44px, 7vw, 88px)', fontWeight: 300, color: C.white, lineHeight: 1.1, marginBottom: 40, whiteSpace: 'pre-line' }}>
             {heroSlides[activeSlide].title}
           </h1>
 
-          {/* Search */}
-          <div style={{ width: '100%', maxWidth: 760, backgroundColor: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(12px)' }}>
-            <div className="resp-hero-search" style={{ display: 'flex', flexWrap: 'wrap' }}>
-              <div style={{ flex: 1, display: 'flex', alignItems: 'center', padding: '0 24px', borderRight: '1px solid #e8e4de' }}>
-                <MapPin size={18} style={{ color: C.muted, marginRight: 12, flexShrink: 0 }} />
-                <input type="text" placeholder="Search by City, Address, or ZIP..."
-                  style={{ width: '100%', background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 14, color: C.black, padding: '18px 0' }}
-                  value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleSearch()} />
+          {/* ── MLS Search Bar ── */}
+          <div style={{ width: '100%', maxWidth: 960 }}>
+            {/* Buy/Rent toggle tabs */}
+            <div style={{ display: 'flex', gap: 0, marginBottom: 0 }}>
+              {['buy', 'rent', 'sold'].map(tab => (
+                <button key={tab} onClick={() => setMlsType(tab)}
+                  style={{
+                    fontFamily: C.body, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: 500,
+                    padding: '12px 28px', border: 'none', cursor: 'pointer', transition: 'all 0.2s',
+                    backgroundColor: mlsType === tab ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.15)',
+                    color: mlsType === tab ? C.black : 'rgba(255,255,255,0.8)',
+                    borderRadius: tab === 'buy' ? '6px 0 0 0' : tab === 'sold' ? '0 6px 0 0' : '0',
+                    backdropFilter: 'blur(8px)',
+                  }}>
+                  {tab}
+                </button>
+              ))}
+            </div>
+
+            {/* Search fields row */}
+            <div style={{ backgroundColor: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(16px)', borderRadius: '0 6px 6px 6px', overflow: 'hidden' }}>
+              <div className="resp-hero-search" style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {/* Location */}
+                <div style={{ flex: '2 1 200px', display: 'flex', alignItems: 'center', padding: '0 20px', borderRight: '1px solid #e8e4de', minHeight: 56 }}>
+                  <MapPin size={16} style={{ color: C.gold, marginRight: 10, flexShrink: 0 }} />
+                  <input type="text" placeholder="City, Address, or ZIP..."
+                    style={{ width: '100%', background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 14, color: C.black, padding: '16px 0' }}
+                    value={mlsCity} onChange={e => setMlsCity(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleMlsSearch()} />
+                </div>
+                {/* Price Range */}
+                <div style={{ flex: '1 1 140px', display: 'flex', alignItems: 'center', padding: '0 12px', borderRight: '1px solid #e8e4de', gap: 4 }}>
+                  <DollarSign size={14} style={{ color: C.gold, flexShrink: 0 }} />
+                  <select value={mlsMinPrice} onChange={e => setMlsMinPrice(e.target.value)}
+                    style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 13, color: C.black, padding: '16px 0', cursor: 'pointer', appearance: 'none' }}>
+                    <option value="">Min Price</option>
+                    <option value="200000">$200k</option>
+                    <option value="400000">$400k</option>
+                    <option value="600000">$600k</option>
+                    <option value="800000">$800k</option>
+                    <option value="1000000">$1M</option>
+                    <option value="1500000">$1.5M</option>
+                    <option value="2000000">$2M+</option>
+                  </select>
+                  <span style={{ color: C.muted, fontSize: 12 }}>–</span>
+                  <select value={mlsMaxPrice} onChange={e => setMlsMaxPrice(e.target.value)}
+                    style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 13, color: C.black, padding: '16px 0', cursor: 'pointer', appearance: 'none' }}>
+                    <option value="">Max</option>
+                    <option value="400000">$400k</option>
+                    <option value="600000">$600k</option>
+                    <option value="800000">$800k</option>
+                    <option value="1000000">$1M</option>
+                    <option value="1500000">$1.5M</option>
+                    <option value="2000000">$2M</option>
+                    <option value="5000000">$5M+</option>
+                  </select>
+                </div>
+                {/* Beds */}
+                <div style={{ flex: '0 1 110px', display: 'flex', alignItems: 'center', padding: '0 12px', borderRight: '1px solid #e8e4de' }}>
+                  <Bed size={14} style={{ color: C.gold, marginRight: 8, flexShrink: 0 }} />
+                  <select value={mlsBeds} onChange={e => setMlsBeds(e.target.value)}
+                    style={{ width: '100%', background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 13, color: C.black, padding: '16px 0', cursor: 'pointer', appearance: 'none' }}>
+                    <option value="">Beds</option>
+                    <option value="1">1+</option>
+                    <option value="2">2+</option>
+                    <option value="3">3+</option>
+                    <option value="4">4+</option>
+                    <option value="5">5+</option>
+                  </select>
+                </div>
+                {/* Search Button */}
+                <button onClick={handleMlsSearch}
+                  style={{ flex: '0 0 auto', backgroundColor: C.gold, color: C.white, padding: '0 32px', border: 'none', cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8, transition: 'background 0.2s', minHeight: 56 }}
+                  onMouseEnter={e => e.currentTarget.style.backgroundColor = C.black}
+                  onMouseLeave={e => e.currentTarget.style.backgroundColor = C.gold}>
+                  <Search size={16} /> Search MLS
+                </button>
               </div>
-              <button onClick={handleSearch}
-                style={{ backgroundColor: C.black, color: C.white, padding: '0 36px', border: 'none', cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 10, transition: 'background 0.2s' }}
-                onMouseEnter={e => e.currentTarget.style.backgroundColor = C.gold}
-                onMouseLeave={e => e.currentTarget.style.backgroundColor = C.black}>
-                <Search size={16} /> Search
-              </button>
+            </div>
+
+            {/* Quick links */}
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 24, marginTop: 16, flexWrap: 'wrap' }}>
+              {[
+                { label: 'Denver', city: 'Denver' },
+                { label: 'Boulder', city: 'Boulder' },
+                { label: 'Aurora', city: 'Aurora' },
+                { label: 'Lakewood', city: 'Lakewood' },
+                { label: 'Colorado Springs', city: 'Colorado Springs' },
+              ].map(q => (
+                <button key={q.label} onClick={() => { window.location.href = `/search?city=${encodeURIComponent(q.city)}`; }}
+                  style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', padding: '6px 16px', fontFamily: C.body, fontSize: 11, color: 'rgba(255,255,255,0.8)', cursor: 'pointer', borderRadius: 20, transition: 'all 0.2s', letterSpacing: '0.05em', backdropFilter: 'blur(6px)' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; e.currentTarget.style.color = '#fff'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = 'rgba(255,255,255,0.8)'; }}>
+                  {q.label}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -178,24 +258,94 @@ const Home = () => {
                 style={{ width: i === activeSlide ? 40 : 8, height: 2, backgroundColor: i === activeSlide ? C.white : 'rgba(255,255,255,0.35)', border: 'none', cursor: 'pointer', borderRadius: 2, transition: 'all 0.4s', padding: 0 }} />
             ))}
           </div>
-
-          {/* Scroll indicator */}
-          <div style={{ position: 'absolute', bottom: 80, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-            <ChevronDown size={20} style={{ color: 'rgba(255,255,255,0.5)', animation: 'bounce 2s infinite' }} />
-          </div>
         </div>
       </section>
 
-      {/* ═══ STATS ═══ */}
-      <section style={{ backgroundColor: C.cream, borderTop: `1px solid ${C.midCream}`, borderBottom: `1px solid ${C.midCream}` }}>
-        <div className="resp-grid-4" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)' }}>
-          {stats.map((s, i) => (
-            <div key={i} style={{ textAlign: 'center', padding: '48px 24px', borderRight: i < 3 ? `1px solid ${C.midCream}` : 'none' }}>
-              <p style={{ fontFamily: C.display, fontSize: 52, fontWeight: 300, color: C.black, lineHeight: 1, marginBottom: 8 }}>{s.value}</p>
-              <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.black, fontWeight: 500 }}>{s.label}</p>
-              <p style={{ fontFamily: C.body, fontSize: 12, color: C.muted, marginTop: 4 }}>{s.sub}</p>
+
+
+      {/* ═══ MLS LISTING FEED ═══ */}
+      <section style={{ padding: '80px 0', backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
+          {/* Header */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48, flexWrap: 'wrap', gap: 16 }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#22c55e', boxShadow: '0 0 8px rgba(34,197,94,0.4)' }} />
+                <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted }}>Live MLS Feed</p>
+              </div>
+              <h2 style={{ fontFamily: C.display, fontSize: 'clamp(32px, 4vw, 52px)', fontWeight: 300, color: C.black, lineHeight: 1.15 }}>
+                Latest Colorado Listings
+              </h2>
             </div>
-          ))}
+            <Link to="/search"
+              style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.black, textDecoration: 'none', border: `1px solid ${C.black}`, padding: '12px 28px', borderRadius: 40, display: 'inline-flex', alignItems: 'center', gap: 10, transition: 'all 0.3s', whiteSpace: 'nowrap' }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.black; e.currentTarget.style.color = C.white; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = C.black; }}>
+              View All <ArrowRight size={14} />
+            </Link>
+          </div>
+
+          {/* MLS Grid */}
+          {mlsLoading ? (
+            <div style={{ textAlign: 'center', padding: '60px 0' }}>
+              <div style={{ width: 40, height: 40, border: `2px solid ${C.midCream}`, borderTopColor: C.gold, borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
+              <p style={{ fontFamily: C.body, fontSize: 13, color: C.muted }}>Loading MLS listings...</p>
+              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+          ) : (
+            <div className="resp-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
+              {mlsListings.slice(0, 8).map((p) => (
+                <Link key={p._id} to={`/property/${p._id}`}
+                  style={{ textDecoration: 'none', color: 'inherit', display: 'block', backgroundColor: C.white, border: `1px solid ${C.midCream}`, overflow: 'hidden', transition: 'transform 0.3s, box-shadow 0.3s' }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,0,0,0.1)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+                  {/* Image */}
+                  <div style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden' }}>
+                    <img src={p.images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600'} alt={p.address}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s' }}
+                      onMouseEnter={e => e.target.style.transform = 'scale(1.05)'}
+                      onMouseLeave={e => e.target.style.transform = 'scale(1)'} />
+                    <div style={{ position: 'absolute', top: 10, left: 10 }}>
+                      <span style={{ backgroundColor: C.black, color: C.white, fontFamily: C.body, fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', padding: '4px 10px', borderRadius: 3 }}>
+                        {p.status || 'For Sale'}
+                      </span>
+                    </div>
+                    <div style={{ position: 'absolute', bottom: 10, left: 10 }}>
+                      <span style={{ backgroundColor: 'rgba(0,0,0,0.7)', color: C.white, fontFamily: C.display, fontSize: 20, fontWeight: 400, padding: '4px 12px', borderRadius: 3, backdropFilter: 'blur(4px)' }}>
+                        ${p.price?.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                  {/* Info */}
+                  <div style={{ padding: '16px 16px 20px' }}>
+                    <h3 style={{ fontFamily: C.body, fontSize: 14, fontWeight: 500, color: C.black, marginBottom: 4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {p.address}
+                    </h3>
+                    <p style={{ fontFamily: C.body, fontSize: 12, color: C.muted, marginBottom: 12 }}>{p.city}, Colorado</p>
+                    <div style={{ display: 'flex', gap: 16, borderTop: `1px solid ${C.midCream}`, paddingTop: 12 }}>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontFamily: C.body, fontSize: 12, color: C.muted }}>
+                        <Bed size={13} /> {p.beds}
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontFamily: C.body, fontSize: 12, color: C.muted }}>
+                        <Bath size={13} /> {p.baths}
+                      </span>
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontFamily: C.body, fontSize: 12, color: C.muted }}>
+                        <Square size={13} /> {p.sqft?.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {/* MLS attribution */}
+          <div style={{ marginTop: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
+            <img src="/Recolorado_Logo.jpg" alt="reColorado MLS" style={{ height: 20, objectFit: 'contain', opacity: 0.5 }} />
+            <p style={{ fontFamily: C.body, fontSize: 11, color: C.muted, letterSpacing: '0.05em' }}>
+              Listing data provided by reColorado MLS. Updated frequently.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -345,48 +495,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ═══ TEAM ═══ */}
-      <section style={{ padding: '96px 0', backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 16 }}>Our Experts</p>
-            <h2 style={{ fontFamily: C.display, fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 300, color: C.black, marginBottom: 20 }}>Meet Our Team</h2>
-            <div style={{ width: 60, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
-          </div>
 
-          <div className="resp-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
-            {teamMembers.map((m, i) => (
-              <div key={i} style={{ overflow: 'hidden' }}>
-                <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 20 }}>
-                  <img src={m.image} alt={m.name}
-                    style={{ width: '100%', height: 380, objectFit: 'cover', transition: 'transform 0.6s ease', display: 'block' }}
-                    onMouseEnter={e => e.target.style.transform = 'scale(1.05)'}
-                    onMouseLeave={e => e.target.style.transform = 'scale(1)'} />
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px', background: 'linear-gradient(to top, rgba(10,10,10,0.6) 0%, transparent 100%)', opacity: 0, transition: 'opacity 0.3s', display: 'flex', gap: 12, justifyContent: 'center' }}
-                    onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-                    onMouseLeave={e => e.currentTarget.style.opacity = '0'}>
-                    {[Linkedin, Instagram].map((Icon, j) => (
-                      <a key={j} href="#"
-                        style={{ width: 36, height: 36, backgroundColor: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.white, textDecoration: 'none' }}>
-                        <Icon size={15} />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-                <h3 style={{ fontFamily: C.display, fontSize: 22, fontWeight: 400, color: C.black, marginBottom: 4 }}>{m.name}</h3>
-                <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.1em', color: C.muted }}>{m.role}</p>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ textAlign: 'center', marginTop: 56 }}>
-            <Link to="/about"
-              style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.black, textDecoration: 'none', border: `1px solid ${C.black}`, padding: '14px 36px', display: 'inline-block' }}>
-              View All Team Members
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* ═══ TESTIMONIALS ═══ */}
       <section style={{ padding: '96px 0', backgroundColor: C.cream }}>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import API from '../api';
 import { trackBehavior, trackListingClick, saveProperty, unsaveProperty } from '../api';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { Search, SlidersHorizontal, Grid3X3, List, Bed, Bath, Square, Heart, X, ChevronDown, Check } from 'lucide-react';
 
@@ -15,10 +15,18 @@ const C = {
 const SearchPage = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState('list');
-  const [filters, setFilters] = useState({ minPrice: '', maxPrice: '', beds: '', baths: '', city: '', propertyType: '' });
+  const [filters, setFilters] = useState({
+    minPrice: searchParams.get('minPrice') || '',
+    maxPrice: searchParams.get('maxPrice') || '',
+    beds: searchParams.get('beds') || '',
+    baths: searchParams.get('baths') || '',
+    city: searchParams.get('city') || searchParams.get('location') || '',
+    propertyType: searchParams.get('propertyType') || '',
+  });
   const [showFilters, setShowFilters] = useState(false);
   const [savedIds, setSavedIds] = useState(new Set());
   const [toast, setToast] = useState(null);

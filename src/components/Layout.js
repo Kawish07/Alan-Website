@@ -786,11 +786,11 @@ const Footer = () => {
             { name: 'Realtor.com', url: 'https://www.realtor.com/realestateagents/66287142c789e4cbc7224e7b' },
             { name: 'SOLD.com', url: 'https://www.sold.com/agent-profile/Alain-Ramirez-228234' },
           ].map((logo, i) => logo.url ? (
-            <a key={i} href={logo.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 9, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', textTransform: 'uppercase', fontFamily: "'Jost', sans-serif", textDecoration: 'none', transition: 'color 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.color = 'rgba(255,255,255,0.5)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.2)'}>{logo.name}</a>
+            <a key={i} href={logo.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 10, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase', fontFamily: "'Jost', sans-serif", textDecoration: 'none', transition: 'color 0.2s', fontWeight: 500 }}
+              onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}>{logo.name}</a>
           ) : (
-            <span key={i} style={{ fontSize: 9, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.2)', textTransform: 'uppercase', fontFamily: "'Jost', sans-serif" }}>{logo.name}</span>
+            <span key={i} style={{ fontSize: 10, letterSpacing: '0.2em', color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase', fontFamily: "'Jost', sans-serif", fontWeight: 500 }}>{logo.name}</span>
           ))}
         </div>
 
