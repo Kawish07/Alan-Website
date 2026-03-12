@@ -88,18 +88,6 @@ const About = () => {
         <div style={{ position: 'absolute', bottom: 40, left: 40, width: 1, height: 100, backgroundColor: 'rgba(9,9,9,0.05)' }} />
       </section>
 
-      {/* ── Stats Bar ── */}
-      <section style={{ backgroundColor: C.black, position: 'relative', zIndex: 20, marginTop: '-40px', maxWidth: 1200, margin: '-40px auto 0' }}>
-        <div className="resp-stats-bar" style={{ padding: '0 48px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.2)' }}>
-          {stats.map((s, i) => (
-            <div key={i} style={{ textAlign: 'center', padding: '48px 24px', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
-              <p style={{ fontFamily: C.display, fontSize: 48, fontWeight: 300, color: C.white, lineHeight: 1, marginBottom: 8 }}>{s.value}</p>
-              <p style={{ fontFamily: C.body, fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)' }}>{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── Our Story ── */}
       <section style={{ padding: '96px 0', backgroundColor: C.cream }}>
         <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
@@ -202,47 +190,6 @@ const About = () => {
           </div>
         </div>
       </section>
-
-      {/* ── Team ── */}
-      <section style={{ padding: '96px 0', backgroundColor: C.cream }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 16 }}>The Team</p>
-            <h2 style={{ fontFamily: C.display, fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 300, color: C.black, marginBottom: 20 }}>Meet Our Experts</h2>
-            <div style={{ width: 60, height: 1, backgroundColor: C.black, margin: '0 auto' }} />
-          </div>
-
-          <div className="resp-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32 }}>
-            {team.map((member, i) => (
-              <div key={i} style={{ overflow: 'hidden', backgroundColor: C.white }}>
-                <div style={{ position: 'relative', overflow: 'hidden' }}>
-                  <img src={member.image} alt={member.name}
-                    style={{ width: '100%', height: 360, objectFit: 'cover', display: 'block', transition: 'transform 0.6s ease' }}
-                    onMouseEnter={e => e.target.style.transform = 'scale(1.05)'}
-                    onMouseLeave={e => e.target.style.transform = 'scale(1)'} />
-
-                  {/* Social on hover overlay */}
-                  <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '16px', background: 'linear-gradient(to top, rgba(10,10,10,0.7) 0%, transparent 100%)', opacity: 0, transition: 'opacity 0.3s', display: 'flex', justifyContent: 'center', gap: 10 }}
-                    onMouseEnter={e => e.currentTarget.style.opacity = '1'}
-                    onMouseLeave={e => e.currentTarget.style.opacity = '0'}>
-                    {[Linkedin, Instagram].map((Icon, j) => (
-                      <a key={j} href="#" style={{ width: 34, height: 34, backgroundColor: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.white, textDecoration: 'none' }}>
-                        <Icon size={14} />
-                      </a>
-                    ))}
-                  </div>
-                </div>
-                <div style={{ padding: '24px 28px' }}>
-                  <h3 style={{ fontFamily: C.display, fontSize: 22, fontWeight: 400, color: C.black, marginBottom: 4 }}>{member.name}</h3>
-                  <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: C.gold, marginBottom: 12 }}>{member.role}</p>
-                  <p style={{ fontFamily: C.body, fontSize: 13, lineHeight: 1.8, color: '#5a5248' }}>{member.bio}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── Memberships & Associations ── */}
       <section style={{ padding: '80px 0', backgroundColor: C.white }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
