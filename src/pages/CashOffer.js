@@ -9,8 +9,18 @@ const C = {
   body: "'Jost', sans-serif",
 };
 
+const BEDS_OPTIONS = ['1', '2', '3', '4', '5+'];
+const BATHS_OPTIONS = ['1', '1.5', '2', '3', '4+'];
+const PRICE_RANGES = [
+  'Under $200k', '$200k – $300k', '$300k – $500k',
+  '$500k – $750k', '$750k – $1M', '$1M – $2M', '$2M+',
+];
+
 const CashOffer = () => {
-  const [formData, setFormData] = useState({ address: '', name: '', phone: '', email: '' });
+  const [formData, setFormData] = useState({
+    firstName: '', lastName: '', email: '', phone: '',
+    address: '', beds: '', baths: '', priceRange: '', notes: '',
+  });
   const [submitted, setSubmitted] = useState(false);
   const [focused, setFocused] = useState('');
 
@@ -18,7 +28,15 @@ const CashOffer = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await submitLead({ ...formData, source: 'Cash Offer Page', intent: 'Seller' });
+    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+    const details = [
+      formData.address && `Property: ${formData.address}`,
+      formData.beds && `Beds: ${formData.beds}`,
+      formData.baths && `Baths: ${formData.baths}`,
+      formData.priceRange && `Est. Value: ${formData.priceRange}`,
+      formData.notes,
+    ].filter(Boolean).join(' | ');
+    await submitLead({ name: fullName, email: formData.email, phone: formData.phone, source: 'Cash Offer Page', intent: 'Seller', message: details });
     trackBehavior('FORM_SUBMIT', { type: 'CashOffer' });
     setSubmitted(true);
   };
@@ -109,42 +127,99 @@ const CashOffer = () => {
               <>
                 <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: C.muted, marginBottom: 12 }}>Free — No Obligation</p>
                 <h2 style={{ fontFamily: C.display, fontSize: 'clamp(32px, 3.5vw, 48px)', fontWeight: 300, color: C.black, lineHeight: 1.1, marginBottom: 8 }}>
-                  Enter Your<br />Property Address
+                  Get an Instant<br />Cash Offer Quote
                 </h2>
                 <div style={{ width: 40, height: 1, backgroundColor: C.black, marginBottom: 40 }} />
 
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-                  <div>
-                    <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Property Address</label>
-                    <input type="text" required placeholder="123 Main St, Denver, CO"
-                      style={inputStyle('address')}
-                      onFocus={() => setFocused('address')} onBlur={() => setFocused('')}
-                      onChange={e => setFormData({ ...formData, address: e.target.value })} />
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                  {/* First & Last Name */}
+                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                    <div>
+                      <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>First Name</label>
+                      <input type="text" required placeholder="First name" value={formData.firstName}
+                        style={inputStyle('firstName')}
+                        onFocus={() => setFocused('firstName')} onBlur={() => setFocused('')}
+                        onChange={e => setFormData({ ...formData, firstName: e.target.value })} />
+                    </div>
+                    <div>
+                      <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Last Name</label>
+                      <input type="text" required placeholder="Last name" value={formData.lastName}
+                        style={inputStyle('lastName')}
+                        onFocus={() => setFocused('lastName')} onBlur={() => setFocused('')}
+                        onChange={e => setFormData({ ...formData, lastName: e.target.value })} />
+                    </div>
                   </div>
 
-                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+                  {/* Email & Phone */}
+                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                     <div>
-                      <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Your Name</label>
-                      <input type="text" required placeholder="Full name"
-                        style={inputStyle('name')}
-                        onFocus={() => setFocused('name')} onBlur={() => setFocused('')}
-                        onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                      <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Email</label>
+                      <input type="email" required placeholder="your@email.com" value={formData.email}
+                        style={inputStyle('email')}
+                        onFocus={() => setFocused('email')} onBlur={() => setFocused('')}
+                        onChange={e => setFormData({ ...formData, email: e.target.value })} />
                     </div>
                     <div>
                       <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Phone</label>
-                      <input type="tel" required placeholder="(303) 000-0000"
+                      <input type="tel" required placeholder="(303) 000-0000" value={formData.phone}
                         style={inputStyle('phone')}
                         onFocus={() => setFocused('phone')} onBlur={() => setFocused('')}
                         onChange={e => setFormData({ ...formData, phone: e.target.value })} />
                     </div>
                   </div>
 
+                  {/* Property Address */}
                   <div>
-                    <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Email</label>
-                    <input type="email" required placeholder="your@email.com"
-                      style={inputStyle('email')}
-                      onFocus={() => setFocused('email')} onBlur={() => setFocused('')}
-                      onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                    <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Property Address</label>
+                    <input type="text" required placeholder="123 Main St, Denver, CO" value={formData.address}
+                      style={inputStyle('address')}
+                      onFocus={() => setFocused('address')} onBlur={() => setFocused('')}
+                      onChange={e => setFormData({ ...formData, address: e.target.value })} />
+                  </div>
+
+                  {/* Beds & Baths */}
+                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                    <div>
+                      <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Bedrooms</label>
+                      <select value={formData.beds}
+                        style={{ ...inputStyle('beds'), cursor: 'pointer', color: formData.beds ? C.black : C.muted }}
+                        onFocus={() => setFocused('beds')} onBlur={() => setFocused('')}
+                        onChange={e => setFormData({ ...formData, beds: e.target.value })}>
+                        <option value="">Select</option>
+                        {BEDS_OPTIONS.map(b => <option key={b} value={b}>{b}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Bathrooms</label>
+                      <select value={formData.baths}
+                        style={{ ...inputStyle('baths'), cursor: 'pointer', color: formData.baths ? C.black : C.muted }}
+                        onFocus={() => setFocused('baths')} onBlur={() => setFocused('')}
+                        onChange={e => setFormData({ ...formData, baths: e.target.value })}>
+                        <option value="">Select</option>
+                        {BATHS_OPTIONS.map(b => <option key={b} value={b}>{b}</option>)}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Estimated Home Value */}
+                  <div>
+                    <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Estimated Home Value</label>
+                    <select value={formData.priceRange}
+                      style={{ ...inputStyle('priceRange'), cursor: 'pointer', color: formData.priceRange ? C.black : C.muted }}
+                      onFocus={() => setFocused('priceRange')} onBlur={() => setFocused('')}
+                      onChange={e => setFormData({ ...formData, priceRange: e.target.value })}>
+                      <option value="">Select a range</option>
+                      {PRICE_RANGES.map(r => <option key={r} value={r}>{r}</option>)}
+                    </select>
+                  </div>
+
+                  {/* Additional Notes */}
+                  <div>
+                    <label style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8 }}>Additional Notes</label>
+                    <textarea rows={3} placeholder="Any details about your property or situation (optional)" value={formData.notes}
+                      style={{ ...inputStyle('notes'), resize: 'none', borderBottom: 'none', border: `1px solid ${focused === 'notes' ? C.black : C.midCream}`, padding: '14px 16px' }}
+                      onFocus={() => setFocused('notes')} onBlur={() => setFocused('')}
+                      onChange={e => setFormData({ ...formData, notes: e.target.value })} />
                   </div>
 
                   <button type="submit"

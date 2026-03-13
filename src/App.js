@@ -19,9 +19,13 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Services = lazy(() => import('./pages/Services'));
 const FirstTimeBuyer = lazy(() => import('./pages/FirstTimeBuyer'));
 const CashOffer = lazy(() => import('./pages/CashOffer'));
+const HomeBuyers = lazy(() => import('./pages/HomeBuyers'));
+const HomeSellers = lazy(() => import('./pages/HomeSellers'));
 const SellBeforeYouBuy = lazy(() => import('./pages/SellBeforeYouBuy'));
 const BookShowing = lazy(() => import('./pages/BookShowing'));
 const LoanApplication = lazy(() => import('./pages/LoanApplication'));
+const MortgageCalculator = lazy(() => import('./pages/MortgageCalculator'));
+const MortgageLoanType = lazy(() => import('./pages/MortgageLoanType'));
 const Login = lazy(() => import('./pages/Login'));
 const Register = lazy(() => import('./pages/Register'));
 const UserDashboard = lazy(() => import('./pages/UserDashboard'));
@@ -56,7 +60,7 @@ function App() {
       <ScrollToTop />
       <Layout>
         <Popup /> 
-        <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0a0a0a' }} />}>
+        <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0F172A' }} />}>
         <Routes>
           {/* Public Core */}
           <Route path="/" element={<Home />} />
@@ -71,10 +75,14 @@ function App() {
           <Route path="/valuation" element={<Valuation />} />
           <Route path="/home-valuation" element={<Valuation />} />
           <Route path="/first-time-buyers" element={<FirstTimeBuyer />} />
+          <Route path="/home-buyers" element={<HomeBuyers />} />
+          <Route path="/home-sellers" element={<HomeSellers />} />
           <Route path="/cash-offer" element={<CashOffer />} />
           <Route path="/sell-before-you-buy" element={<SellBeforeYouBuy />} />
           <Route path="/book-showing" element={<BookShowing />} />
           <Route path="/loan-application" element={<LoanApplication />} />
+          <Route path="/mortgage-calculator" element={<MortgageCalculator />} />
+          <Route path="/mortgage/:loanType" element={<MortgageLoanType />} />
           
           {/* User Auth & Dashboard */}
           <Route path="/login" element={<Login />} />

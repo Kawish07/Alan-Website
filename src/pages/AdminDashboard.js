@@ -78,7 +78,7 @@ const AdminDashboard = () => {
     }
     try {
       const propsRes = await API.get('/properties');
-      setProperties(propsRes.data);
+      setProperties(propsRes.data?.properties || propsRes.data);
     } catch {
       setProperties([]);
     }

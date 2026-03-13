@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family= Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -16,7 +16,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Montserrat', system-ui, sans-serif;
 }
 
 /* Custom Scrollbar */
@@ -25,16 +25,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F8F9FA;
+  background: #F8FAFC;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D4AF37;
+  background: #94A3B8;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #E5C76B;
+  background: #64748B;
 }
 
 /* Animations */
@@ -69,13 +69,13 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(0);
 }
 
-/* Gold Shimmer Effect */
+/* Accent Shimmer Effect */
 .gold-shimmer {
   background: linear-gradient(
     90deg,
-    #D4AF37 0%,
-    #E5C76B 50%,
-    #D4AF37 100%
+    #C4956A 0%,
+    #D4A97A 50%,
+    #C4956A 100%
   );
   background-size: 2000px 100%;
   animation: shimmer 3s infinite linear;
@@ -86,8 +86,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Button Hover Effects */
 .btn-primary {
-  @apply relative overflow-hidden text-white px-8 py-4 rounded-none font-semibold tracking-wider uppercase text-sm transition-all duration-500;
-  background-color: #D4AF37;
+  @apply relative overflow-hidden text-white px-8 py-4 rounded-lg font-semibold tracking-wider uppercase text-sm transition-all duration-500;
+  background-color: #1B2A4A;
 }
 
 .btn-primary::before {
@@ -97,7 +97,7 @@ h1, h2, h3, h4, h5, h6 {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
   transition: left 0.5s ease;
 }
 
@@ -106,9 +106,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary:hover {
-  background-color: #E5C76B;
+  background-color: #243B6A;
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+  box-shadow: 0 10px 30px rgba(27, 42, 74, 0.3);
 }
 
 /* Card Hover Effects */
@@ -134,21 +134,21 @@ h1, h2, h3, h4, h5, h6 {
 /* Section Divider */
 .section-divider {
   @apply w-24 h-0.5 mx-auto;
-  background-color: #ffdb64;
+  background-color: #C4956A;
 }
 
 /* Gradient Overlays */
 .gradient-overlay {
   background: linear-gradient(
     to bottom,
-    rgba(10, 25, 47, 0.3) 0%,
-    rgba(10, 25, 47, 0.7) 100%
+    rgba(15, 23, 42, 0.3) 0%,
+    rgba(15, 23, 42, 0.7) 100%
   );
 }
 
 /* Text Selection */
 ::selection {
-  background: #D4AF37;
+  background: #1B2A4A;
   color: white;
 }
 

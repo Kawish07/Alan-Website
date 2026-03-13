@@ -9,15 +9,34 @@ const C = {
   body: "'Jost', sans-serif",
 };
 
+const BEDS_OPTIONS = ['1', '2', '3', '4', '5+'];
+const BATHS_OPTIONS = ['1', '1.5', '2', '3', '4+'];
+const PRICE_RANGES = [
+  'Under $200k', '$200k – $300k', '$300k – $500k',
+  '$500k – $750k', '$750k – $1M', '$1M – $2M', '$2M+',
+];
+
 const Valuation = () => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', address: '' });
+  const [formData, setFormData] = useState({
+    firstName: '', lastName: '', email: '', phone: '',
+    address: '', beds: '', baths: '', priceRange: '', notes: '',
+  });
+  const [focused, setFocused] = useState('');
 
   useEffect(() => { trackPageView('Valuation'); }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await submitLead({ ...formData, source: 'Home Valuation Page', intent: 'Seller' });
+    const fullName = `${formData.firstName} ${formData.lastName}`.trim();
+    const details = [
+      formData.address && `Property: ${formData.address}`,
+      formData.beds && `Beds: ${formData.beds}`,
+      formData.baths && `Baths: ${formData.baths}`,
+      formData.priceRange && `Est. Value: ${formData.priceRange}`,
+      formData.notes,
+    ].filter(Boolean).join(' | ');
+    await submitLead({ name: fullName, email: formData.email, phone: formData.phone, source: 'Home Valuation Page', intent: 'Seller', message: details });
     trackBehavior('FORM_SUBMIT', { type: 'Valuation' });
     setStep(3);
   };
@@ -118,16 +137,65 @@ const Valuation = () => {
               <form onSubmit={handleSubmit}>
                 <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', color: C.muted, marginBottom: 12 }}>Step 2 of 2</p>
                 <h2 style={{ fontFamily: C.display, fontSize: 42, fontWeight: 300, color: C.black, marginBottom: 8, lineHeight: 1.1 }}>
-                  Where Should<br />We Send Your Report?
+                  Your Details &<br />Property Info
                 </h2>
                 <div style={{ width: 40, height: 1, backgroundColor: C.black, marginBottom: 36 }} />
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 20 }}>
-                  {[['text', 'Full Name', 'name'], ['email', 'Email Address', 'email'], ['tel', 'Phone Number', 'phone']].map(([type, placeholder, field]) => (
-                    <input key={field} type={type} placeholder={placeholder} required
-                      style={{ width: '100%', padding: '16px 18px', border: `1px solid ${C.midCream}`, outline: 'none', fontFamily: C.body, fontSize: 13, color: C.black, backgroundColor: C.white, boxSizing: 'border-box' }}
-                      onChange={e => setFormData({ ...formData, [field]: e.target.value })} />
-                  ))}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 16, marginBottom: 20 }}>
+                  {/* First & Last Name */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    <input type="text" placeholder="First Name" required value={formData.firstName}
+                      style={{ width: '100%', padding: '16px 18px', border: `1px solid ${focused === 'firstName' ? C.black : C.midCream}`, outline: 'none', fontFamily: C.body, fontSize: 13, color: C.black, backgroundColor: C.white, boxSizing: 'border-box', transition: 'border-color 0.2s' }}
+                      onFocus={() => setFocused('firstName')} onBlur={() => setFocused('')}
+                      onChange={e => setFormData({ ...formData, firstName: e.target.value })} />
+                    <input type="text" placeholder="Last Name" required value={formData.lastName}
+                      style={{ width: '100%', padding: '16px 18px', border: `1px solid ${focused === 'lastName' ? C.black : C.midCream}`, outline: 'none', fontFamily: C.body, fontSize: 13, color: C.black, backgroundColor: C.white, boxSizing: 'border-box', transition: 'border-color 0.2s' }}
+                      onFocus={() => setFocused('lastName')} onBlur={() => setFocused('')}
+                      onChange={e => setFormData({ ...formData, lastName: e.target.value })} />
+                  </div>
+
+                  {/* Email & Phone */}
+                  <input type="email" placeholder="Email Address" required value={formData.email}
+                    style={{ width: '100%', padding: '16px 18px', border: `1px solid ${focused === 'email' ? C.black : C.midCream}`, outline: 'none', fontFamily: C.body, fontSize: 13, color: C.black, backgroundColor: C.white, boxSizing: 'border-box', transition: 'border-color 0.2s' }}
+                    onFocus={() => setFocused('email')} onBlur={() => setFocused('')}
+                    onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                  <input type="tel" placeholder="Phone Number" required value={formData.phone}
+                    style={{ width: '100%', padding: '16px 18px', border: `1px solid ${focused === 'phone' ? C.black : C.midCream}`, outline: 'none', fontFamily: C.body, fontSize: 13, color: C.black, backgroundColor: C.white, boxSizing: 'border-box', transition: 'border-color 0.2s' }}
+                    onFocus={() => setFocused('phone')} onBlur={() => setFocused('')}
+                    onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+
+                  {/* Beds & Baths */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    <select value={formData.beds}
+                      style={{ width: '100%', padding: '16px 18px', border: `1px solid ${focused === 'beds' ? C.black : C.midCream}`, outline: 'none', fontFamily: C.body, fontSize: 13, color: formData.beds ? C.black : C.muted, backgroundColor: C.white, boxSizing: 'border-box', cursor: 'pointer', transition: 'border-color 0.2s' }}
+                      onFocus={() => setFocused('beds')} onBlur={() => setFocused('')}
+                      onChange={e => setFormData({ ...formData, beds: e.target.value })}>
+                      <option value="">Bedrooms</option>
+                      {BEDS_OPTIONS.map(b => <option key={b} value={b}>{b}</option>)}
+                    </select>
+                    <select value={formData.baths}
+                      style={{ width: '100%', padding: '16px 18px', border: `1px solid ${focused === 'baths' ? C.black : C.midCream}`, outline: 'none', fontFamily: C.body, fontSize: 13, color: formData.baths ? C.black : C.muted, backgroundColor: C.white, boxSizing: 'border-box', cursor: 'pointer', transition: 'border-color 0.2s' }}
+                      onFocus={() => setFocused('baths')} onBlur={() => setFocused('')}
+                      onChange={e => setFormData({ ...formData, baths: e.target.value })}>
+                      <option value="">Bathrooms</option>
+                      {BATHS_OPTIONS.map(b => <option key={b} value={b}>{b}</option>)}
+                    </select>
+                  </div>
+
+                  {/* Estimated Home Value */}
+                  <select value={formData.priceRange}
+                    style={{ width: '100%', padding: '16px 18px', border: `1px solid ${focused === 'priceRange' ? C.black : C.midCream}`, outline: 'none', fontFamily: C.body, fontSize: 13, color: formData.priceRange ? C.black : C.muted, backgroundColor: C.white, boxSizing: 'border-box', cursor: 'pointer', transition: 'border-color 0.2s' }}
+                    onFocus={() => setFocused('priceRange')} onBlur={() => setFocused('')}
+                    onChange={e => setFormData({ ...formData, priceRange: e.target.value })}>
+                    <option value="">Estimated Home Value</option>
+                    {PRICE_RANGES.map(r => <option key={r} value={r}>{r}</option>)}
+                  </select>
+
+                  {/* Additional Notes */}
+                  <textarea rows={3} placeholder="Additional notes or comments (optional)" value={formData.notes}
+                    style={{ width: '100%', padding: '16px 18px', border: `1px solid ${focused === 'notes' ? C.black : C.midCream}`, outline: 'none', fontFamily: C.body, fontSize: 13, color: C.black, backgroundColor: C.white, boxSizing: 'border-box', resize: 'none', transition: 'border-color 0.2s' }}
+                    onFocus={() => setFocused('notes')} onBlur={() => setFocused('')}
+                    onChange={e => setFormData({ ...formData, notes: e.target.value })} />
                 </div>
 
                 <button type="submit"

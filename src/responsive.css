@@ -202,7 +202,7 @@ html, body {
   }
   .resp-hero-search > div {
     border-right: none !important;
-    border-bottom: 1px solid #e8e4de !important;
+    border-bottom: 1px solid #E2E8F0 !important;
     width: 100% !important;
     flex: unset !important;
     min-height: 50px !important;
@@ -263,7 +263,7 @@ html, body {
   .resp-filter-bar > div:first-child {
     min-width: 100% !important;
     border-right: none !important;
-    border-bottom: 1px solid #ede9e3 !important;
+    border-bottom: 1px solid #E2E8F0 !important;
   }
 
   /* ── Section containers ── */
@@ -320,6 +320,15 @@ html, body {
   }
   .resp-newsletter form button {
     width: 100% !important;
+  }
+
+  /* ── Footer CTA buttons ── */
+  .resp-footer-cta {
+    gap: 8px !important;
+  }
+  .resp-footer-cta a {
+    font-size: 10px !important;
+    padding: 10px 16px !important;
   }
 
   /* ── Contact info strip → 2 on small tablets ── */
