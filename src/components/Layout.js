@@ -874,7 +874,7 @@ const Layout = ({ children }) => {
               )}
               <div className="chf-drawer-socials">
                 {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
-                  <a key={i} href="#" className="chf-drawer-social"><Icon size={15} /></a>
+                  <button key={i} type="button" className="chf-drawer-social" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}><Icon size={15} /></button>
                 ))}
               </div>
             </div>
@@ -1044,9 +1044,9 @@ const Footer = () => {
             </div>
             <div style={{ display: 'flex', gap: 12 }}>
               {[Facebook, Instagram, Linkedin, Youtube].map((Icon, i) => (
-                <a key={i} href="#" className="chf-social">
+                <button key={i} type="button" className="chf-social" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
                   <Icon size={15} />
-                </a>
+                </button>
               ))}
             </div>
           </div>

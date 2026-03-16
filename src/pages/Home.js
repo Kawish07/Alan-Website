@@ -83,7 +83,7 @@ const Home = () => {
     fetchMlsFeed();
     const t = setInterval(() => setActiveSlide(p => (p + 1) % heroSlides.length), 5000);
     return () => clearInterval(t);
-  }, []);
+  }, [heroSlides.length]);
 
   const setMlsDefaultListings = () => {
     setMlsListings([
@@ -100,11 +100,23 @@ const Home = () => {
 
   const handleMlsSearch = () => {
     const params = new URLSearchParams();
-    if (mlsCity) params.set('city', mlsCity);
+    const q = mlsCity.trim();
+    if (q) {
+      if (/^\d{5}$/.test(q)) {
+        // 5-digit zip code
+        params.set('zip', q);
+      } else if (/^\d+\s/.test(q) || /\b(st|ave|dr|blvd|rd|ln|way|ct|pl|pkwy|hwy)\b/i.test(q)) {
+        // Street address (starts with number or contains street suffix)
+        params.set('address', q);
+      } else {
+        // City / neighborhood name
+        params.set('city', q);
+      }
+    }
     if (mlsMinPrice) params.set('minPrice', mlsMinPrice);
     if (mlsMaxPrice) params.set('maxPrice', mlsMaxPrice);
     if (mlsBeds) params.set('beds', mlsBeds);
-    trackBehavior('SEARCH_FILTER', { city: mlsCity, minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, type: mlsType });
+    trackBehavior('SEARCH_FILTER', { query: q, minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, type: mlsType });
     window.location.href = `/search?${params.toString()}`;
   };
 
@@ -158,7 +170,7 @@ const Home = () => {
                 {/* Location */}
                 <div style={{ flex: '2 1 200px', display: 'flex', alignItems: 'center', padding: '0 20px', borderRight: '1px solid #E2E8F0', minHeight: 56 }}>
                   <MapPin size={16} style={{ color: C.accent, marginRight: 10, flexShrink: 0 }} />
-                  <input type="text" placeholder="City, Address, or ZIP..."
+                  <input type="text" placeholder="City, Neighborhood, or ZIP..."
                     style={{ width: '100%', background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 14, color: C.slateDark, padding: '16px 0' }}
                     value={mlsCity} onChange={e => setMlsCity(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleMlsSearch()} />
@@ -222,7 +234,7 @@ const Home = () => {
                 { label: 'Lakewood', city: 'Lakewood' },
                 { label: 'Colorado Springs', city: 'Colorado Springs' },
               ].map(q => (
-                <button key={q.label} onClick={() => { window.location.href = `/search?city=${encodeURIComponent(q.city)}`; }}
+                <button key={q.label} onClick={() => { window.location.href = `/search?city=${encodeURIComponent(q.city)}&beds=`; }}
                   style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 20px', fontFamily: C.body, fontSize: 12, color: 'rgba(255,255,255,0.85)', cursor: 'pointer', borderRadius: 24, transition: 'all 0.2s', fontWeight: 500, backdropFilter: 'blur(6px)' }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = 'rgba(255,255,255,0.85)'; }}>

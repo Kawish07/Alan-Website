@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Calculator, ChevronDown, DollarSign, Percent, Calendar, Home, ArrowRight } from 'lucide-react';
 import { trackPageView } from '../api';
 
@@ -19,7 +19,6 @@ const formatCurrency = (num) => {
 };
 
 const MortgageCalculator = () => {
-  const navigate = useNavigate();
   const [homePrice, setHomePrice] = useState(450000);
   const [downPayment, setDownPayment] = useState(90000);
   const [downPaymentPercent, setDownPaymentPercent] = useState(20);

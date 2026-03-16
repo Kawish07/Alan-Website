@@ -24,8 +24,10 @@ const ScrollToTop = () => {
       window.scrollTo(0, 0);
     }, 50);
 
-    // 4. Track page view on every route change
-    trackPageView(pathname);
+    // 4. Track page view on every route change (skip admin pages)
+    if (!pathname.startsWith('/admin')) {
+      trackPageView(pathname);
+    }
 
     return () => clearTimeout(timer);
   }, [pathname]);

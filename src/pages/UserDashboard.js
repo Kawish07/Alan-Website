@@ -261,7 +261,18 @@ const UserDashboard = () => {
             <div style={{ backgroundColor: '#fff1f2', border: '1px solid #fecdd3', padding: '28px', marginTop: 24 }}>
               <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#be123c', marginBottom: 8 }}>Account</p>
               <p style={{ fontFamily: C.body, fontSize: 12, color: '#e11d48', lineHeight: 1.6, marginBottom: 16 }}>Delete your account and all associated data. This action cannot be undone.</p>
-              <button style={{ padding: '10px 20px', border: '1px solid #f87171', backgroundColor: 'transparent', color: '#ef4444', cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+              <button
+                onClick={async () => {
+                  if (!window.confirm('Are you sure you want to delete your account? This cannot be undone.')) return;
+                  try {
+                    await API.delete('/users/me');
+                    logout();
+                    navigate('/');
+                  } catch {
+                    alert('Failed to delete account. Please try again.');
+                  }
+                }}
+                style={{ padding: '10px 20px', border: '1px solid #f87171', backgroundColor: 'transparent', color: '#ef4444', cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase' }}>
                 Delete Account
               </button>
             </div>

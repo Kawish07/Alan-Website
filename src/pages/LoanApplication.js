@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { submitLead, trackBehavior, trackPageView } from '../api';
-import { CheckCircle, ArrowRight, DollarSign, Shield, Clock, FileText, Phone } from 'lucide-react';
+import { CheckCircle, ArrowRight, DollarSign, Shield, Clock, FileText } from 'lucide-react';
 
 const C = {
   black: '#0a0a0a', cream: '#f5f3ef', midCream: '#ede9e3',

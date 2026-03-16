@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CheckCircle, ArrowRight, Home, DollarSign, Key, FileText, Users } from 'lucide-react';
+import { CheckCircle, ArrowRight, Home, DollarSign, Key, FileText } from 'lucide-react';
 import { submitLead, trackBehavior, trackPageView } from '../api';
 
 const C = {

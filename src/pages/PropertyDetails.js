@@ -4,7 +4,7 @@ import API from '../api';
 import { trackBehavior, submitLead, trackPageView, saveProperty, unsaveProperty } from '../api';
 import { AuthContext } from '../context/AuthContext';
 import {
-  Bed, Bath, Square, MapPin, Heart, Share2, ArrowLeft, ArrowRight,
+  Bed, Bath, Square, MapPin, Heart, Share2, ArrowLeft,
   ChevronDown, ChevronUp, Phone, Mail, Calendar, CheckCircle, Check
 } from 'lucide-react';
 
@@ -53,7 +53,7 @@ const PropertyDetails = () => {
   const [activeTab, setActiveTab] = useState('description');
   const [inquiry, setInquiry] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
-  const [galleryIndex, setGalleryIndex] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isSaved, setIsSaved] = useState(false);
@@ -99,7 +99,7 @@ const PropertyDetails = () => {
         setIsSaved(ids.includes(id));
       }).catch(() => {});
     }
-  }, [id]);
+  }, [id, isAuthenticated, user?.role]);
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type });

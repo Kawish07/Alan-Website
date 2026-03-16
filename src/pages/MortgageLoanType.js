@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { CheckCircle, ArrowRight, DollarSign, Shield, Home, FileText, Users, Phone } from 'lucide-react';
+import { CheckCircle, ArrowRight, DollarSign, Shield, Home, FileText, Users } from 'lucide-react';
 import { submitLead, trackBehavior, trackPageView } from '../api';
 
 const C = {

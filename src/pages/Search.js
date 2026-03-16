@@ -113,7 +113,9 @@ const SearchPage = () => {
     beds: searchParams.get('beds') || '',
     baths: searchParams.get('baths') || '',
     neighborhood: searchParams.get('neighborhood') || '',
-    city: searchParams.get('city') || searchParams.get('location') || '',
+    // city field also accepts a raw zip via `zip=` param from hero search
+    city: searchParams.get('city') || searchParams.get('location') || searchParams.get('zip') || '',
+    address: searchParams.get('address') || '',
     propertyType: searchParams.get('propertyType') || '',
     minSqft: searchParams.get('minSqft') || '',
     maxSqft: searchParams.get('maxSqft') || '',
@@ -148,6 +150,11 @@ const SearchPage = () => {
           delete apiFilters.city; // zip takes precedence over city
         }
       }
+      // If the city field looks like a zip code, pass it as zip instead
+      if (apiFilters.city && /^\d{5}$/.test(apiFilters.city.trim())) {
+        apiFilters.zip = apiFilters.city.trim();
+        delete apiFilters.city;
+      }
       const params = Object.entries({ ...apiFilters, sort: sortBy, page }).filter(([_, v]) => v).map(([k, v]) => `${k}=${encodeURIComponent(v)}`).join('&');
       const res = await API.get(`/properties?${params}`);
       const data = res.data?.properties || res.data;
@@ -155,8 +162,30 @@ const SearchPage = () => {
       if (res.data?.pagination) setPagination(res.data.pagination);
       else setPagination({ page: 1, totalPages: 1, total: Array.isArray(data) ? data.length : 0 });
     } catch {
-      setProperties(FALLBACK_LISTINGS);
-      setPagination({ page: 1, totalPages: 1, total: FALLBACK_LISTINGS.length });
+      // Apply filters to fallback listings so search still works without a backend
+      let fallback = [...FALLBACK_LISTINGS];
+      const cityQ = (filters.city || '').trim().toLowerCase();
+      if (cityQ) {
+        if (/^\d{5}$/.test(cityQ)) {
+          // zip code — fallback has no zip field, so filter by nothing (show all)
+        } else {
+          fallback = fallback.filter(p =>
+            p.city?.toLowerCase().includes(cityQ) ||
+            p.address?.toLowerCase().includes(cityQ)
+          );
+        }
+      }
+      if (filters.address) {
+        const addrQ = filters.address.trim().toLowerCase();
+        fallback = fallback.filter(p => p.address?.toLowerCase().includes(addrQ));
+      }
+      if (filters.minPrice) fallback = fallback.filter(p => p.price >= Number(filters.minPrice));
+      if (filters.maxPrice) fallback = fallback.filter(p => p.price <= Number(filters.maxPrice));
+      if (filters.beds) fallback = fallback.filter(p => p.beds >= Number(filters.beds));
+      if (filters.baths) fallback = fallback.filter(p => p.baths >= Number(filters.baths));
+      if (filters.propertyType) fallback = fallback.filter(p => p.propertyType === filters.propertyType);
+      setProperties(fallback);
+      setPagination({ page: 1, totalPages: 1, total: fallback.length });
     } finally { setLoading(false); }
   }, [filters, sortBy]);
 
@@ -219,7 +248,7 @@ const SearchPage = () => {
   };
 
   const clearFilters = () => {
-    setFilters({ minPrice: '', maxPrice: '', beds: '', baths: '', neighborhood: '', city: '', propertyType: '', minSqft: '', maxSqft: '' });
+    setFilters({ minPrice: '', maxPrice: '', beds: '', baths: '', neighborhood: '', city: '', address: '', propertyType: '', minSqft: '', maxSqft: '' });
     setShowFilters(false);
   };
 
@@ -264,6 +293,21 @@ const SearchPage = () => {
 
           {/* ── Row 1: Primary filters (always visible) ── */}
           <form onSubmit={handleSearch} className="filter-row-primary" style={{ display: 'flex', alignItems: 'end', gap: 12, padding: '16px 0', flexWrap: 'wrap' }}>
+
+            {/* City / Zip Code free-text search */}
+            <div className="filter-cell" style={{ flex: '1 1 200px', minWidth: 160 }}>
+              <label style={labelStyle}>City or Zip Code</label>
+              <div style={{ position: 'relative' }}>
+                <MapPin size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: D.slateLight, pointerEvents: 'none' }} />
+                <input
+                  type="text"
+                  placeholder="Denver, Boulder, 80202..."
+                  value={filters.city}
+                  onChange={e => updateFilter('city', e.target.value)}
+                  style={{ ...inputStyle, paddingLeft: 30 }}
+                />
+              </div>
+            </div>
 
             {/* Neighborhood / Location (4.3 Zip-Mapped Dropdown) */}
             <div className="filter-cell" style={{ flex: '1 1 220px', minWidth: 170 }}>
