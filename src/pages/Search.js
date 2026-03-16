@@ -164,10 +164,20 @@ const SearchPage = () => {
     } catch {
       // Apply filters to fallback listings so search still works without a backend
       let fallback = [...FALLBACK_LISTINGS];
+      // Neighborhood filter — map label to city keywords
+      if (filters.neighborhood && filters.neighborhood !== 'Custom Search (All CO)') {
+        const nbhd = filters.neighborhood.toLowerCase();
+        const zips = NEIGHBORHOOD_ZIPS[filters.neighborhood] || [];
+        fallback = fallback.filter(p =>
+          p.city?.toLowerCase().includes(nbhd.split(',')[0].trim()) ||
+          p.address?.toLowerCase().includes(nbhd.split(',')[0].trim()) ||
+          (zips.length > 0 && zips.includes(p.zip))
+        );
+      }
       const cityQ = (filters.city || '').trim().toLowerCase();
       if (cityQ) {
         if (/^\d{5}$/.test(cityQ)) {
-          // zip code — fallback has no zip field, so filter by nothing (show all)
+          fallback = fallback.filter(p => p.zip === cityQ);
         } else {
           fallback = fallback.filter(p =>
             p.city?.toLowerCase().includes(cityQ) ||
@@ -184,6 +194,8 @@ const SearchPage = () => {
       if (filters.beds) fallback = fallback.filter(p => p.beds >= Number(filters.beds));
       if (filters.baths) fallback = fallback.filter(p => p.baths >= Number(filters.baths));
       if (filters.propertyType) fallback = fallback.filter(p => p.propertyType === filters.propertyType);
+      if (filters.minSqft) fallback = fallback.filter(p => p.sqft >= Number(filters.minSqft));
+      if (filters.maxSqft) fallback = fallback.filter(p => p.sqft <= Number(filters.maxSqft));
       setProperties(fallback);
       setPagination({ page: 1, totalPages: 1, total: fallback.length });
     } finally { setLoading(false); }

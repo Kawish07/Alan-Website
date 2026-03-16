@@ -149,14 +149,14 @@ const Home = () => {
           <div style={{ width: '100%', maxWidth: 960 }}>
             {/* Buy/Rent toggle tabs */}
             <div style={{ display: 'flex', gap: 0, marginBottom: 0 }}>
-              {['buy', 'rent', 'sold'].map(tab => (
+              {['buy', 'rent', 'sell'].map(tab => (
                 <button key={tab} onClick={() => setMlsType(tab)}
                   style={{
                     fontFamily: C.body, fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600,
                     padding: '12px 28px', border: 'none', cursor: 'pointer', transition: 'all 0.2s',
                     backgroundColor: mlsType === tab ? 'rgba(255,255,255,0.97)' : 'rgba(255,255,255,0.12)',
                     color: mlsType === tab ? C.navy : 'rgba(255,255,255,0.8)',
-                    borderRadius: tab === 'buy' ? '8px 0 0 0' : tab === 'sold' ? '0 8px 0 0' : '0',
+                    borderRadius: tab === 'buy' ? '8px 0 0 0' : tab === 'sell' ? '0 8px 0 0' : '0',
                     backdropFilter: 'blur(8px)',
                   }}>
                   {tab}

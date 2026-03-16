@@ -132,7 +132,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
 
     .nav-dropdown-menu {
       position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
-      min-width: 230px; padding: 16px 0 10px 0;
+      min-width: 230px; padding: 24px 0 10px 0;
       background: linear-gradient(165deg, rgba(15,23,42,0.96) 0%, rgba(27,42,74,0.97) 100%);
       backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
       border-radius: 14px;
@@ -142,12 +142,8 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
       transform: translateX(-50%) translateY(10px);
       transition: opacity .3s cubic-bezier(.22,1,.36,1), transform .3s cubic-bezier(.22,1,.36,1), visibility .3s ease;
       pointer-events: none;
-      margin-top: 8px;
+      margin-top: 0;
       overflow: hidden;
-    }
-    .nav-dropdown-menu::before {
-      content: ''; position: absolute; top: -14px; left: 0; right: 0;
-      height: 14px; background: transparent;
     }
     .nav-dropdown:hover .nav-dropdown-menu {
       opacity: 1; visibility: visible;
@@ -217,7 +213,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .chf-login-dropdown:hover .chf-login-btn .chf-chevron { transform: rotate(180deg); }
     .chf-login-menu {
       position: absolute; top: 100%; right: 0;
-      min-width: 200px; padding: 12px 0 8px 0;
+      min-width: 200px; padding: 18px 0 8px 0;
       background: linear-gradient(165deg, rgba(15,23,42,0.96) 0%, rgba(27,42,74,0.97) 100%);
       backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
       border-radius: 14px;
@@ -227,12 +223,8 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
       transform: translateY(10px);
       transition: opacity .3s cubic-bezier(.22,1,.36,1), transform .3s cubic-bezier(.22,1,.36,1), visibility .3s ease;
       pointer-events: none;
-      margin-top: 6px;
+      margin-top: 0;
       overflow: hidden;
-    }
-    .chf-login-menu::before {
-      content: ''; position: absolute; top: -10px; left: 0; right: 0;
-      height: 10px; background: transparent;
     }
     .chf-login-dropdown:hover .chf-login-menu {
       opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
@@ -786,9 +778,6 @@ const Layout = ({ children }) => {
                 </>
               ) : isAuthenticated && user?.role === 'admin' ? (
                 <>
-                  <Link to="/admin" className="chf-admin-link">
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>Admin Panel</span>
-                  </Link>
                   <button onClick={() => { logout(); navigate('/'); }} className="chf-admin-link" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', padding: 0 }}>
                     <LogOut size={16} className="chf-admin-icon" />
                   </button>
@@ -804,10 +793,6 @@ const Layout = ({ children }) => {
                     </Link>
                     <Link to="/register" className="chf-login-menu-item">
                       <ArrowRight size={15} /> Sign Up
-                    </Link>
-                    <div className="chf-login-menu-divider" />
-                    <Link to="/admin/login" className="chf-login-menu-item">
-                      <Shield size={15} /> Admin Login
                     </Link>
                   </div>
                 </div>
@@ -852,9 +837,6 @@ const Layout = ({ children }) => {
                 </>
               ) : isAuthenticated && user?.role === 'admin' ? (
                 <>
-                  <Link to="/admin" className="chf-drawer-login" onClick={() => setMobileMenuOpen(false)}>
-                    <UserIcon size={15} /> Admin Panel
-                  </Link>
                   <button className="chf-drawer-login" style={{ background: 'none', border: 'none', cursor: 'pointer', font: 'inherit', width: '100%', textAlign: 'left' }} onClick={() => { logout(); navigate('/'); setMobileMenuOpen(false); }}>
                     <LogOut size={15} /> Logout
                   </button>
@@ -866,9 +848,6 @@ const Layout = ({ children }) => {
                   </Link>
                   <Link to="/register" className="chf-drawer-login" onClick={() => setMobileMenuOpen(false)}>
                     <UserIcon size={15} /> Sign Up
-                  </Link>
-                  <Link to="/admin/login" className="chf-drawer-login" style={{ opacity: 0.5, fontSize: 10, marginTop: 8 }} onClick={() => setMobileMenuOpen(false)}>
-                    <Shield size={13} /> Admin Login
                   </Link>
                 </>
               )}
