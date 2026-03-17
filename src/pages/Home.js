@@ -51,7 +51,7 @@ const Home = () => {
     },
     {
       label: 'Your Neighborhood, Your Future',
-      title: 'Suburban Denver\nAt Its Best',
+      title: 'Denver Metro\nAt Its Best',
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
     },
   ];
@@ -64,10 +64,10 @@ const Home = () => {
         if (data?.length > 0) { setFeaturedListings(data); return; }
       } catch {}
       setFeaturedListings([
-        { _id: '1', price: 1295000, address: '5673 E Colfax Ave', city: 'Denver', beds: 5, baths: 4, sqft: 3800, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-        { _id: '2', price: 875000, address: '1204 S Pearl St', city: 'Denver', beds: 4, baths: 3, sqft: 2850, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-        { _id: '3', price: 2150000, address: '123 Mountain Vista Dr', city: 'Boulder', beds: 5, baths: 4, sqft: 4200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-        { _id: '4', price: 725000, address: '4845 W Alameda Ave', city: 'Lakewood', beds: 3, baths: 2, sqft: 2200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+        { _id: 'f1', price: 589000, address: '7842 E Dartmouth Ave', city: 'Denver', state: 'CO', zip: '80231', beds: 4, baths: 3, sqft: 2240, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+        { _id: 'f2', price: 425000, address: '3315 S Xanthia St', city: 'Denver', state: 'CO', zip: '80231', beds: 3, baths: 2, sqft: 1640, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+        { _id: 'f3', price: 329000, address: '6600 E Hampden Ave #204', city: 'Denver', state: 'CO', zip: '80237', beds: 2, baths: 2, sqft: 1180, propertyType: 'Townhouse', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+        { _id: 'f4', price: 499000, address: '7700 E Quincy Ave #310', city: 'Denver', state: 'CO', zip: '80237', beds: 2, baths: 2, sqft: 1320, propertyType: 'Condo', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
       ]);
     };
     const fetchMlsFeed = async () => {
@@ -87,14 +87,14 @@ const Home = () => {
 
   const setMlsDefaultListings = () => {
     setMlsListings([
-      { _id: '1', price: 1295000, address: '5673 E Colfax Ave', city: 'Denver', beds: 5, baths: 4, sqft: 3800, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: '2', price: 875000, address: '1204 S Pearl St', city: 'Denver', beds: 4, baths: 3, sqft: 2850, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: '3', price: 2150000, address: '123 Mountain Vista Dr', city: 'Boulder', beds: 5, baths: 4, sqft: 4200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: '4', price: 725000, address: '4845 W Alameda Ave', city: 'Lakewood', beds: 3, baths: 2, sqft: 2200, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: '5', price: 549000, address: '789 Columbine St', city: 'Denver', beds: 3, baths: 2, sqft: 1850, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: '6', price: 1750000, address: '456 Mapleton Ave', city: 'Boulder', beds: 4, baths: 3, sqft: 3400, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: '7', price: 425000, address: '321 Elm St', city: 'Aurora', beds: 3, baths: 2, sqft: 1600, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: '8', price: 985000, address: '1010 Highlands Dr', city: 'Denver', beds: 4, baths: 3, sqft: 2900, status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: 'm1', price: 589000, address: '7842 E Dartmouth Ave', city: 'Denver', state: 'CO', zip: '80231', beds: 4, baths: 3, sqft: 2240, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: 'm2', price: 465000, address: '3901 S Yosemite St', city: 'Denver', state: 'CO', zip: '80237', beds: 3, baths: 2, sqft: 1720, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: 'm3', price: 349000, address: '6600 E Hampden Ave #112', city: 'Denver', state: 'CO', zip: '80237', beds: 2, baths: 1, sqft: 1050, propertyType: 'Condo', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: 'm4', price: 525000, address: '3200 S Parker Rd #45', city: 'Aurora', state: 'CO', zip: '80014', beds: 3, baths: 2, sqft: 1890, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: 'm5', price: 385000, address: '7500 E Mississippi Ave #B', city: 'Denver', state: 'CO', zip: '80231', beds: 2, baths: 2, sqft: 1240, propertyType: 'Townhouse', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: 'm6', price: 619000, address: '9100 E Florida Ave', city: 'Denver', state: 'CO', zip: '80231', beds: 4, baths: 3, sqft: 2380, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: 'm7', price: 315000, address: '7770 E Quincy Ave #102', city: 'Denver', state: 'CO', zip: '80237', beds: 1, baths: 1, sqft: 820, propertyType: 'Condo', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
+      { _id: 'm8', price: 479000, address: '4420 S Yosemite St', city: 'Denver', state: 'CO', zip: '80237', beds: 3, baths: 2, sqft: 1680, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
     ]);
   };
 
@@ -147,16 +147,16 @@ const Home = () => {
 
           {/* ── MLS Search Bar ── */}
           <div style={{ width: '100%', maxWidth: 960 }}>
-            {/* Buy/Rent toggle tabs */}
+            {/* Buy/Sell toggle tabs */}
             <div style={{ display: 'flex', gap: 0, marginBottom: 0 }}>
-              {['buy', 'rent', 'sell'].map(tab => (
+              {['buy', 'sell'].map(tab => (
                 <button key={tab} onClick={() => setMlsType(tab)}
                   style={{
                     fontFamily: C.body, fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600,
                     padding: '12px 28px', border: 'none', cursor: 'pointer', transition: 'all 0.2s',
                     backgroundColor: mlsType === tab ? 'rgba(255,255,255,0.97)' : 'rgba(255,255,255,0.12)',
                     color: mlsType === tab ? C.navy : 'rgba(255,255,255,0.8)',
-                    borderRadius: tab === 'buy' ? '8px 0 0 0' : tab === 'sell' ? '0 8px 0 0' : '0',
+                    borderRadius: tab === 'buy' ? '8px 0 0 0' : '0 8px 0 0',
                     backdropFilter: 'blur(8px)',
                   }}>
                   {tab}
@@ -228,13 +228,14 @@ const Home = () => {
             {/* Quick links */}
             <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
               {[
-                { label: 'Denver', city: 'Denver' },
-                { label: 'Boulder', city: 'Boulder' },
-                { label: 'Aurora', city: 'Aurora' },
-                { label: 'Lakewood', city: 'Lakewood' },
-                { label: 'Colorado Springs', city: 'Colorado Springs' },
+                { label: 'Denver', href: '/search?city=Denver' },
+                { label: 'Aurora', href: '/search?city=Aurora' },
+                { label: 'Cherry Creek', href: '/search?city=Cherry+Creek' },
+                { label: 'DIA', href: '/search?zip=80019%2C80022%2C80249' },
+                { label: 'DTC', href: '/search?city=Denver+Tech+Center' },
+                { label: 'Custom Search', href: '/search' },
               ].map(q => (
-                <button key={q.label} onClick={() => { window.location.href = `/search?city=${encodeURIComponent(q.city)}&beds=`; }}
+                <button key={q.label} onClick={() => { window.location.href = q.href; }}
                   style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 20px', fontFamily: C.body, fontSize: 12, color: 'rgba(255,255,255,0.85)', cursor: 'pointer', borderRadius: 24, transition: 'all 0.2s', fontWeight: 500, backdropFilter: 'blur(6px)' }}
                   onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = '#fff'; }}
                   onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = 'rgba(255,255,255,0.85)'; }}>

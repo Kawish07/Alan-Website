@@ -603,12 +603,13 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
 
 const navLinks = [
   { name: 'Properties', path: '/search' },
-  { name: 'Home Buyers', path: '/home-buyers' },
+  { name: 'Home Buyers', path: '/home-buyers', children: [
+    { name: '1st Time Home Buyers', path: '/first-time-buyers' },
+  ]},
   { name: 'Home Sellers', path: '/home-sellers', children: [
     { name: 'Home Valuation', path: '/valuation' },
     { name: 'Cash Offers', path: '/cash-offer' },
   ]},
-  { name: 'Cash Offers', path: '/cash-offer' },
   { name: 'Mortgage Calculator', path: '/mortgage-calculator', children: [
     { name: 'Conventional Loans', path: '/mortgage/conventional' },
     { name: 'CHFA Loans', path: '/mortgage/chfa' },
