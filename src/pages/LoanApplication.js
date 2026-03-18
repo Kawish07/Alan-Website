@@ -27,7 +27,7 @@ const LoanApplication = () => {
     try {
       await submitLead({
         name: formData.name, email: formData.email, phone: formData.phone,
-        message: `Loan Type: ${formData.loanType} | Purchase Price: ${formData.purchasePrice} | Down Payment: ${formData.downPayment} | Employment: ${formData.employmentStatus} | Income: ${formData.annualIncome} | Credit: ${formData.creditScore} | Property: ${formData.propertyAddress} | Notes: ${formData.message}`,
+        message: `Loan Type: ${formData.loanType} | Purchase Price: ${formData.purchasePrice} | Down Payment: ${formData.downPayment} | Employment: ${formData.employmentStatus} | Income: ${formData.annualIncome} | Credit: ${formData.creditScore} | Property: ${formData.propertyAddress} | Notes: ${formData.message} | LENDER: ${formData.loanType === 'land' ? 'Marion Ramirez – Motto Mortgage (MARION.RAMIREZ@MOTTOMORTGAGE.COM)' : 'Kasey Wong – DHI Mortgage (KCWONG@DHIMORTGAGE.COM)'}`,
         source: 'Loan Application Page', intent: 'Buyer'
       });
       trackBehavior('FORM_SUBMIT', { source: 'Loan Application' });
@@ -58,9 +58,24 @@ const LoanApplication = () => {
         <div style={{ textAlign: 'center', maxWidth: 480, padding: 40 }}>
           <CheckCircle size={64} style={{ color: '#4caf50', margin: '0 auto 24px' }} />
           <h2 style={{ fontFamily: C.display, fontSize: 36, fontWeight: 300, color: C.black, marginBottom: 12 }}>Application Received!</h2>
-          <p style={{ fontFamily: C.body, fontSize: 14, color: C.muted, lineHeight: 1.8, marginBottom: 32 }}>
-            Your loan pre-approval application has been submitted. Our lending partner will contact you within 24 hours to discuss your options and next steps.
+          <p style={{ fontFamily: C.body, fontSize: 14, color: C.muted, lineHeight: 1.8, marginBottom: 20 }}>
+            Your loan pre-approval application has been submitted. Your dedicated lending specialist will contact you within 24 hours.
           </p>
+          {formData.loanType === 'land' ? (
+            <div style={{ backgroundColor: C.cream, border: `1px solid ${C.midCream}`, padding: '20px 24px', marginBottom: 28, textAlign: 'left' }}>
+              <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.gold, fontWeight: 600, marginBottom: 8 }}>Your Land / Lot Lending Specialist</p>
+              <p style={{ fontFamily: C.body, fontSize: 14, color: C.black, fontWeight: 600, marginBottom: 4 }}>Marion Ramirez</p>
+              <p style={{ fontFamily: C.body, fontSize: 13, color: C.muted, marginBottom: 4 }}>Motto Mortgage</p>
+              <a href="mailto:MARION.RAMIREZ@MOTTOMORTGAGE.COM" style={{ fontFamily: C.body, fontSize: 13, color: C.gold, textDecoration: 'none' }}>MARION.RAMIREZ@MOTTOMORTGAGE.COM</a>
+            </div>
+          ) : (
+            <div style={{ backgroundColor: C.cream, border: `1px solid ${C.midCream}`, padding: '20px 24px', marginBottom: 28, textAlign: 'left' }}>
+              <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.gold, fontWeight: 600, marginBottom: 8 }}>Your Lending Specialist</p>
+              <p style={{ fontFamily: C.body, fontSize: 14, color: C.black, fontWeight: 600, marginBottom: 4 }}>Kasey Wong</p>
+              <p style={{ fontFamily: C.body, fontSize: 13, color: C.muted, marginBottom: 4 }}>DHI Mortgage</p>
+              <a href="mailto:KCWONG@DHIMORTGAGE.COM" style={{ fontFamily: C.body, fontSize: 13, color: C.gold, textDecoration: 'none' }}>KCWONG@DHIMORTGAGE.COM</a>
+            </div>
+          )}
           <Link to="/search" style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase', color: C.white, textDecoration: 'none', backgroundColor: C.black, padding: '14px 36px', display: 'inline-block', transition: 'all 0.3s' }}
             onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.gold; e.currentTarget.style.transform = 'translateY(-2px)'; }}
             onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.black; e.currentTarget.style.transform = 'translateY(0)'; }}>
@@ -171,8 +186,14 @@ const LoanApplication = () => {
                       <option value="va">VA</option>
                       <option value="jumbo">Jumbo</option>
                       <option value="usda">USDA</option>
+                      <option value="land">Land / Lot</option>
                       <option value="not-sure">Not Sure</option>
                     </select>
+                    {formData.loanType === 'land' && (
+                      <p style={{ fontFamily: C.body, fontSize: 11, color: C.gold, marginTop: 8, lineHeight: 1.6 }}>
+                        Land deals are handled by Marion Ramirez at Motto Mortgage. Your inquiry will be forwarded accordingly.
+                      </p>
+                    )}
                   </div>
                   <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                     <div>

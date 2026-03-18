@@ -30,7 +30,7 @@ const Home = () => {
   const [mlsMinPrice, setMlsMinPrice] = useState('');
   const [mlsMaxPrice, setMlsMaxPrice] = useState('');
   const [mlsBeds, setMlsBeds] = useState('');
-  const [mlsType, setMlsType] = useState('buy');
+  const [mlsBaths, setMlsBaths] = useState('');
   const [featuredListings, setFeaturedListings] = useState([]);
   const [mlsListings, setMlsListings] = useState([]);
   const [mlsLoading, setMlsLoading] = useState(true);
@@ -42,7 +42,7 @@ const Home = () => {
     {
       label: "Denver Metro's Trusted Real Estate Team",
       title: 'Find Your Perfect\nColorado Home',
-      image: 'https://images.unsplash.com/photo-1546156929-a4c0ac411f47?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
     },
     {
       label: 'Expert Guidance for Every Neighborhood',
@@ -51,7 +51,7 @@ const Home = () => {
     },
     {
       label: 'Your Neighborhood, Your Future',
-      title: 'Denver Metro\nAt Its Best',
+      title: "Denver Metro\nAt It's Best",
       image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
     },
   ];
@@ -116,7 +116,8 @@ const Home = () => {
     if (mlsMinPrice) params.set('minPrice', mlsMinPrice);
     if (mlsMaxPrice) params.set('maxPrice', mlsMaxPrice);
     if (mlsBeds) params.set('beds', mlsBeds);
-    trackBehavior('SEARCH_FILTER', { query: q, minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, type: mlsType });
+    if (mlsBaths) params.set('baths', mlsBaths);
+    trackBehavior('SEARCH_FILTER', { query: q, minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, baths: mlsBaths });
     window.location.href = `/search?${params.toString()}`;
   };
 
@@ -147,24 +148,21 @@ const Home = () => {
 
           {/* ── MLS Search Bar ── */}
           <div style={{ width: '100%', maxWidth: 960 }}>
-            {/* Buy/Sell toggle tabs */}
+            {/* Buy tab */}
             <div style={{ display: 'flex', gap: 0, marginBottom: 0 }}>
-              {['buy', 'sell'].map(tab => (
-                <button key={tab} onClick={() => setMlsType(tab)}
-                  style={{
-                    fontFamily: C.body, fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600,
-                    padding: '12px 28px', border: 'none', cursor: 'pointer', transition: 'all 0.2s',
-                    backgroundColor: mlsType === tab ? 'rgba(255,255,255,0.97)' : 'rgba(255,255,255,0.12)',
-                    color: mlsType === tab ? C.navy : 'rgba(255,255,255,0.8)',
-                    borderRadius: tab === 'buy' ? '8px 0 0 0' : '0 8px 0 0',
-                    backdropFilter: 'blur(8px)',
-                  }}>
-                  {tab}
-                </button>
-              ))}
+              <button
+                style={{
+                  fontFamily: C.body, fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600,
+                  padding: '12px 28px', border: 'none', cursor: 'default', transition: 'all 0.2s',
+                  backgroundColor: 'rgba(255,255,255,0.97)',
+                  color: C.navy,
+                  borderRadius: '8px 8px 0 0',
+                  backdropFilter: 'blur(8px)',
+                }}>
+                Buy
+              </button>
             </div>
 
-            {/* Search fields row */}
             <div style={{ backgroundColor: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(16px)', borderRadius: '0 8px 8px 8px', overflow: 'hidden' }}>
               <div className="resp-hero-search" style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {/* Location */}
@@ -215,7 +213,18 @@ const Home = () => {
                     <option value="5">5+</option>
                   </select>
                 </div>
-                {/* Search Button */}
+                {/* Baths */}
+                <div style={{ flex: '0 1 110px', display: 'flex', alignItems: 'center', padding: '0 12px', borderRight: '1px solid #E2E8F0' }}>
+                  <Bath size={14} style={{ color: C.accent, marginRight: 8, flexShrink: 0 }} />
+                  <select value={mlsBaths} onChange={e => setMlsBaths(e.target.value)}
+                    style={{ width: '100%', background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 13, color: C.slateDark, padding: '16px 0', cursor: 'pointer', appearance: 'none' }}>
+                    <option value="">Baths</option>
+                    <option value="1">1+</option>
+                    <option value="2">2+</option>
+                    <option value="3">3+</option>
+                    <option value="4">4+</option>
+                  </select>
+                </div>
                 <button onClick={handleMlsSearch}
                   style={{ flex: '0 0 auto', backgroundColor: C.navy, color: C.white, padding: '0 32px', border: 'none', cursor: 'pointer', fontFamily: C.body, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8, transition: 'background 0.2s', minHeight: 56, borderRadius: '0 0 8px 0' }}
                   onMouseEnter={e => e.currentTarget.style.backgroundColor = C.navyLight}
@@ -617,9 +626,9 @@ const Home = () => {
             </Link>
             <a href="tel:+17738180444"
               onClick={() => trackPhoneClick('Home')}
-              style={{ fontFamily: C.body, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', color: C.navy, textDecoration: 'none', backgroundColor: C.white, padding: '16px 40px', display: 'inline-flex', alignItems: 'center', gap: 10, borderRadius: 8, fontWeight: 600, transition: 'all 0.3s' }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.accent; e.currentTarget.style.color = C.white; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.color = C.navy; }}>
+              style={{ fontFamily: C.body, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', color: C.navy, textDecoration: 'none', backgroundColor: C.white, padding: '16px 40px', display: 'inline-flex', alignItems: 'center', gap: 10, borderRadius: 8, fontWeight: 600, transition: 'all 0.3s', border: '2px solid transparent' }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.borderColor = C.white; e.currentTarget.style.color = C.white; e.currentTarget.querySelectorAll('*').forEach(el => el.style.color = C.white); }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.white; e.currentTarget.style.borderColor = 'transparent'; e.currentTarget.style.color = C.navy; e.currentTarget.querySelectorAll('*').forEach(el => el.style.color = ''); }}>
               <Phone size={14} /> Call (773) 818-0444
             </a>
           </div>

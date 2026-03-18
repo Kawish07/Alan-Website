@@ -34,7 +34,7 @@ const Contact = () => {
     { Icon: Phone, label: 'Phone', value: '+1 (773) 818-0444', href: 'tel:+17738180444' },
     { Icon: Mail, label: 'Email', value: 'AmRamz79@gmail.com', href: 'mailto:AmRamz79@gmail.com' },
     { Icon: MapPin, label: 'Office', value: 'Denver, CO — Serving the Greater Denver Metro', href: null },
-    { Icon: Clock, label: 'Hours', value: 'Mon – Sat: 9:00 AM – 6:00 PM', href: null },
+    { Icon: Clock, label: 'Hours', value: 'Call or Text 24 Hours a Day, 7 Days a Week — Never Closed', href: null },
   ];
 
   return (
@@ -213,7 +213,7 @@ const Contact = () => {
                 </button>
 
                 <p style={{ fontFamily: C.body, fontSize: 11, color: C.muted, marginTop: 16, textAlign: 'center' }}>
-                  We respond within 24 hours on business days.
+                  We respond quickly — call or text anytime, 24 hours a day, 7 days a week.
                 </p>
               </form>
             )}

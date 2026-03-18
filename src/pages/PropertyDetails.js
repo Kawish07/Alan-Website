@@ -4,7 +4,7 @@ import API from '../api';
 import { trackBehavior, submitLead, trackPageView, saveProperty, unsaveProperty } from '../api';
 import { AuthContext } from '../context/AuthContext';
 import {
-  Bed, Bath, Square, MapPin, Heart, Share2, ArrowLeft,
+  Bed, Bath, Square, MapPin, Heart, ArrowLeft,
   ChevronDown, ChevronUp, Phone, Mail, Calendar, CheckCircle, Check
 } from 'lucide-react';
 
@@ -51,6 +51,7 @@ const PropertyDetails = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
   const [property, setProperty] = useState(null);
   const [activeTab, setActiveTab] = useState('description');
+  const [showFullDesc, setShowFullDesc] = useState(false);
   const [inquiry, setInquiry] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -256,9 +257,6 @@ const PropertyDetails = () => {
               onMouseLeave={e => { if (!isSaved) { e.currentTarget.style.borderColor = C.midCream; } }}>
               <Heart size={14} fill={isSaved ? '#ef4444' : 'none'} /> {isSaved ? 'Saved' : 'Save Property'}
             </button>
-            <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 28px', border: `1px solid ${C.midCream}`, background: C.white, cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.1em', borderRadius: 40, transition: 'all 0.2s' }}>
-              <Share2 size={14} /> Share
-            </button>
           </div>
         </div>
       </section>
@@ -287,7 +285,7 @@ const PropertyDetails = () => {
         {/* Left Content */}
         <div>
           {/* Description */}
-          <section style={{ marginBottom: 64 }}>
+          <section style={{ marginBottom: 64, display: activeTab === 'description' ? 'block' : 'none' }}>
             <h2 style={{ fontFamily: C.display, fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 300, color: C.black, letterSpacing: '0.05em', marginBottom: 40, textTransform: 'uppercase' }}>
               Property Description
             </h2>
@@ -296,21 +294,25 @@ const PropertyDetails = () => {
                 {property.description}
               </p>
               <div>
-                <p style={{ fontFamily: C.body, fontSize: 13, lineHeight: 2, color: '#5a5248', marginBottom: 20 }}>
-                  {property.description2}
-                </p>
-                <p style={{ fontFamily: C.body, fontSize: 13, lineHeight: 2, color: '#5a5248' }}>
-                  {property.description3}
-                </p>
-                <button style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.black }}>
-                  Read More <ChevronDown size={14} />
+                {showFullDesc && (
+                  <>
+                    <p style={{ fontFamily: C.body, fontSize: 13, lineHeight: 2, color: '#5a5248', marginBottom: 20 }}>
+                      {property.description2}
+                    </p>
+                    <p style={{ fontFamily: C.body, fontSize: 13, lineHeight: 2, color: '#5a5248' }}>
+                      {property.description3}
+                    </p>
+                  </>
+                )}
+                <button onClick={() => setShowFullDesc(p => !p)} style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', fontFamily: C.body, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.black }}>
+                  {showFullDesc ? 'Show Less' : 'Read More'} {showFullDesc ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                 </button>
               </div>
             </div>
           </section>
 
           {/* Overview */}
-          <section style={{ marginBottom: 64 }}>
+          <section style={{ marginBottom: 64, display: activeTab === 'overview' ? 'block' : 'none' }}>
             <h2 style={{ fontFamily: C.display, fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 300, color: C.black, letterSpacing: '0.05em', marginBottom: 32, textTransform: 'uppercase' }}>
               Overview
             </h2>
@@ -325,7 +327,7 @@ const PropertyDetails = () => {
           </section>
 
           {/* Features & Amenities */}
-          <section>
+          <section style={{ display: activeTab === 'features-amenities' ? 'block' : 'none' }}>
             <h2 style={{ fontFamily: C.display, fontSize: 'clamp(28px, 4vw, 52px)', fontWeight: 300, color: C.black, letterSpacing: '0.05em', marginBottom: 32, textTransform: 'uppercase' }}>
               Features & Amenities
             </h2>

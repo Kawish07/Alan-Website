@@ -41,7 +41,7 @@ const NEIGHBORHOOD_ZIPS = {
 const NEIGHBORHOOD_LABELS = Object.keys(NEIGHBORHOOD_ZIPS);
 
 const PROPERTY_TYPES = [
-  'Single Family', 'Condo', 'Townhouse', 'Multi-Family', 'Land', 'Commercial',
+  'Single Family', 'Condo', 'Townhouse', 'Multi-Family', 'Land/Lot', 'Manufactured', 'Commercial',
 ];
 
 const BEDS_OPTIONS = [
@@ -366,6 +366,15 @@ const SearchPage = () => {
               </div>
             </div>
 
+            {/* Property Type */}
+            <div className="filter-cell" style={{ flex: '0 1 180px', minWidth: 150 }}>
+              <label style={labelStyle}>Property Type</label>
+              <select value={filters.propertyType} onChange={e => updateFilter('propertyType', e.target.value)} style={selectStyle}>
+                <option value="">All Types</option>
+                {PROPERTY_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+              </select>
+            </div>
+
             {/* More Filters toggle + View toggle + Search */}
             <div style={{ display: 'flex', alignItems: 'end', gap: 8, marginLeft: 'auto', flexShrink: 0 }}>
               <button type="button" onClick={() => setShowFilters(!showFilters)}
@@ -398,15 +407,6 @@ const SearchPage = () => {
           {/* ── Row 2: Extra filters (collapsible) ── */}
           {showFilters && (
             <div style={{ padding: '16px 0', borderTop: `1px solid ${D.slateBorder}`, display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'end' }}>
-
-              {/* Property Type */}
-              <div className="filter-cell" style={{ flex: '0 1 160px', minWidth: 140 }}>
-                <label style={labelStyle}>Property Type</label>
-                <select value={filters.propertyType} onChange={e => updateFilter('propertyType', e.target.value)} style={selectStyle}>
-                  <option value="">All Types</option>
-                  {PROPERTY_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-                </select>
-              </div>
 
               {/* Sort */}
               <div className="filter-cell" style={{ flex: '0 1 160px', minWidth: 140 }}>

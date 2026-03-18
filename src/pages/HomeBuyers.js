@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowRight, Home, Search, Shield, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, CheckCircle, Calendar, Phone } from 'lucide-react';
 import { submitLead, trackPageView } from '../api';
 
 const C = {
@@ -9,18 +10,10 @@ const C = {
   body: "'Jost', sans-serif",
 };
 
-/* Neighborhood labels matching Section 4.3 */
 const AREA_OPTIONS = [
-  'Aurora, CO',
-  'Cherry Creek',
-  'Denver Metro',
-  'DTC (Denver Tech Center)',
-  'DIA / Green Valley Ranch',
-  'Glendale',
-  'Downtown Denver',
-  'Custom Search (All CO)',
+  'Aurora, CO', 'Cherry Creek', 'Denver Metro', 'DTC (Denver Tech Center)',
+  'DIA / Green Valley Ranch', 'Glendale', 'Downtown Denver', 'Custom Search (All CO)',
 ];
-
 const BEDS_OPTIONS = ['1', '2', '3', '4', '5+'];
 const BATHS_OPTIONS = ['1', '1.5', '2', '3', '4+'];
 const PRICE_RANGES = [
@@ -49,19 +42,13 @@ const HomeBuyers = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      const fullName = `${form.firstName} ${form.lastName}`.trim();
-
       await submitLead({
-        name: fullName,
-        email: form.email,
-        phone: form.phone,
-        intent: 'Buyer',
-        source: 'Home Buyers Page',
+        name: `${form.firstName} ${form.lastName}`.trim(),
+        email: form.email, phone: form.phone,
+        intent: 'Buyer', source: 'Home Buyers Page',
         buyerCriteria: {
-          beds: form.beds,
-          baths: form.baths,
-          priceRange: form.priceRange,
-          area: form.area,
+          beds: form.beds, baths: form.baths,
+          priceRange: form.priceRange, area: form.area,
           currentAddress: form.currentAddress,
         },
       });
@@ -73,251 +60,260 @@ const HomeBuyers = () => {
     }
   };
 
-  const inputStyle = (field) => ({
-    width: '100%', padding: '14px 0',
-    border: 'none', borderBottom: `1px solid ${focused === field ? C.black : C.midCream}`,
+  const inp = (field) => ({
+    width: '100%', padding: '13px 14px',
+    border: `1.5px solid ${focused === field ? C.black : C.midCream}`,
     outline: 'none', fontFamily: C.body, fontSize: 14, color: C.black,
-    backgroundColor: 'transparent', boxSizing: 'border-box',
-    transition: 'border-color 0.2s',
+    backgroundColor: C.white, boxSizing: 'border-box', transition: 'border-color 0.2s',
   });
 
-  const selectStyle = (field) => ({
-    ...inputStyle(field),
+  const sel = (field) => ({
+    ...inp(field),
     appearance: 'none', WebkitAppearance: 'none',
     backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%238a8078\' stroke-width=\'2\'%3E%3Cpath d=\'M6 9l6 6 6-6\'/%3E%3C/svg%3E")',
-    backgroundRepeat: 'no-repeat', backgroundPosition: 'right 4px center',
-    cursor: 'pointer', paddingRight: 24,
+    backgroundRepeat: 'no-repeat', backgroundPosition: 'right 12px center',
+    cursor: 'pointer', paddingRight: 32,
   });
 
-  const labelStyle = {
-    fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em',
-    textTransform: 'uppercase', color: C.muted, display: 'block', marginBottom: 8,
+  const lbl = {
+    fontFamily: C.body, fontSize: 11, letterSpacing: '0.12em',
+    textTransform: 'uppercase', color: C.black, fontWeight: 600,
+    display: 'block', marginBottom: 6,
   };
-
-  const steps = [
-    { icon: Search, title: 'Tell Us What You Want', desc: 'Fill out the form with your home preferences and budget.' },
-    { icon: Home, title: 'Get Matched Listings', desc: 'Receive automated alerts for homes matching your criteria.' },
-    { icon: Shield, title: 'Expert Guidance', desc: 'Our team helps you navigate every step to closing.' },
-  ];
 
   return (
     <div style={{ fontFamily: C.body, backgroundColor: C.white, color: C.black, minHeight: '100vh' }}>
 
       {/* ── Hero ── */}
-      <section style={{ position: 'relative', minHeight: '70vh', backgroundColor: C.black, overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
+      <section style={{ position: 'relative', minHeight: '55vh', backgroundColor: C.black, overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
         <img
           src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
           alt="Colorado home"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35 }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }}
         />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(9,9,9,0.9), transparent)' }} />
-
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', width: '100%', position: 'relative', zIndex: 10 }}>
-          <div style={{ maxWidth: 620 }}>
-            <div style={{ width: 40, height: 1, backgroundColor: C.gold, marginBottom: 24 }} />
-            <h1 style={{ fontFamily: C.display, fontSize: 'clamp(48px, 7vw, 88px)', fontWeight: 300, color: C.white, lineHeight: 0.95, letterSpacing: '0.02em', marginBottom: 24 }}>
-              Find Your<br /><em style={{ color: C.gold }}>Dream Home</em>
-            </h1>
-            <p style={{ fontFamily: C.body, fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.9, letterSpacing: '0.04em', maxWidth: 460 }}>
-              Tell us what you're looking for and we'll send you personalized listing alerts for homes that match your criteria across the Denver metro area.
-            </p>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.8) 100%)' }} />
+        <div style={{ maxWidth: 920, margin: '0 auto', padding: '100px 32px 72px', position: 'relative', zIndex: 10, textAlign: 'center', width: '100%' }}>
+          <h1 style={{ fontFamily: C.display, fontSize: 'clamp(42px, 7vw, 80px)', fontWeight: 300, color: C.white, lineHeight: 1.05, marginBottom: 20 }}>
+            Find Your Colorado Home
+          </h1>
+          <p style={{ fontFamily: C.body, fontSize: 16, color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, maxWidth: 560, margin: '0 auto 36px' }}>
+            Get matched with listings that fit your budget and must-haves — or schedule a showing today. Alan responds personally, 24 hours a day.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 14 }}>
+            <a href="#get-alerts"
+              style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600, color: C.black, textDecoration: 'none', backgroundColor: C.gold, padding: '15px 36px', display: 'inline-flex', alignItems: 'center', gap: 8, transition: 'all 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#d4b47e'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.gold; e.currentTarget.style.transform = 'translateY(0)'; }}>
+              <ArrowRight size={14} /> Get Listing Alerts
+            </a>
+            <Link to="/book-showing"
+              style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600, color: C.white, textDecoration: 'none', backgroundColor: 'transparent', border: '2px solid rgba(255,255,255,0.6)', padding: '15px 36px', display: 'inline-flex', alignItems: 'center', gap: 8, transition: 'all 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = C.gold; e.currentTarget.style.color = C.gold; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)'; e.currentTarget.style.color = C.white; }}>
+              <Calendar size={14} /> Schedule a Showing
+            </Link>
           </div>
+          {/* Phone strip */}
+          <p style={{ fontFamily: C.body, fontSize: 13, color: 'rgba(255,255,255,0.55)', marginTop: 28 }}>
+            Or call/text Alan directly:&nbsp;
+            <a href="tel:+17738180444" style={{ color: C.gold, textDecoration: 'none', fontWeight: 600 }}>(773) 818-0444</a>
+            &nbsp;— Available 24/7
+          </p>
         </div>
-
-        <div style={{ position: 'absolute', top: '12%', right: '8%', width: '35%', height: '76%', border: '1px solid rgba(255,255,255,0.1)', zIndex: 1 }} />
       </section>
 
-      {/* ── How It Works ── */}
-      <section style={{ backgroundColor: C.cream, padding: '80px 0' }}>
-        <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>
-          <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 16 }}>How It Works</p>
-          <h2 style={{ fontFamily: C.display, fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 300, color: C.black, lineHeight: 1.15, marginBottom: 56 }}>
-            Three Simple Steps
-          </h2>
-          <div className="resp-form-3col" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 48 }}>
-            {steps.map(({ icon: Icon, title, desc }, i) => (
-              <div key={i} style={{ textAlign: 'center' }}>
-                <div style={{ width: 56, height: 56, border: `1px solid ${C.midCream}`, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
-                  <Icon size={22} style={{ color: C.gold }} />
-                </div>
-                <p style={{ fontFamily: C.body, fontSize: 9, letterSpacing: '0.25em', textTransform: 'uppercase', color: C.gold, fontWeight: 600, marginBottom: 12 }}>Step {i + 1}</p>
-                <h3 style={{ fontFamily: C.display, fontSize: 22, fontWeight: 400, color: C.black, marginBottom: 10 }}>{title}</h3>
-                <p style={{ fontFamily: C.body, fontSize: 13, color: C.muted, lineHeight: 1.7 }}>{desc}</p>
-              </div>
-            ))}
-          </div>
+      {/* ── 3-stat trust bar ── */}
+      <section style={{ backgroundColor: C.black, borderTop: `3px solid ${C.gold}` }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+          {[
+            { num: '500+', label: 'Families Helped' },
+            { num: '24/7', label: 'Always Available' },
+            { num: '10+ Yrs', label: 'Colorado Experience' },
+          ].map(({ num, label }, i) => (
+            <div key={i} style={{ textAlign: 'center', padding: '28px 16px', borderRight: i < 2 ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
+              <p style={{ fontFamily: C.display, fontSize: 34, fontWeight: 400, color: C.gold, margin: 0 }}>{num}</p>
+              <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', margin: '4px 0 0' }}>{label}</p>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* ── Lead Capture Form ── */}
-      <section style={{ padding: '96px 0', backgroundColor: C.white }}>
-        <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 96, alignItems: 'start' }}>
+      <section id="get-alerts" style={{ padding: '72px 0', backgroundColor: C.cream }}>
+        <div style={{ maxWidth: 780, margin: '0 auto', padding: '0 32px' }}>
 
-          {/* Left - Copy */}
-          <div>
-            <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 16 }}>Home Buyers</p>
-            <h2 style={{ fontFamily: C.display, fontSize: 'clamp(36px, 4vw, 56px)', fontWeight: 300, color: C.black, lineHeight: 1.15, marginBottom: 24 }}>
-              Let Us Find<br />Your <em>Perfect Home</em>
+          {/* Header */}
+          <div style={{ textAlign: 'center', marginBottom: 40 }}>
+            <h2 style={{ fontFamily: C.display, fontSize: 'clamp(32px, 5vw, 52px)', fontWeight: 300, color: C.black, marginBottom: 12 }}>
+              Start Your Home Search
             </h2>
-            <div style={{ width: 48, height: 1, backgroundColor: C.black, marginBottom: 32 }} />
-            <p style={{ fontFamily: C.body, fontSize: 14, lineHeight: 1.9, color: '#5a5248', marginBottom: 32 }}>
-              Complete the form and our team will set you up with personalized listing alerts. You'll receive emails with homes that match your bedrooms, bathrooms, price range, and preferred neighborhoods — as soon as they hit the market.
+            <p style={{ fontFamily: C.body, fontSize: 14, color: C.muted, lineHeight: 1.7, maxWidth: 520, margin: '0 auto' }}>
+              Fill out the form below. Alan will personally set up automated listing alerts matching your criteria — straight to your inbox the moment homes hit the market.
             </p>
-            <div style={{ padding: '24px 28px', backgroundColor: C.cream, marginBottom: 24 }}>
-              <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.gold, fontWeight: 600, marginBottom: 12 }}>What You'll Get</p>
-              {['Automated MLS listing alerts matching your criteria', 'Early access to new listings before they go public', 'Expert guidance from consultation to closing', 'Free home buyer consultation — no obligation'].map((item, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: i < 3 ? 10 : 0 }}>
-                  <CheckCircle size={14} style={{ color: C.gold, flexShrink: 0 }} />
-                  <p style={{ fontFamily: C.body, fontSize: 13, color: C.black, lineHeight: 1.5 }}>{item}</p>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ padding: '20px 24px', backgroundColor: C.cream }}>
-              <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.gold, fontWeight: 600, marginBottom: 8 }}>Agent</p>
-              <p style={{ fontFamily: C.body, fontSize: 13, color: C.black }}>Alan Ramirez — Colorado Home Finder LLC</p>
-              <p style={{ fontFamily: C.body, fontSize: 12, color: C.muted }}>License #FA100104608 · +1 (773) 818-0444</p>
-            </div>
           </div>
 
-          {/* Right - Form */}
-          <div>
-            <p style={{ fontFamily: C.body, fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: C.muted, marginBottom: 16 }}>Get Started</p>
-            <h3 style={{ fontFamily: C.display, fontSize: 40, fontWeight: 300, color: C.black, marginBottom: 40, lineHeight: 1.1 }}>
-              Tell Us What<br />You're <em>Looking For</em>
-            </h3>
-
+          {/* Form card */}
+          <div style={{ backgroundColor: C.white, padding: '40px 40px 32px', border: `1px solid ${C.midCream}` }}>
             {submitted ? (
-              <div style={{ padding: '48px 0', textAlign: 'center' }}>
-                <div style={{ width: 64, height: 64, border: `1px solid ${C.black}`, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
-                  <span style={{ fontFamily: C.display, fontSize: 28 }}>✓</span>
-                </div>
-                <h4 style={{ fontFamily: C.display, fontSize: 36, fontWeight: 300, color: C.black, marginBottom: 12 }}>You're All Set</h4>
-                <div style={{ width: 40, height: 1, backgroundColor: C.black, margin: '0 auto 20px' }} />
-                <p style={{ fontFamily: C.body, fontSize: 14, color: C.muted, lineHeight: 1.8 }}>
-                  We've received your preferences. You'll start receiving listing alerts for homes matching your criteria. One of our agents will also reach out within 24 hours.
+              <div style={{ textAlign: 'center', padding: '32px 0' }}>
+                <CheckCircle size={56} style={{ color: '#4caf50', margin: '0 auto 20px', display: 'block' }} />
+                <h3 style={{ fontFamily: C.display, fontSize: 36, fontWeight: 300, color: C.black, marginBottom: 10 }}>You're All Set!</h3>
+                <p style={{ fontFamily: C.body, fontSize: 14, color: C.muted, lineHeight: 1.8, marginBottom: 28 }}>
+                  Alan has your preferences. Expect listing alerts in your inbox shortly — and a personal follow-up call or text within 24 hours.
                 </p>
+                <Link to="/book-showing"
+                  style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600, color: C.white, textDecoration: 'none', backgroundColor: C.black, padding: '14px 32px', display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+                  <Calendar size={14} /> Schedule a Showing Now
+                </Link>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 24, marginBottom: 32 }}>
+                <div style={{ display: 'grid', gap: 20 }}>
 
-                  {/* First & Last Name */}
-                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+                  {/* Name row */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                     <div>
-                      <label style={labelStyle}>First Name</label>
+                      <label style={lbl}>First Name *</label>
                       <input type="text" required placeholder="First name" value={form.firstName}
-                        style={inputStyle('firstName')}
-                        onFocus={() => setFocused('firstName')} onBlur={() => setFocused('')}
+                        style={inp('firstName')} onFocus={() => setFocused('firstName')} onBlur={() => setFocused('')}
                         onChange={e => handleChange('firstName', e.target.value)} />
                     </div>
                     <div>
-                      <label style={labelStyle}>Last Name</label>
+                      <label style={lbl}>Last Name *</label>
                       <input type="text" required placeholder="Last name" value={form.lastName}
-                        style={inputStyle('lastName')}
-                        onFocus={() => setFocused('lastName')} onBlur={() => setFocused('')}
+                        style={inp('lastName')} onFocus={() => setFocused('lastName')} onBlur={() => setFocused('')}
                         onChange={e => handleChange('lastName', e.target.value)} />
                     </div>
                   </div>
 
-                  {/* Email */}
-                  <div>
-                    <label style={labelStyle}>Email Address</label>
-                    <input type="email" required placeholder="your@email.com" value={form.email}
-                      style={inputStyle('email')}
-                      onFocus={() => setFocused('email')} onBlur={() => setFocused('')}
-                      onChange={e => handleChange('email', e.target.value)} />
+                  {/* Contact row */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                    <div>
+                      <label style={lbl}>Email Address *</label>
+                      <input type="email" required placeholder="you@email.com" value={form.email}
+                        style={inp('email')} onFocus={() => setFocused('email')} onBlur={() => setFocused('')}
+                        onChange={e => handleChange('email', e.target.value)} />
+                    </div>
+                    <div>
+                      <label style={lbl}>Phone Number *</label>
+                      <input type="tel" required placeholder="(303) 000-0000" value={form.phone}
+                        style={inp('phone')} onFocus={() => setFocused('phone')} onBlur={() => setFocused('')}
+                        onChange={e => handleChange('phone', e.target.value)} />
+                    </div>
                   </div>
 
-                  {/* Phone */}
-                  <div>
-                    <label style={labelStyle}>Phone Number</label>
-                    <input type="tel" required placeholder="(303) 000-0000" value={form.phone}
-                      style={inputStyle('phone')}
-                      onFocus={() => setFocused('phone')} onBlur={() => setFocused('')}
-                      onChange={e => handleChange('phone', e.target.value)} />
+                  {/* Beds & Baths */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                    <div>
+                      <label style={lbl}>Bedrooms *</label>
+                      <select required value={form.beds} style={sel('beds')}
+                        onFocus={() => setFocused('beds')} onBlur={() => setFocused('')}
+                        onChange={e => handleChange('beds', e.target.value)}>
+                        <option value="">Select</option>
+                        {BEDS_OPTIONS.map(b => <option key={b} value={b}>{b} bed{b !== '1' ? 's' : ''}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label style={lbl}>Bathrooms *</label>
+                      <select required value={form.baths} style={sel('baths')}
+                        onFocus={() => setFocused('baths')} onBlur={() => setFocused('')}
+                        onChange={e => handleChange('baths', e.target.value)}>
+                        <option value="">Select</option>
+                        {BATHS_OPTIONS.map(b => <option key={b} value={b}>{b} bath{b !== '1' ? 's' : ''}</option>)}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Price & Area */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+                    <div>
+                      <label style={lbl}>Price Range *</label>
+                      <select required value={form.priceRange} style={sel('priceRange')}
+                        onFocus={() => setFocused('priceRange')} onBlur={() => setFocused('')}
+                        onChange={e => handleChange('priceRange', e.target.value)}>
+                        <option value="">Select range</option>
+                        {PRICE_RANGES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label style={lbl}>Area / Neighborhood *</label>
+                      <select required value={form.area} style={sel('area')}
+                        onFocus={() => setFocused('area')} onBlur={() => setFocused('')}
+                        onChange={e => handleChange('area', e.target.value)}>
+                        <option value="">Select area</option>
+                        {AREA_OPTIONS.map(a => <option key={a} value={a}>{a}</option>)}
+                      </select>
+                    </div>
                   </div>
 
                   {/* Current Address */}
                   <div>
-                    <label style={labelStyle}>Current Address</label>
+                    <label style={lbl}>Current Address (optional)</label>
                     <input type="text" placeholder="Your current address" value={form.currentAddress}
-                      style={inputStyle('currentAddress')}
-                      onFocus={() => setFocused('currentAddress')} onBlur={() => setFocused('')}
+                      style={inp('currentAddress')} onFocus={() => setFocused('currentAddress')} onBlur={() => setFocused('')}
                       onChange={e => handleChange('currentAddress', e.target.value)} />
                   </div>
 
-                  {/* Beds & Baths */}
-                  <div className="resp-form-2col" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
-                    <div>
-                      <label style={labelStyle}>Bedrooms</label>
-                      <select value={form.beds} required
-                        style={selectStyle('beds')}
-                        onFocus={() => setFocused('beds')} onBlur={() => setFocused('')}
-                        onChange={e => handleChange('beds', e.target.value)}>
-                        <option value="">Select</option>
-                        {BEDS_OPTIONS.map(b => <option key={b} value={b}>{b}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label style={labelStyle}>Bathrooms</label>
-                      <select value={form.baths} required
-                        style={selectStyle('baths')}
-                        onFocus={() => setFocused('baths')} onBlur={() => setFocused('')}
-                        onChange={e => handleChange('baths', e.target.value)}>
-                        <option value="">Select</option>
-                        {BATHS_OPTIONS.map(b => <option key={b} value={b}>{b}</option>)}
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Price Range */}
-                  <div>
-                    <label style={labelStyle}>Price Range</label>
-                    <select value={form.priceRange} required
-                      style={selectStyle('priceRange')}
-                      onFocus={() => setFocused('priceRange')} onBlur={() => setFocused('')}
-                      onChange={e => handleChange('priceRange', e.target.value)}>
-                      <option value="">Select a range</option>
-                      {PRICE_RANGES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
-                    </select>
-                  </div>
-
-                  {/* Area / City of Interest */}
-                  <div>
-                    <label style={labelStyle}>Area / City of Interest</label>
-                    <select value={form.area} required
-                      style={selectStyle('area')}
-                      onFocus={() => setFocused('area')} onBlur={() => setFocused('')}
-                      onChange={e => handleChange('area', e.target.value)}>
-                      <option value="">Select a neighborhood</option>
-                      {AREA_OPTIONS.map(a => <option key={a} value={a}>{a}</option>)}
-                    </select>
-                  </div>
                 </div>
 
+                {/* Submit */}
                 <button type="submit" disabled={submitting}
                   style={{
-                    width: '100%', padding: '18px',
-                    backgroundColor: submitting ? '#333' : C.black,
+                    width: '100%', marginTop: 28, padding: '17px',
+                    backgroundColor: submitting ? '#555' : C.black,
                     color: C.white, border: 'none', cursor: submitting ? 'default' : 'pointer',
-                    fontFamily: C.body, fontSize: 11, letterSpacing: '0.22em', textTransform: 'uppercase',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12,
-                    transition: 'background 0.2s', opacity: submitting ? 0.7 : 1,
+                    fontFamily: C.body, fontSize: 12, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 600,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+                    transition: 'background 0.2s',
                   }}
-                  onMouseEnter={e => { if (!submitting) e.currentTarget.style.backgroundColor = '#1a1a1a'; }}
+                  onMouseEnter={e => { if (!submitting) e.currentTarget.style.backgroundColor = C.gold; }}
                   onMouseLeave={e => { if (!submitting) e.currentTarget.style.backgroundColor = C.black; }}>
-                  {submitting ? 'Submitting…' : 'Get My Listing Alerts'} {!submitting && <ArrowRight size={15} />}
+                  {submitting ? 'Sending…' : <><ArrowRight size={15} /> Send Me Matching Listings</>}
                 </button>
 
-                <p style={{ fontFamily: C.body, fontSize: 11, color: C.muted, marginTop: 16, textAlign: 'center' }}>
-                  Your information is secure. We'll set up your alerts within 24 hours.
+                <p style={{ fontFamily: C.body, fontSize: 11, color: C.muted, marginTop: 12, textAlign: 'center' }}>
+                  100% free — no obligation. Alan will follow up personally.
                 </p>
               </form>
             )}
           </div>
         </div>
       </section>
+
+      {/* ── Schedule a Showing — full CTA band ── */}
+      <section style={{ backgroundColor: C.black, padding: '64px 0' }}>
+        <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 32px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 32 }}>
+            {/* Left copy */}
+            <div style={{ flex: '1 1 340px' }}>
+              <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.gold, fontWeight: 600, marginBottom: 10 }}>Ready to See It In Person?</p>
+              <h2 style={{ fontFamily: C.display, fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 300, color: C.white, lineHeight: 1.15, marginBottom: 12 }}>
+                Schedule a Showing Today
+              </h2>
+              <p style={{ fontFamily: C.body, fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7 }}>
+                Found a home you love? Alan will walk you through it — any day, any time. No pressure, just a private tour.
+              </p>
+            </div>
+            {/* Right buttons */}
+            <div style={{ flex: '0 0 auto', display: 'flex', flexDirection: 'column', gap: 12, minWidth: 220 }}>
+              <Link to="/book-showing"
+                style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600, color: C.black, textDecoration: 'none', backgroundColor: C.gold, padding: '16px 32px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#d4b47e'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.gold; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                <Calendar size={14} /> Book a Showing
+              </Link>
+              <a href="tel:+17738180444"
+                style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 600, color: C.white, textDecoration: 'none', backgroundColor: 'transparent', border: '2px solid rgba(255,255,255,0.4)', padding: '14px 32px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'all 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = C.gold; e.currentTarget.style.color = C.gold; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'; e.currentTarget.style.color = C.white; }}>
+                <Phone size={14} /> (773) 818-0444
+              </a>
+              <p style={{ fontFamily: C.body, fontSize: 11, color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>Call or text — available 24/7</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 };

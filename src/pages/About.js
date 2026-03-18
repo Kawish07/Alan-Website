@@ -78,11 +78,27 @@ const About = () => {
           <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 20, fontWeight: 500 }}>About</p>
           <div style={{ width: 48, height: 1, backgroundColor: 'rgba(255,255,255,0.3)', marginBottom: 24 }} />
           <h1 style={{ fontFamily: C.heading, fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 700, color: C.white, lineHeight: 1.1 }}>
-            Meet Alan Ramirez
+            Colorado's Trusted<br />Real Estate Agent
           </h1>
           <p style={{ fontFamily: C.body, fontSize: 15, color: 'rgba(255,255,255,0.7)', maxWidth: 560, lineHeight: 1.8, marginTop: 16 }}>
             Your trusted real estate partner in the Denver metro area.
           </p>
+          {/* Trust logos strip */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'center', marginTop: 32 }}>
+            {[
+              { name: 'Zillow', src: 'https://www.zillowstatic.com/s3/pfs/static/z-logo-default-visual-refresh.svg', url: 'https://www.zillow.com/profile/alain%20ramirez3' },
+              { name: 'Realtor.com', src: 'https://static.rdc.moveaws.com/rdc-ui/logos/logo-brand.svg', url: 'https://www.realtor.com/realestateagents/66287142c789e4cbc7224e7b' },
+              { name: 'AREAA', src: '/areaa-logo.png', url: 'https://www.areaa.org' },
+              { name: 'REcolorado', src: '/Recolorado_Logo.jpg', url: 'https://www.recolorado.com' },
+            ].map((logo, i) => (
+              <a key={i} href={logo.url} target="_blank" rel="noopener noreferrer"
+                style={{ backgroundColor: 'rgba(255,255,255,0.92)', borderRadius: 8, padding: '8px 16px', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 0.2s' }}
+                onMouseEnter={e => e.currentTarget.style.opacity = '0.85'}
+                onMouseLeave={e => e.currentTarget.style.opacity = '1'}>
+                <img src={logo.src} alt={logo.name} style={{ height: 28, maxWidth: 90, objectFit: 'contain' }} />
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 

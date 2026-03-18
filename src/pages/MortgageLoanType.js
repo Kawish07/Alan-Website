@@ -90,6 +90,25 @@ const LOAN_DATA = {
       { q: 'Best For', a: 'Anyone purchasing their first home who wants to explore all available assistance programs and find the most affordable path to homeownership.' },
     ],
   },
+  'credit-repair': {
+    title: 'Credit Repair',
+    subtitle: 'Build Your Path to Homeownership',
+    heroImg: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+    loanTypeLabel: 'Credit Repair',
+    description: 'Your credit score plays a major role in the mortgage rates and loan programs available to you. If your score needs improvement, don\'t worry — Alan works with trusted credit specialists and lenders who can guide you through the process of repairing your credit so you can qualify for the best possible loan terms.',
+    benefits: [
+      { icon: Shield, title: 'Personalized Plan', desc: 'Get a customized credit improvement plan based on your specific situation.' },
+      { icon: FileText, title: 'Dispute Support', desc: 'We help identify and dispute inaccurate negative items on your credit report.' },
+      { icon: DollarSign, title: 'Better Rates', desc: 'Improving your score can save you thousands in interest over the life of your loan.' },
+      { icon: Users, title: 'Expert Guidance', desc: 'Work with credit specialists who understand Colorado real estate financing.' },
+    ],
+    details: [
+      { q: 'How Long Does It Take?', a: 'Credit repair timelines vary, but many clients see meaningful improvement within 3–6 months. Alan will connect you with specialists while you continue planning your home purchase.' },
+      { q: 'What Score Do I Need?', a: 'FHA loans require a minimum of 580 (3.5% down) or 500 (10% down). Conventional loans typically require 620+. VA and USDA loans are more flexible.' },
+      { q: 'Can I Still Buy Now?', a: 'Depending on your score and loan type, you may still qualify today. Alan will review your full financial picture and connect you with the right lender.' },
+      { q: 'Best For', a: 'Aspiring homebuyers who want to improve their financial position before purchasing, or anyone who has been told their credit score is too low.' },
+    ],
+  },
 };
 
 const MortgageLoanType = () => {

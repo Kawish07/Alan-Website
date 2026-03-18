@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
-  Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Menu, X, LogIn, ArrowRight, LogOut, User as UserIcon, Shield,
+  Phone, Mail, MapPin, Facebook, Instagram, Linkedin, Youtube, Menu, X, LogIn, ArrowRight, LogOut, User as UserIcon,
   Calendar, Home as HomeIcon, DollarSign, MessageCircle, Users, ChevronDown
 } from 'lucide-react';
 import { submitLead, trackBehavior } from '../api';
@@ -604,6 +604,8 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
 const navLinks = [
   { name: 'Properties', path: '/search' },
   { name: 'Home Buyers', path: '/home-buyers', children: [
+    { name: 'Relocation', path: '/contact' },
+    { name: 'Need to Sell?', path: '/sell-before-you-buy' },
     { name: '1st Time Home Buyers', path: '/first-time-buyers' },
   ]},
   { name: 'Home Sellers', path: '/home-sellers', children: [
@@ -614,7 +616,8 @@ const navLinks = [
     { name: 'Conventional Loans', path: '/mortgage/conventional' },
     { name: 'CHFA Loans', path: '/mortgage/chfa' },
     { name: 'VA Loans', path: '/mortgage/va' },
-    { name: '1st Time Home Buyer', path: '/mortgage/first-time-buyer' },
+    { name: 'Credit Repair', path: '/mortgage/credit-repair' },
+    { name: 'Get Pre-Approved', path: '/loan-application' },
   ]},
   { name: 'Services', path: '/services' },
   { name: 'About', path: '/about' },
@@ -1005,6 +1008,22 @@ const InlineLeadForm = () => {
 
 /* ── Footer Component ── */
 const Footer = () => {
+  const [subEmail, setSubEmail] = useState('');
+  const [subStatus, setSubStatus] = useState('idle');
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!subEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(subEmail)) return;
+    setSubStatus('loading');
+    try {
+      await submitLead({ name: subEmail.split('@')[0], email: subEmail, phone: '', intent: 'Subscriber', source: 'Footer Newsletter' });
+      setSubStatus('done');
+      setSubEmail('');
+    } catch {
+      setSubStatus('error');
+    }
+  };
+
   return (
     <footer style={{ backgroundColor: '#0F172A', color: '#ffffff', paddingTop: 80, paddingBottom: 40 }}>
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
@@ -1111,12 +1130,29 @@ const Footer = () => {
             <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 28, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>Stay Connected</p>
             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>Get early access to new listings & market insights.</p>
           </div>
-          <form onSubmit={e => e.preventDefault()} style={{ display: 'flex', gap: 0 }}>
-            <input type="email" placeholder="Enter your email" style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, padding: '14px 20px', border: '1px solid rgba(255,255,255,0.15)', borderRight: 'none', backgroundColor: 'transparent', color: '#ffffff', outline: 'none', minWidth: 260, borderRadius: '8px 0 0 8px' }} />
-            <button type="submit" style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, padding: '14px 28px', backgroundColor: '#C4956A', color: '#ffffff', border: 'none', cursor: 'pointer', transition: 'background 0.2s', borderRadius: '0 8px 8px 0' }}>
-              Subscribe
-            </button>
-          </form>
+          {subStatus === 'done' ? (
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#4ade80', fontWeight: 500 }}>✓ You're subscribed! Alan will be in touch.</p>
+          ) : (
+            <form onSubmit={handleSubscribe} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
+              <div style={{ display: 'flex', gap: 0 }}>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={subEmail}
+                  onChange={e => setSubEmail(e.target.value)}
+                  required
+                  style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, padding: '14px 20px', border: '1px solid rgba(255,255,255,0.15)', borderRight: 'none', backgroundColor: 'transparent', color: '#ffffff', outline: 'none', minWidth: 260, borderRadius: '8px 0 0 8px' }}
+                />
+                <button
+                  type="submit"
+                  disabled={subStatus === 'loading'}
+                  style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, padding: '14px 28px', backgroundColor: '#C4956A', color: '#ffffff', border: 'none', cursor: 'pointer', transition: 'background 0.2s', borderRadius: '0 8px 8px 0', opacity: subStatus === 'loading' ? 0.7 : 1 }}>
+                  {subStatus === 'loading' ? '...' : 'Subscribe'}
+                </button>
+              </div>
+              {subStatus === 'error' && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#f87171', margin: 0 }}>Something went wrong. Please try again.</p>}
+            </form>
+          )}
         </div>
 
         {/* Bottom */}
