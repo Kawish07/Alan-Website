@@ -209,8 +209,8 @@ const HomeBuyers = () => {
                       <select required value={form.beds} style={sel('beds')}
                         onFocus={() => setFocused('beds')} onBlur={() => setFocused('')}
                         onChange={e => handleChange('beds', e.target.value)}>
-                        <option value="">Select</option>
-                        {BEDS_OPTIONS.map(b => <option key={b} value={b}>{b} bed{b !== '1' ? 's' : ''}</option>)}
+                        <option value="" style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>Select</option>
+                        {BEDS_OPTIONS.map(b => <option key={b} value={b} style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>{b} bed{b !== '1' ? 's' : ''}</option>)}
                       </select>
                     </div>
                     <div>
@@ -218,8 +218,8 @@ const HomeBuyers = () => {
                       <select required value={form.baths} style={sel('baths')}
                         onFocus={() => setFocused('baths')} onBlur={() => setFocused('')}
                         onChange={e => handleChange('baths', e.target.value)}>
-                        <option value="">Select</option>
-                        {BATHS_OPTIONS.map(b => <option key={b} value={b}>{b} bath{b !== '1' ? 's' : ''}</option>)}
+                        <option value="" style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>Select</option>
+                        {BATHS_OPTIONS.map(b => <option key={b} value={b} style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>{b} bath{b !== '1' ? 's' : ''}</option>)}
                       </select>
                     </div>
                   </div>
@@ -231,8 +231,8 @@ const HomeBuyers = () => {
                       <select required value={form.priceRange} style={sel('priceRange')}
                         onFocus={() => setFocused('priceRange')} onBlur={() => setFocused('')}
                         onChange={e => handleChange('priceRange', e.target.value)}>
-                        <option value="">Select range</option>
-                        {PRICE_RANGES.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
+                        <option value="" style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>Select range</option>
+                        {PRICE_RANGES.map(r => <option key={r.value} value={r.value} style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>{r.label}</option>)}
                       </select>
                     </div>
                     <div>
@@ -240,8 +240,8 @@ const HomeBuyers = () => {
                       <select required value={form.area} style={sel('area')}
                         onFocus={() => setFocused('area')} onBlur={() => setFocused('')}
                         onChange={e => handleChange('area', e.target.value)}>
-                        <option value="">Select area</option>
-                        {AREA_OPTIONS.map(a => <option key={a} value={a}>{a}</option>)}
+                        <option value="" style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>Select area</option>
+                        {AREA_OPTIONS.map(a => <option key={a} value={a} style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>{a}</option>)}
                       </select>
                     </div>
                   </div>

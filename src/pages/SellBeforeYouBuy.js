@@ -157,11 +157,11 @@ const SellBeforeYouBuy = () => {
                     style={{ width: '100%', padding: '14px 16px', border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'rgba(255,255,255,0.05)', color: C.white, fontFamily: C.body, fontSize: 13, outline: 'none', boxSizing: 'border-box' }} />
                   <select value={formData.timeline} onChange={e => setFormData({ ...formData, timeline: e.target.value })}
                     style={{ width: '100%', padding: '14px 16px', border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'rgba(255,255,255,0.05)', color: formData.timeline ? C.white : 'rgba(255,255,255,0.5)', fontFamily: C.body, fontSize: 13, outline: 'none', boxSizing: 'border-box' }}>
-                    <option value="">Purchase Timeline</option>
-                    <option value="immediately">Immediately</option>
-                    <option value="1-3months">1-3 Months</option>
-                    <option value="3-6months">3-6 Months</option>
-                    <option value="6+months">6+ Months</option>
+                    <option value="" style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>Purchase Timeline</option>
+                    <option value="immediately" style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>Immediately</option>
+                    <option value="1-3months" style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>1-3 Months</option>
+                    <option value="3-6months" style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>3-6 Months</option>
+                    <option value="6+months" style={{ color: '#0a0a0a', backgroundColor: '#ffffff' }}>6+ Months</option>
                   </select>
                 </div>
               ) : (
