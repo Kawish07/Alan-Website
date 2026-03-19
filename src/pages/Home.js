@@ -32,8 +32,6 @@ const Home = () => {
   const [mlsBeds, setMlsBeds] = useState('');
   const [mlsBaths, setMlsBaths] = useState('');
   const [featuredListings, setFeaturedListings] = useState([]);
-  const [mlsListings, setMlsListings] = useState([]);
-  const [mlsLoading, setMlsLoading] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
 
   useEffect(() => { trackPageView('Home'); }, []);
@@ -42,17 +40,17 @@ const Home = () => {
     {
       label: "Denver Metro's Trusted Real Estate Team",
       title: 'Find Your Perfect\nColorado Home',
-      image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      image: '/find your perfect coleredo image.jpg',
     },
     {
       label: 'Expert Guidance for Every Neighborhood',
       title: 'Modern Living\nin the Rockies',
-      image: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      image: '/modern living in the rockies.jpg',
     },
     {
       label: 'Your Neighborhood, Your Future',
       title: "Denver Metro\nAt It's Best",
-      image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+      image: '/devner metro at its best.jpg',
     },
   ];
 
@@ -61,42 +59,13 @@ const Home = () => {
       try {
         const res = await API.get('/properties?featured=true&limit=4');
         const data = res.data?.properties || res.data;
-        if (data?.length > 0) { setFeaturedListings(data); return; }
+        if (data?.length > 0) setFeaturedListings(data);
       } catch {}
-      setFeaturedListings([
-        { _id: 'f1', price: 589000, address: '7842 E Dartmouth Ave', city: 'Denver', state: 'CO', zip: '80231', beds: 4, baths: 3, sqft: 2240, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-        { _id: 'f2', price: 425000, address: '3315 S Xanthia St', city: 'Denver', state: 'CO', zip: '80231', beds: 3, baths: 2, sqft: 1640, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-        { _id: 'f3', price: 329000, address: '6600 E Hampden Ave #204', city: 'Denver', state: 'CO', zip: '80237', beds: 2, baths: 2, sqft: 1180, propertyType: 'Townhouse', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-        { _id: 'f4', price: 499000, address: '7700 E Quincy Ave #310', city: 'Denver', state: 'CO', zip: '80237', beds: 2, baths: 2, sqft: 1320, propertyType: 'Condo', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      ]);
-    };
-    const fetchMlsFeed = async () => {
-      setMlsLoading(true);
-      try {
-        const res = await API.get('/properties?limit=12');
-        const data = res.data?.properties || res.data;
-        if (data?.length > 0) { setMlsListings(data); } else { setMlsDefaultListings(); }
-      } catch { setMlsDefaultListings(); }
-      setMlsLoading(false);
     };
     fetchListings();
-    fetchMlsFeed();
     const t = setInterval(() => setActiveSlide(p => (p + 1) % heroSlides.length), 5000);
     return () => clearInterval(t);
   }, [heroSlides.length]);
-
-  const setMlsDefaultListings = () => {
-    setMlsListings([
-      { _id: 'm1', price: 589000, address: '7842 E Dartmouth Ave', city: 'Denver', state: 'CO', zip: '80231', beds: 4, baths: 3, sqft: 2240, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: 'm2', price: 465000, address: '3901 S Yosemite St', city: 'Denver', state: 'CO', zip: '80237', beds: 3, baths: 2, sqft: 1720, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: 'm3', price: 349000, address: '6600 E Hampden Ave #112', city: 'Denver', state: 'CO', zip: '80237', beds: 2, baths: 1, sqft: 1050, propertyType: 'Condo', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: 'm4', price: 525000, address: '3200 S Parker Rd #45', city: 'Aurora', state: 'CO', zip: '80014', beds: 3, baths: 2, sqft: 1890, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: 'm5', price: 385000, address: '7500 E Mississippi Ave #B', city: 'Denver', state: 'CO', zip: '80231', beds: 2, baths: 2, sqft: 1240, propertyType: 'Townhouse', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: 'm6', price: 619000, address: '9100 E Florida Ave', city: 'Denver', state: 'CO', zip: '80231', beds: 4, baths: 3, sqft: 2380, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: 'm7', price: 315000, address: '7770 E Quincy Ave #102', city: 'Denver', state: 'CO', zip: '80237', beds: 1, baths: 1, sqft: 820, propertyType: 'Condo', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-      { _id: 'm8', price: 479000, address: '4420 S Yosemite St', city: 'Denver', state: 'CO', zip: '80237', beds: 3, baths: 2, sqft: 1680, propertyType: 'Single Family', status: 'FOR SALE', images: ['https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80'] },
-    ]);
-  };
 
   const handleMlsSearch = () => {
     const params = new URLSearchParams();
@@ -266,171 +235,23 @@ const Home = () => {
 
 
 
-      {/* ═══ MLS LISTING FEED ═══ */}
+      {/* ═══ LIVE MLS LISTINGS (IDX) ═══ */}
       <section style={{ padding: '80px 0', backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          {/* Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48, flexWrap: 'wrap', gap: 16 }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
-                <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: '#22c55e', boxShadow: '0 0 8px rgba(34,197,94,0.4)' }} />
-                <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.slateLight, fontWeight: 500 }}>Live MLS Feed</p>
-              </div>
-              <h2 style={{ fontFamily: C.display, fontSize: 'clamp(28px, 3.5vw, 44px)', fontWeight: 600, color: C.slateDark, lineHeight: 1.2 }}>
-                Latest Colorado Listings
-              </h2>
-            </div>
-            <Link to="/search"
-              style={{ fontFamily: C.body, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', color: C.navy, textDecoration: 'none', border: `2px solid ${C.navy}`, padding: '12px 28px', borderRadius: 8, display: 'inline-flex', alignItems: 'center', gap: 10, transition: 'all 0.3s', whiteSpace: 'nowrap', fontWeight: 600 }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.navy; e.currentTarget.style.color = C.white; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = C.navy; }}>
-              View All <ArrowRight size={14} />
-            </Link>
-          </div>
-
-          {/* MLS Grid */}
-          {mlsLoading ? (
-            <div style={{ textAlign: 'center', padding: '60px 0' }}>
-              <div style={{ width: 40, height: 40, border: `3px solid ${C.slateBorder}`, borderTopColor: C.navy, borderRadius: '50%', animation: 'spin 0.8s linear infinite', margin: '0 auto 16px' }} />
-              <p style={{ fontFamily: C.body, fontSize: 14, color: C.slateLight }}>Loading MLS listings...</p>
-              <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-            </div>
-          ) : (
-            <div className="resp-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
-              {mlsListings.slice(0, 8).map((p) => (
-                <Link key={p._id} to={`/property/${p._id}`}
-                  style={{ textDecoration: 'none', color: 'inherit', display: 'block', backgroundColor: C.white, border: `1px solid ${C.slateBorder}`, borderRadius: 12, overflow: 'hidden', transition: 'transform 0.3s, box-shadow 0.3s' }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(15,23,42,0.1)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
-                  {/* Image */}
-                  <div style={{ position: 'relative', aspectRatio: '4/3', overflow: 'hidden' }}>
-                    <img src={p.images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600'} alt={p.address}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.5s' }}
-                      onMouseEnter={e => e.target.style.transform = 'scale(1.05)'}
-                      onMouseLeave={e => e.target.style.transform = 'scale(1)'} />
-                    <div style={{ position: 'absolute', top: 12, left: 12 }}>
-                      <span style={{ backgroundColor: C.navy, color: C.white, fontFamily: C.body, fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '5px 12px', borderRadius: 6, fontWeight: 600 }}>
-                        {p.status || 'For Sale'}
-                      </span>
-                    </div>
-                    <div style={{ position: 'absolute', bottom: 12, left: 12 }}>
-                      <span style={{ backgroundColor: 'rgba(15,23,42,0.85)', color: C.white, fontFamily: C.display, fontSize: 20, fontWeight: 600, padding: '6px 14px', borderRadius: 6, backdropFilter: 'blur(4px)' }}>
-                        ${p.price?.toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                  {/* Info */}
-                  <div style={{ padding: '16px 16px 20px' }}>
-                    <h3 style={{ fontFamily: C.body, fontSize: 14, fontWeight: 600, color: C.slateDark, marginBottom: 4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      {p.address}
-                    </h3>
-                    <p style={{ fontFamily: C.body, fontSize: 13, color: C.slateLight, marginBottom: 12 }}>{p.city}, Colorado</p>
-                    <div style={{ display: 'flex', gap: 16, borderTop: `1px solid ${C.slateBorder}`, paddingTop: 12 }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontFamily: C.body, fontSize: 12, color: C.slateMed }}>
-                        <Bed size={13} /> {p.beds}
-                      </span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontFamily: C.body, fontSize: 12, color: C.slateMed }}>
-                        <Bath size={13} /> {p.baths}
-                      </span>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontFamily: C.body, fontSize: 12, color: C.slateMed }}>
-                        <Square size={13} /> {p.sqft?.toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-
-          {/* MLS attribution */}
-          <div style={{ marginTop: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-            <img src="/Recolorado_Logo.jpg" alt="reColorado MLS" style={{ height: 20, objectFit: 'contain', opacity: 0.5 }} />
-            <p style={{ fontFamily: C.body, fontSize: 12, color: C.slateLight }}>
-              Listing data provided by reColorado MLS. Updated frequently.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══ FEATURED PROPERTIES ═══ */}
-      <section style={{ padding: '96px 0', backgroundColor: C.coolWhite }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          {/* Header */}
-          <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, marginBottom: 12, fontWeight: 600 }}>Featured Properties</p>
-            <h2 style={{ fontFamily: C.display, fontSize: 'clamp(28px, 4vw, 48px)', fontWeight: 600, color: C.slateDark, marginBottom: 20 }}>Our Current Active Listings</h2>
-            <div style={{ width: 60, height: 3, backgroundColor: C.accent, margin: '0 auto', borderRadius: 2 }} />
-          </div>
-
-          {/* Alternating property rows */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            {featuredListings.map((p, i) => (
-              <Link key={p._id} to={`/property/${p._id}`}
-                className="resp-property-row"
-                style={{ display: 'grid', gridTemplateColumns: i % 2 === 0 ? '60% 40%' : '40% 60%', minHeight: 420, textDecoration: 'none', color: 'inherit', borderRadius: 16, overflow: 'hidden', border: `1px solid ${C.slateBorder}` }}>
-
-                {/* Image */}
-                <div style={{ order: i % 2 === 0 ? 0 : 1, position: 'relative', overflow: 'hidden' }}>
-                  <img src={p.images[0]} alt={p.address}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.7s ease', display: 'block' }}
-                    onMouseEnter={e => e.target.style.transform = 'scale(1.04)'}
-                    onMouseLeave={e => e.target.style.transform = 'scale(1)'} />
-                  <div style={{ position: 'absolute', top: 20, left: 20 }}>
-                    <span style={{ backgroundColor: C.navy, color: C.white, fontFamily: C.body, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', padding: '6px 16px', borderRadius: 8, fontWeight: 600 }}>
-                      {p.status || 'For Sale'}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Info */}
-                <div style={{ order: i % 2 === 0 ? 1 : 0, padding: '56px 48px', display: 'flex', flexDirection: 'column', justifyContent: 'center', backgroundColor: i % 2 === 0 ? C.white : C.coolWhite }}>
-                  <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', color: C.slateLight, marginBottom: 12, fontWeight: 500 }}>
-                    {p.city}, Colorado
-                  </p>
-                  <h3 style={{ fontFamily: C.display, fontSize: 'clamp(20px, 2.5vw, 28px)', fontWeight: 600, color: C.slateDark, marginBottom: 16, lineHeight: 1.3 }}>
-                    {p.address}
-                  </h3>
-                  <p style={{ fontFamily: C.display, fontSize: 'clamp(28px, 3.5vw, 40px)', fontWeight: 700, color: C.navy, marginBottom: 28 }}>
-                    ${p.price.toLocaleString()}
-                  </p>
-
-                  {/* Pill badges */}
-                  <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 32 }}>
-                    {[
-                      [Bed, `${p.beds} Beds`],
-                      [Bath, `${p.baths} Baths`],
-                      [Square, `${p.sqft.toLocaleString()} Sq.Ft.`],
-                    ].map(([Icon, label], j) => (
-                      <span key={j} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, backgroundColor: C.coolWhite, color: C.slateDark, fontFamily: C.body, fontSize: 12, padding: '8px 16px', borderRadius: 8, border: `1px solid ${C.slateBorder}`, fontWeight: 500 }}>
-                        <Icon size={14} style={{ color: C.accent }} /> {label}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, fontFamily: C.body, fontSize: 13, letterSpacing: '0.08em', textTransform: 'uppercase', color: C.navy, fontWeight: 600, width: 'fit-content' }}>
-                    View Details <ArrowRight size={14} />
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          <div style={{ textAlign: 'center', marginTop: 56 }}>
-            <Link to="/search"
-              style={{ fontFamily: C.body, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase', color: C.navy, textDecoration: 'none', border: `2px solid ${C.navy}`, padding: '14px 36px', borderRadius: 8, display: 'inline-flex', alignItems: 'center', gap: 12, transition: 'all 0.3s', fontWeight: 600 }}
-              onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.navy; e.currentTarget.style.color = C.white; }}
-              onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = C.navy; }}>
-              View All Properties <ArrowRight size={14} />
-            </Link>
-          </div>
-        </div>
+          <iframe
+            src="https://matrix.recolorado.com/Matrix/public/IDX.aspx?idx=b094320f"
+            title="Colorado MLS Listings — Powered by REcolorado"
+            frameBorder="0"
+            scrolling="auto"
+            allowFullScreen
+            style={{ display: 'block', border: 'none', width: '100%', height: 700 }}
+          />
       </section>
 
       {/* ═══ ABOUT ═══ */}
       <section style={{ backgroundColor: C.white, padding: '96px 0' }}>
         <div className="resp-split" style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
           <div style={{ position: 'relative' }}>
-            <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+            <img src="/agent-about.jpg"
               alt="Modern Denver home" style={{ width: '100%', height: 560, objectFit: 'cover', borderRadius: 16 }} />
             <div className="resp-about-overlay" style={{ position: 'absolute', right: -24, bottom: -24, backgroundColor: C.navy, color: C.white, padding: 28, borderRadius: 12, boxShadow: '0 12px 32px rgba(15,23,42,0.2)' }}>
               <p style={{ fontFamily: C.display, fontSize: 44, fontWeight: 700 }}>15+</p>
@@ -515,8 +336,8 @@ const Home = () => {
 
           <div className="resp-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
             {[
-              { quote: '"Alan made the home buying process seamless. His knowledge of the Colorado market is unmatched, and he negotiated $20,000 off our dream home. We couldn\'t be happier!"', name: 'Sarah & Michael Johnson', location: 'Denver, CO', img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80' },
-              { quote: '"Professional, responsive, and truly cares about his clients. Alan sold our home in just 3 days above asking price. Highly recommend Colorado Home Finder!"', name: 'David Thompson', location: 'Boulder, CO', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80' },
+              { quote: '"Alan made the home buying process seamless. His knowledge of the Colorado market is unmatched, and he negotiated $20,000 off our dream home. We couldn\'t be happier!"', name: 'Sarah & Michael Johnson', location: 'Denver, CO', img: '/testimonial-sarah.jpg' },
+              { quote: '"Professional, responsive, and truly cares about his clients. Alan sold our home in just 3 days above asking price. Highly recommend Colorado Home Finder!"', name: 'David Thompson', location: 'Boulder, CO', img: '/testimonial-david.jpg' },
             ].map((t, i) => (
               <div key={i} className="chf-card" style={{ backgroundColor: C.white, padding: 48, position: 'relative', borderRadius: 16, border: `1px solid ${C.slateBorder}` }}>
                 <div style={{ display: 'flex', gap: 4, marginBottom: 24 }}>
@@ -605,7 +426,7 @@ const Home = () => {
 
       {/* ═══ CTA ═══ */}
       <section style={{ position: 'relative', padding: '120px 0', overflow: 'hidden' }}>
-        <img src="https://images.unsplash.com/photo-1546156929-a4c0ac411f47?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+        <img src="/cta-bg.jpg"
           alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(15,23,42,0.75), rgba(15,23,42,0.9))' }} />
         <div style={{ position: 'relative', zIndex: 10, maxWidth: 700, margin: '0 auto', padding: '0 32px', textAlign: 'center' }}>

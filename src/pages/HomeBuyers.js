@@ -87,7 +87,7 @@ const HomeBuyers = () => {
       {/* ── Hero ── */}
       <section style={{ position: 'relative', minHeight: '55vh', backgroundColor: C.black, overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
         <img
-          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+          src="/devner metro at its best.jpg"
           alt="Colorado home"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }}
         />

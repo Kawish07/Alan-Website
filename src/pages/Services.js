@@ -22,42 +22,42 @@ const serviceAreas = [
     icon: Home,
     title: 'Single Family Homes',
     desc: 'Whether you\'re buying or selling a single-family home in the Denver metro area, we offer expert guidance, market analysis, and negotiation support to get you the best outcome.',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80',
+    image: '/devner metro at its best.jpg',
     highlights: ['Neighborhood expertise', 'Pricing strategy', 'Full-service representation'],
   },
   {
     icon: Building2,
     title: 'Condos',
     desc: 'From high-rise living in downtown Denver to suburban condo communities, we help buyers and sellers navigate HOA requirements, reserves, and unique condo market dynamics.',
-    image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80',
+    image: '/services-buying.jpg',
     highlights: ['HOA review & analysis', 'Building condition assessment', 'Market comparables'],
   },
   {
     icon: Building,
     title: 'Townhomes',
     desc: 'Townhomes offer the perfect balance of space and convenience. We specialize in finding and marketing townhome properties across Colorado\'s most desirable communities.',
-    image: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80',
+    image: '/book-showing-hero.jpg',
     highlights: ['Community insights', 'Maintenance-free options', 'Investment potential'],
   },
   {
     icon: MapPin,
     title: 'Land',
     desc: 'Looking to build your dream home or develop a property? We assist clients with finding and evaluating vacant land, zoning research, and connecting you with the right partners.',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80',
+    image: '/services-investment.jpg',
     highlights: ['Zoning & permits', 'Utility access evaluation', 'Development feasibility'],
   },
   {
     icon: Store,
     title: 'Commercial',
     desc: 'Our commercial real estate services cover retail, office, and mixed-use properties. We help business owners and investors find the right commercial space or sell at peak value.',
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80',
+    image: '/services-commercial.jpg',
     highlights: ['Lease negotiation', 'Cap rate analysis', 'Tenant representation'],
   },
   {
     icon: TrendingUp,
     title: 'Investment Property',
     desc: 'Build long-term wealth through real estate. We identify high-yield investment opportunities, analyze ROI, and provide ongoing advisory for portfolio growth in Colorado.',
-    image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=900&q=80',
+    image: '/loan-type-hero.jpg',
     highlights: ['ROI analysis', 'Property management referrals', 'Portfolio strategy'],
   },
   /* ── Add new service categories below this line ── */
@@ -72,7 +72,7 @@ const Services = () => {
       {/* ── Hero ── */}
       <section style={{ position: 'relative', height: '50vh', minHeight: 400, overflow: 'hidden' }}>
         <img
-          src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+          src="/property-detail-4.jpg"
           alt="Services"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />

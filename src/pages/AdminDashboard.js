@@ -465,7 +465,7 @@ const AdminDashboard = () => {
                   <div>
                     {properties.slice(0, 4).map((prop, i) => (
                       <div key={prop._id} style={{ padding: '14px 24px', borderBottom: i < 3 ? `1px solid ${C.midCream}` : 'none', display: 'flex', alignItems: 'center', gap: 14 }}>
-                        <img src={prop.images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=100&q=60'} alt="" style={{ width: 52, height: 40, objectFit: 'cover', borderRadius: 2, flexShrink: 0 }} />
+                        <img src={prop.images?.[0] || '/devner metro at its best.jpg'} alt="" style={{ width: 52, height: 40, objectFit: 'cover', borderRadius: 2, flexShrink: 0 }} />
                         <div style={{ flex: 1, minWidth: 0 }}>
                           <p style={{ fontFamily: C.body, fontSize: 13, fontWeight: 500, color: C.black, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{prop.address}</p>
                           <p style={{ fontFamily: C.display, fontSize: 16, color: C.black }}>${prop.price?.toLocaleString()}</p>
@@ -603,7 +603,7 @@ const AdminDashboard = () => {
                   {properties.map(prop => (
                     <div key={prop._id} style={{ backgroundColor: C.white, border: `1px solid ${C.midCream}`, overflow: 'hidden' }}>
                       <div style={{ position: 'relative', height: 200 }}>
-                        <img src={prop.images?.[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=60'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                        <img src={prop.images?.[0] || '/devner metro at its best.jpg'} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                         <div style={{ position: 'absolute', top: 12, left: 12 }}>
                           <Badge color="seller">{prop.status}</Badge>
                         </div>

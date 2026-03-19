@@ -106,7 +106,7 @@ const MortgageCalculator = () => {
       {/* Hero */}
       <section style={{ position: 'relative', height: '50vh', minHeight: 400, overflow: 'hidden' }}>
         <img
-          src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+          src="/mortgage-hero.jpg"
           alt="Mortgage Calculator"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />

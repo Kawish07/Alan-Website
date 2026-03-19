@@ -83,11 +83,11 @@ const PropertyDetails = () => {
           appliances: ['Auto Garage Door Opener', 'Dishwasher', 'Disposal', 'Dryer', 'Microwave', 'Refrigerator W/Ice Maker', 'Smoke Detector', 'Washer', 'Wine Refrigerator'],
           agent: { name: 'Alan Ramirez', phone: '(773) 818-0444', email: 'AmRamz79@gmail.com', image: '/alan.png' },
           images: [
-            'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80',
-            'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1600585154526-990dced4db0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
-            'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+            '/book-showing-hero.jpg',
+            '/property-detail-2.jpg',
+            '/property-detail-3.jpg',
+            '/find your perfect coleredo image.jpg',
+            '/property-detail-4.jpg',
           ],
         });
       }

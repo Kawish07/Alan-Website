@@ -17,7 +17,7 @@ const LOAN_DATA = {
   conventional: {
     title: 'Conventional Loans',
     subtitle: 'Traditional Financing',
-    heroImg: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+    heroImg: '/loan-type-hero.jpg',
     loanTypeLabel: 'Conventional Loan',
     description: 'A conventional loan is one of the most common mortgage options for homebuyers. These loans are not backed by a government agency and typically require good credit and a stable income. They offer competitive interest rates and flexible terms.',
     benefits: [
@@ -36,7 +36,7 @@ const LOAN_DATA = {
   chfa: {
     title: 'CHFA Loans',
     subtitle: 'Colorado Housing Assistance',
-    heroImg: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+    heroImg: '/find your perfect coleredo image.jpg',
     loanTypeLabel: 'CHFA Loan',
     description: 'The Colorado Housing and Finance Authority (CHFA) offers programs designed to help Colorado residents achieve homeownership. These programs provide down payment assistance and competitive interest rates for qualifying buyers.',
     benefits: [
@@ -55,7 +55,7 @@ const LOAN_DATA = {
   va: {
     title: 'VA Loans',
     subtitle: 'Veterans Benefits',
-    heroImg: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+    heroImg: '/devner metro at its best.jpg',
     loanTypeLabel: 'VA Loan',
     description: 'VA loans are a benefit earned by veterans, active-duty service members, and eligible surviving spouses. Backed by the U.S. Department of Veterans Affairs, these loans offer exceptional terms including zero down payment and no PMI.',
     benefits: [
@@ -74,7 +74,7 @@ const LOAN_DATA = {
   'first-time-buyer': {
     title: '1st Time Home Buyer',
     subtitle: 'First-Time Buyer Programs',
-    heroImg: 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+    heroImg: '/book-showing-hero.jpg',
     loanTypeLabel: '1st Time Home Buyer',
     description: 'If you\'re buying your first home, there are special programs and assistance available to help make homeownership more accessible. From down payment assistance to favorable loan terms, we\'ll help you navigate every option.',
     benefits: [
@@ -93,7 +93,7 @@ const LOAN_DATA = {
   'credit-repair': {
     title: 'Credit Repair',
     subtitle: 'Build Your Path to Homeownership',
-    heroImg: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
+    heroImg: '/mortgage-hero.jpg',
     loanTypeLabel: 'Credit Repair',
     description: 'Your credit score plays a major role in the mortgage rates and loan programs available to you. If your score needs improvement, don\'t worry — Alan works with trusted credit specialists and lenders who can guide you through the process of repairing your credit so you can qualify for the best possible loan terms.',
     benefits: [

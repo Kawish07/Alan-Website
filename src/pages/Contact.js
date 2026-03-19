@@ -43,7 +43,7 @@ const Contact = () => {
       {/* ── Hero ── */}
       <section style={{ position: 'relative', minHeight: '85vh', backgroundColor: C.black, overflow: 'hidden', display: 'flex', alignItems: 'center' }}>
         <img
-          src="https://images.unsplash.com/photo-1549497538-303791108f95?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+          src="/contact-hero.jpg"
           alt="Denver"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.35 }}
         />
@@ -110,7 +110,7 @@ const Contact = () => {
             {/* Map placeholder */}
             <div style={{ position: 'relative', height: 300, backgroundColor: C.cream, overflow: 'hidden' }}>
               <img
-                src="https://images.unsplash.com/photo-1549497538-303791108f95?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                src="/contact-hero.jpg"
                 alt="Denver Colorado"
                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />

@@ -53,7 +53,7 @@ const AdminLogin = () => {
       {/* Left: Brand panel */}
       <div style={{ position: 'relative', overflow: 'hidden', backgroundColor: C.black }}>
         <img
-          src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+          src="/find your perfect coleredo image.jpg"
           alt=""
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.3 }}
         />

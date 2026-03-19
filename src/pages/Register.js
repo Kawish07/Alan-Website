@@ -51,7 +51,7 @@ const Register = () => {
 
       {/* Left Brand Panel */}
       <div style={{ width: '45%', backgroundColor: C.black, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 64px', position: 'relative', overflow: 'hidden' }}>
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+        <img src="/devner metro at its best.jpg"
           alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.15 }} />
         <div style={{ position: 'relative', zIndex: 1 }}>
           <Link to="/" style={{ textDecoration: 'none' }}>

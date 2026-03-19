@@ -43,7 +43,7 @@ const FirstTimeBuyer = () => {
       {/* ── Hero ── */}
       <section style={{ position: 'relative', height: '65vh', overflow: 'hidden' }}>
         <img
-          src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+          src="/devner metro at its best.jpg"
           alt="Home"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />

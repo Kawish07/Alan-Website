@@ -49,7 +49,7 @@ const Valuation = () => {
 
         {/* Left: Image + Content */}
         <div style={{ position: 'relative', overflow: 'hidden' }}>
-          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+          <img src="/find your perfect coleredo image.jpg"
             alt="Luxury Home" style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }} />
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.6) 100%)' }} />
 

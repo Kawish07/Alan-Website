@@ -69,7 +69,7 @@ const About = () => {
       {/* ── Hero ── */}
       <section style={{ position: 'relative', height: '50vh', minHeight: 400, overflow: 'hidden' }}>
         <img
-          src="https://images.unsplash.com/photo-1628745277862-bc0822606566?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
+          src="/modern living in the rockies.jpg"
           alt="Colorado Real Estate"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
