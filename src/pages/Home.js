@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Search, MapPin, ArrowRight, Phone, Award, TrendingUp, Shield,
@@ -23,6 +23,48 @@ const C = {
   white: '#ffffff',
   display: "'Montserrat', system-ui, sans-serif",
   body: "'Inter', system-ui, sans-serif",
+};
+
+/* ─── Lazy-loaded IDX section: only starts loading when scrolled into view ─── */
+const HomeMlsSection = () => {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { rootMargin: '200px' }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section ref={ref} style={{ padding: '80px 0', backgroundColor: C.white }}>
+      <div style={{ position: 'relative', width: '100%', height: 700, backgroundColor: '#F8FAFC' }}>
+        {/* Skeleton shown while loading */}
+        {(!loaded || !visible) && (
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14 }}>
+            <div style={{ width: 40, height: 40, border: '3px solid #E2E8F0', borderTop: '3px solid #1B2A4A', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, color: '#94A3B8', margin: 0 }}>Loading listings…</p>
+            <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+          </div>
+        )}
+        {visible && (
+          <iframe
+            src="https://matrix.recolorado.com/Matrix/public/IDX.aspx?idx=b094320f&p_search_type=city&p_city=Denver&p_state=CO&p_property_type=RES"
+            title="Colorado MLS Listings"
+            frameBorder="0"
+            scrolling="auto"
+            allowFullScreen
+            onLoad={() => setLoaded(true)}
+            style={{ display: 'block', border: 'none', width: '100%', height: '100%', opacity: loaded ? 1 : 0, transition: 'opacity 0.4s ease' }}
+          />
+        )}
+      </div>
+    </section>
+  );
 };
 
 const Home = () => {
@@ -236,16 +278,7 @@ const Home = () => {
 
 
       {/* ═══ LIVE MLS LISTINGS (IDX) ═══ */}
-      <section style={{ padding: '80px 0', backgroundColor: C.white }}>
-          <iframe
-            src="https://matrix.recolorado.com/Matrix/public/IDX.aspx?idx=b094320f"
-            title="Colorado MLS Listings — Powered by REcolorado"
-            frameBorder="0"
-            scrolling="auto"
-            allowFullScreen
-            style={{ display: 'block', border: 'none', width: '100%', height: 700 }}
-          />
-      </section>
+      <HomeMlsSection />
 
       {/* ═══ ABOUT ═══ */}
       <section style={{ backgroundColor: C.white, padding: '96px 0' }}>
