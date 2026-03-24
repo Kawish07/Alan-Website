@@ -423,3 +423,32 @@ bb-widget {
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
+
+/* ═══ Buying Buddy Modal / Overlay — fix scroll ═══ */
+[class*="mbb-modal"],
+[class*="mbb-overlay"],
+[class*="mbb-detail"],
+[class*="mbb-popup"],
+[class*="mbb-display"],
+[class*="mbb-lightbox"],
+.mbb-modal,
+.mbb-overlay,
+.mbb-details-overlay,
+div[id*="mbb"][style*="position"],
+div[id*="mbb"][style*="fixed"],
+bb-widget[data-type="SearchDetails"],
+bb-widget[data-type="SearchDetails"] > div {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  max-height: 100vh !important;
+  max-height: 100dvh !important;
+}
+
+/* Ensure body scroll is not locked when modal opens */
+body.mbb-no-scroll,
+body.mbb-modal-open,
+html.mbb-no-scroll {
+  overflow: auto !important;
+  position: static !important;
+  height: auto !important;
+}
