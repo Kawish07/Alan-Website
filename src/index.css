@@ -342,7 +342,13 @@ bb-widget[data-type="SearchForm"] [class*="search-form"] {
   box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
 }
 
-/* ── Hero BB SearchForm: match old custom search bar exactly ── */
+/* ═══════════════════════════════════════════════════════════
+   Hero BB SearchForm — KEY FIX: constrain widget inside
+   padded container so it respects left/right spacing
+   ═══════════════════════════════════════════════════════════ */
+
+/* Reset all bb-widget overrides inside hero — let padding do the work */
+.hero-bb-searchform,
 .hero-bb-searchform bb-widget[data-type="SearchForm"],
 .hero-bb-searchform bb-widget[data-type="SearchForm"] > *,
 .hero-bb-searchform [class*="mbb-"] {
@@ -351,10 +357,10 @@ bb-widget[data-type="SearchForm"] [class*="search-form"] {
   box-shadow: none !important;
   border-radius: 0 !important;
   padding: 0 !important;
-  /* Prevent BB inner elements from overflowing the margin wrapper */
+  /* CRITICAL: do NOT set width here — let the parent padding constrain it */
   max-width: 100% !important;
-  width: 100% !important;
   box-sizing: border-box !important;
+  display: block !important;
 }
 
 /* Row: single horizontal strip, no wrapping */
