@@ -403,20 +403,28 @@ const Home = () => {
               </p>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 {hoods.map(h => (
-                  <Link key={h.name}
-                    to={`/search?neighborhood=${encodeURIComponent(h.name)}`}
+                  <button key={h.name}
+                    onClick={() => {
+                      if (window.MBB && typeof window.MBB.cookie === 'function') {
+                        window.MBB.cookie('mbb-search-params', JSON.stringify({
+                          zip_code: h.zips,
+                          'bb-search': true
+                        }), { path: '/', expires: 1 });
+                      }
+                      window.location.href = '/listing-results';
+                    }}
                     style={{
                       fontFamily: C.body, fontSize: 13, fontWeight: 500, color: C.slateDark,
                       textDecoration: 'none', padding: '8px 18px', borderRadius: 24,
                       border: `1px solid ${C.slateBorder}`, backgroundColor: C.white,
                       display: 'inline-flex', alignItems: 'center', gap: 6,
-                      transition: 'all 0.18s',
+                      transition: 'all 0.18s', cursor: 'pointer',
                     }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = C.navy; e.currentTarget.style.color = C.navy; e.currentTarget.style.backgroundColor = '#EEF2FF'; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = C.slateBorder; e.currentTarget.style.color = C.slateDark; e.currentTarget.style.backgroundColor = C.white; }}>
                     <span style={{ fontSize: 10, color: C.slateLight, fontWeight: 400 }}>{h.zips.split(',')[0]}+</span>
                     {h.name}
-                  </Link>
+                  </button>
                 ))}
               </div>
             </div>
