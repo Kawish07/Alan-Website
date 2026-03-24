@@ -46,14 +46,22 @@ const HomeMlsSection = () => {
         </div>
       </section>
 
-      {/* Featured Listings */}
+      {/* Live MLS Listings Preview */}
       <section style={{ padding: '40px 0 80px', backgroundColor: C.coolWhite }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, marginBottom: 12, fontWeight: 600 }}>Live MLS Listings</p>
-          <h2 style={{ fontFamily: C.display, fontSize: 'clamp(24px, 3vw, 38px)', fontWeight: 600, color: C.slateDark, lineHeight: 1.2, marginBottom: 32 }}>
-            Featured Properties
-          </h2>
-          <bb-widget data-type="FeaturedListings"></bb-widget>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap', gap: 16 }}>
+            <div>
+              <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, marginBottom: 8, fontWeight: 600 }}>Live MLS Listings</p>
+              <h2 style={{ fontFamily: C.display, fontSize: 'clamp(24px, 3vw, 38px)', fontWeight: 600, color: C.slateDark, lineHeight: 1.2, margin: 0 }}>
+                Denver Properties
+              </h2>
+            </div>
+            <a href="/listing-results"
+              style={{ fontFamily: C.body, fontSize: 13, fontWeight: 600, color: C.navy, textDecoration: 'none', border: `1px solid ${C.navy}`, padding: '10px 24px', borderRadius: 6, letterSpacing: '0.05em' }}>
+              View All Listings →
+            </a>
+          </div>
+          <bb-widget data-type="ListingResults"></bb-widget>
         </div>
       </section>
     </>
