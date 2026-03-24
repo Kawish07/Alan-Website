@@ -768,7 +768,7 @@ const Layout = ({ children }) => {
             {/* Desktop CTA + Auth */}
             <div className="chf-desktop-cta">
               <Link to="/contact" className="chf-cta">
-                Contact Us <span style={{ width: 32, height: 1, backgroundColor: 'currentColor', display: 'inline-block' }} />
+                Contact Us
               </Link>
               {isAuthenticated && user?.role === 'user' ? (
                 <>
