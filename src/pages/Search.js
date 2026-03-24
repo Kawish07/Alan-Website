@@ -100,15 +100,51 @@ const SearchPage = () => {
     }
   }, []);
 
-  // Re-signal BB every time the zip set changes (neighborhood pill click)
-  // Without this, BB ignores the newly-mounted widget with the updated data-zip
+  // When a neighborhood is selected, wait for BB to render then
+  // programmatically inject the zip codes into BB's own search input and click View
   useEffect(() => {
-    const timer = setTimeout(() => {
+    // Re-init BB widgets after React remount
+    const initTimer = setTimeout(() => {
       if (window.MBB && typeof window.MBB.loaded === 'function') {
         window.MBB.loaded();
       }
-    }, 250);
-    return () => clearTimeout(timer);
+    }, 300);
+
+    if (!listingZips) return () => clearTimeout(initTimer);
+
+    let attempts = 0;
+    const injectZips = () => {
+      attempts++;
+      const section = document.getElementById('listings-section');
+      if (!section) { if (attempts < 40) setTimeout(injectZips, 500); return; }
+
+      // Find all text inputs inside the listings section (BB renders its own search bar)
+      const inputs = section.querySelectorAll('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
+      const viewBtns = section.querySelectorAll('button');
+
+      // Pick the first visible text input and the View button
+      const searchInput = Array.from(inputs).find(el => el.offsetParent !== null);
+      const viewBtn = Array.from(viewBtns).find(btn => btn.textContent.includes('View') && btn.offsetParent !== null);
+
+      if (!searchInput || !viewBtn) {
+        if (attempts < 40) setTimeout(injectZips, 500);
+        return;
+      }
+
+      // Use native setter so BB's internal state picks up the change
+      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+      nativeSetter.call(searchInput, listingZips.replace(/,/g, ', '));
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+      // Click View after a short delay
+      setTimeout(() => viewBtn.click(), 400);
+    };
+
+    // Wait for BB to fully render before attempting injection
+    const fillTimer = setTimeout(injectZips, 1500);
+
+    return () => { clearTimeout(initTimer); clearTimeout(fillTimer); };
   }, [listingZips]);
 
   // Pre-fill and submit BB's SearchForm using the URL params from the hero
@@ -316,12 +352,9 @@ const SearchPage = () => {
           </div>
         </div>
 
-        {/* Key forces BB to remount and re-init with the new data-zip when neighborhood changes */}
+        {/* BB ListingResults widget */}
         <div key={listingZips || 'all-denver'}>
-          {listingZips
-            ? <bb-widget data-type="ListingResults" data-zip={listingZips}></bb-widget>
-            : <bb-widget data-type="ListingResults"></bb-widget>
-          }
+          <bb-widget data-type="ListingResults"></bb-widget>
         </div>
 
         {/* ═══ LISTING ALERT SIGN-UP ═══ */}

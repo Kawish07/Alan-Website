@@ -31,6 +31,27 @@ const HomeMlsSection = () => {
     if (window.MBB && typeof window.MBB.loaded === 'function') {
       window.MBB.loaded();
     }
+
+    // Auto-fill BB's search input with the target zip codes after it loads
+    let attempts = 0;
+    const fillZips = () => {
+      attempts++;
+      const widgets = document.querySelectorAll('bb-widget[data-type="ListingResults"]');
+      if (!widgets.length) { if (attempts < 30) setTimeout(fillZips, 500); return; }
+      const widget = widgets[0];
+      const inputs = widget.querySelectorAll('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
+      const viewBtns = widget.querySelectorAll('button');
+      const searchInput = Array.from(inputs).find(el => el.offsetParent !== null);
+      const viewBtn = Array.from(viewBtns).find(btn => btn.textContent.includes('View') && btn.offsetParent !== null);
+      if (!searchInput || !viewBtn) { if (attempts < 30) setTimeout(fillZips, 500); return; }
+      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+      nativeSetter.call(searchInput, '80231, 80014');
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+      setTimeout(() => viewBtn.click(), 400);
+    };
+    const timer = setTimeout(fillZips, 1500);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -70,7 +91,29 @@ const HomeMlsSection = () => {
           {/* Divider */}
           <div style={{ width: '100%', height: 1, backgroundColor: C.slateBorder, marginBottom: 32 }} />
 
-          <bb-widget data-type="ListingResults" data-limit="12" data-zip="80231,80014"></bb-widget>
+          {/* Contain BB widget to ~12 listings height, with fade-out at bottom */}
+          <div style={{ position: 'relative', maxHeight: 1600, overflow: 'hidden' }}>
+            <bb-widget data-type="ListingResults"></bb-widget>
+            {/* Gradient fade to signal more content */}
+            <div style={{
+              position: 'absolute', bottom: 0, left: 0, right: 0, height: 180,
+              background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)',
+              pointerEvents: 'none', zIndex: 2,
+            }} />
+          </div>
+          {/* View All button below the fade */}
+          <div style={{ textAlign: 'center', marginTop: -40, position: 'relative', zIndex: 3, paddingBottom: 8 }}>
+            <Link to="/search" style={{
+              fontFamily: C.body, fontSize: 14, fontWeight: 700, color: C.white,
+              textDecoration: 'none', backgroundColor: C.navy, padding: '16px 48px',
+              borderRadius: 8, display: 'inline-flex', alignItems: 'center', gap: 10,
+              boxShadow: '0 4px 16px rgba(27,42,74,0.15)', transition: 'all 0.2s',
+            }}
+              onMouseEnter={e => { e.currentTarget.style.backgroundColor = C.navyLight; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.backgroundColor = C.navy; e.currentTarget.style.transform = 'translateY(0)'; }}>
+              View All Listings <ArrowRight size={16} />
+            </Link>
+          </div>
         </div>
       </section>
     </>
