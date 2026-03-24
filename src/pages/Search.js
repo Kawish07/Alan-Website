@@ -93,12 +93,23 @@ const SearchPage = () => {
     trackBehavior('PAGE_VIEW', { page: 'Search' });
   }, []);
 
-  // Signal BB that widgets are ready
+  // Signal BB that widgets are ready on page mount
   useEffect(() => {
     if (window.MBB && typeof window.MBB.loaded === 'function') {
       window.MBB.loaded();
     }
   }, []);
+
+  // Re-signal BB every time the zip set changes (neighborhood pill click)
+  // Without this, BB ignores the newly-mounted widget with the updated data-zip
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (window.MBB && typeof window.MBB.loaded === 'function') {
+        window.MBB.loaded();
+      }
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [listingZips]);
 
   // Pre-fill and submit BB's SearchForm using the URL params from the hero
   useEffect(() => {

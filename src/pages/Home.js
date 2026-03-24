@@ -70,7 +70,7 @@ const HomeMlsSection = () => {
           {/* Divider */}
           <div style={{ width: '100%', height: 1, backgroundColor: C.slateBorder, marginBottom: 32 }} />
 
-          <bb-widget data-type="ListingResults" data-count="12" data-zip="80231,80014"></bb-widget>
+          <bb-widget data-type="ListingResults" data-limit="12" data-zip="80231,80014"></bb-widget>
         </div>
       </section>
     </>
