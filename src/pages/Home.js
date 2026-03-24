@@ -140,7 +140,7 @@ const Home = () => {
           </h1>
 
           {/* ── BB SearchForm widget — same bar as the /search page ── */}
-          <div style={{ width: '100%', maxWidth: 960 }}>
+          <div style={{ width: '100%', maxWidth: 960, padding: '0 24px' }}>
             {/* "Buy" tab — anchored top-left, same as old custom bar */}
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
               <div style={{
