@@ -25,7 +25,7 @@ const C = {
   body: "'Inter', system-ui, sans-serif",
 };
 
-/* ─── Buying Buddy Search Form Widget ─── */
+/* ─── Buying Buddy Search Form + Featured Listings ─── */
 const HomeMlsSection = () => {
   useEffect(() => {
     if (window.MBB && typeof window.MBB.loaded === 'function') {
@@ -34,11 +34,29 @@ const HomeMlsSection = () => {
   }, []);
 
   return (
-    <section style={{ padding: '80px 0', backgroundColor: C.white }}>
-      <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-        <bb-widget data-type="SearchForm"></bb-widget>
-      </div>
-    </section>
+    <>
+      {/* Search Form */}
+      <section style={{ padding: '80px 0 40px', backgroundColor: C.white }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
+          <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, marginBottom: 12, fontWeight: 600 }}>Search MLS</p>
+          <h2 style={{ fontFamily: C.display, fontSize: 'clamp(24px, 3vw, 38px)', fontWeight: 600, color: C.slateDark, lineHeight: 1.2, marginBottom: 32 }}>
+            Find Your Next Home
+          </h2>
+          <bb-widget data-type="SearchForm"></bb-widget>
+        </div>
+      </section>
+
+      {/* Featured Listings */}
+      <section style={{ padding: '40px 0 80px', backgroundColor: C.coolWhite }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
+          <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, marginBottom: 12, fontWeight: 600 }}>Live MLS Listings</p>
+          <h2 style={{ fontFamily: C.display, fontSize: 'clamp(24px, 3vw, 38px)', fontWeight: 600, color: C.slateDark, lineHeight: 1.2, marginBottom: 32 }}>
+            Featured Properties
+          </h2>
+          <bb-widget data-type="FeaturedListings"></bb-widget>
+        </div>
+      </section>
+    </>
   );
 };
 
