@@ -25,32 +25,69 @@ const SearchPage = () => {
 
   // Parse URL search params passed from the hero search bar
   const urlParams = new URLSearchParams(location.search);
-  const searchCity    = urlParams.get('city') || '';
-  const searchZip     = urlParams.get('zip')  || '';
+  const searchCity     = urlParams.get('city')     || '';
+  const searchZip      = urlParams.get('zip')      || '';
   const searchMinPrice = urlParams.get('minPrice') || '';
   const searchMaxPrice = urlParams.get('maxPrice') || '';
-  const searchBeds     = urlParams.get('beds')  || '';
-  const searchBaths    = urlParams.get('baths') || '';
+  const searchBeds     = urlParams.get('beds')     || '';
+  const searchBaths    = urlParams.get('baths')    || '';
 
-  // Build Buying Buddy data-options JSON to pre-filter widgets
-  const bbOptions = {};
-  if (searchCity)     bbOptions.city      = searchCity;
-  if (searchZip)      bbOptions.zip       = searchZip;
-  if (searchMinPrice) bbOptions.minPrice  = parseInt(searchMinPrice);
-  if (searchMaxPrice) bbOptions.maxPrice  = parseInt(searchMaxPrice);
-  if (searchBeds)     bbOptions.bedsMin   = parseInt(searchBeds);
-  if (searchBaths)    bbOptions.bathsMin  = parseInt(searchBaths);
-  const bbOptionsStr = Object.keys(bbOptions).length > 0 ? JSON.stringify(bbOptions) : undefined;
+  const hasFilters = searchCity || searchZip || searchMinPrice || searchMaxPrice || searchBeds || searchBaths;
 
   useEffect(() => {
     trackBehavior('PAGE_VIEW', { page: 'Search' });
   }, []);
 
+  // Signal BB that widgets are ready
   useEffect(() => {
     if (window.MBB && typeof window.MBB.loaded === 'function') {
       window.MBB.loaded();
     }
-  }, [bbOptionsStr]);
+  }, []);
+
+  // Pre-fill and submit BB's SearchForm using the URL params from the hero
+  useEffect(() => {
+    if (!hasFilters) return;
+
+    const query = searchCity || searchZip;
+
+    let attempts = 0;
+    const tryFill = () => {
+      attempts++;
+
+      const formWidget = document.querySelector('bb-widget[data-type="SearchForm"]');
+      if (!formWidget) {
+        if (attempts < 30) setTimeout(tryFill, 400);
+        return;
+      }
+
+      // Find BB's location text input
+      const textInput = formWidget.querySelector('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"])');
+      // Find BB's "View" / submit button
+      const viewBtn = formWidget.querySelector('button');
+
+      if (!textInput || !viewBtn) {
+        if (attempts < 30) setTimeout(tryFill, 400);
+        return;
+      }
+
+      // Inject query into the input in a way React/BB's internal state picks up
+      if (query) {
+        const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+        nativeSetter.call(textInput, query);
+        textInput.dispatchEvent(new Event('input',  { bubbles: true }));
+        textInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+
+      // Short delay then click View to trigger BB's search
+      setTimeout(() => viewBtn.click(), 300);
+    };
+
+    // Wait for MBB to set up the widget DOM before polling
+    setTimeout(tryFill, 1200);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <div ref={containerRef} style={{ minHeight: '100vh', backgroundColor: C.coolWhite, fontFamily: C.body }}>
@@ -111,7 +148,7 @@ const SearchPage = () => {
             Search Properties
           </h2>
         </div>
-        <bb-widget data-type="SearchForm" data-options={bbOptionsStr}></bb-widget>
+        <bb-widget data-type="SearchForm"></bb-widget>
       </div>
 
       {/* ── Listings Section ── */}
@@ -132,7 +169,7 @@ const SearchPage = () => {
           </p>
         </div>
 
-        <bb-widget data-type="ListingResults" data-options={bbOptionsStr}></bb-widget>
+        <bb-widget data-type="ListingResults"></bb-widget>
       </div>
 
     </div>
