@@ -342,6 +342,10 @@ bb-widget[data-type="SearchForm"] [class*="search-form"] {
   box-shadow: none !important;
   border-radius: 0 !important;
   padding: 0 !important;
+  /* Prevent BB inner elements from overflowing the margin wrapper */
+  max-width: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 /* Row: single horizontal strip, no wrapping */

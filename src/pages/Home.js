@@ -141,31 +141,32 @@ const Home = () => {
 
           {/* ── BB SearchForm widget — same bar as the /search page ── */}
           <div style={{ width: '100%', maxWidth: 960 }}>
-            {/* "Buy" tab — anchored top-left, same as old custom bar */}
-            <div style={{ display: 'flex', justifyContent: 'flex-start', marginLeft: 32, marginRight: 32 }}>
-              <div style={{
+            {/* Single inner wrapper that enforces left+right margin on both BUY tab and white bar */}
+            <div style={{ margin: '0 40px' }}>
+              {/* "Buy" tab — anchored top-left */}
+              <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                <div style={{
+                  backgroundColor: 'rgba(255,255,255,0.97)',
+                  backdropFilter: 'blur(8px)',
+                  borderRadius: '8px 8px 0 0',
+                  padding: '10px 28px',
+                  fontFamily: "'Inter', system-ui, sans-serif",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  color: '#1B2A4A',
+                }}>Buy</div>
+              </div>
+              <div className="hero-bb-searchform" style={{
                 backgroundColor: 'rgba(255,255,255,0.97)',
-                backdropFilter: 'blur(8px)',
-                borderRadius: '8px 8px 0 0',
-                padding: '10px 28px',
-                fontFamily: "'Inter', system-ui, sans-serif",
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#1B2A4A',
-              }}>Buy</div>
-            </div>
-            <div className="hero-bb-searchform" style={{
-              backgroundColor: 'rgba(255,255,255,0.97)',
-              backdropFilter: 'blur(16px)',
-              borderRadius: '0 8px 8px 8px',
-              overflow: 'hidden',
-              boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
-              marginLeft: 32,
-              marginRight: 32,
-            }}>
-              <bb-widget data-type="SearchForm"></bb-widget>
+                backdropFilter: 'blur(16px)',
+                borderRadius: '0 8px 8px 8px',
+                overflow: 'hidden',
+                boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
+              }}>
+                <bb-widget data-type="SearchForm"></bb-widget>
+              </div>
             </div>
           </div>
 
