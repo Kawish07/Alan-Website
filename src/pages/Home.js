@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Search, MapPin, ArrowRight, Phone, Award, TrendingUp, Shield,
-  Star, Quote, Bed, Bath, Square,
-  Home as HomeIcon, DollarSign, BarChart3, Key
+  ArrowRight, Phone, Award, TrendingUp, Shield,
+  Star, Quote, Square,DollarSign,
+  Home as HomeIcon, BarChart3, Key
 } from 'lucide-react';
 import API from '../api';
-import { trackBehavior, trackPhoneClick, trackPageView } from '../api';
+import { trackPhoneClick, trackPageView } from '../api';
 
 /* ─── style constants — Modern Denver Suburbs palette ─── */
 const C = {
@@ -35,17 +35,6 @@ const HomeMlsSection = () => {
 
   return (
     <>
-      {/* Search Form */}
-      <section style={{ padding: '80px 0 40px', backgroundColor: C.white }}>
-        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, marginBottom: 12, fontWeight: 600 }}>Search MLS</p>
-          <h2 style={{ fontFamily: C.display, fontSize: 'clamp(24px, 3vw, 38px)', fontWeight: 600, color: C.slateDark, lineHeight: 1.2, marginBottom: 32 }}>
-            Find Your Next Home
-          </h2>
-          <bb-widget data-type="SearchForm"></bb-widget>
-        </div>
-      </section>
-
       {/* Live MLS Listings Preview */}
       <section style={{ padding: '60px 0 80px', backgroundColor: C.coolWhite }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
@@ -89,11 +78,6 @@ const HomeMlsSection = () => {
 };
 
 const Home = () => {
-  const [mlsCity, setMlsCity] = useState('');
-  const [mlsMinPrice, setMlsMinPrice] = useState('');
-  const [mlsMaxPrice, setMlsMaxPrice] = useState('');
-  const [mlsBeds, setMlsBeds] = useState('');
-  const [mlsBaths, setMlsBaths] = useState('');
   const [featuredListings, setFeaturedListings] = useState([]);
   const [activeSlide, setActiveSlide] = useState(0);
 
@@ -130,21 +114,6 @@ const Home = () => {
     return () => clearInterval(t);
   }, [heroSlides.length]);
 
-  const handleMlsSearch = () => {
-    const params = new URLSearchParams();
-    const q = mlsCity.trim();
-    if (q) {
-      if (/^\d{5}$/.test(q)) params.set('zip', q);
-      else params.set('city', q);
-    }
-    if (mlsMinPrice) params.set('minPrice', mlsMinPrice);
-    if (mlsMaxPrice) params.set('maxPrice', mlsMaxPrice);
-    if (mlsBeds) params.set('beds', mlsBeds);
-    if (mlsBaths) params.set('baths', mlsBaths);
-    trackBehavior('SEARCH_FILTER', { query: q, minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, baths: mlsBaths });
-    window.location.href = `/search?${params.toString()}`;
-  };
-
   return (
     <div style={{ fontFamily: C.body, backgroundColor: C.white, color: C.slateDark }}>
 
@@ -170,111 +139,16 @@ const Home = () => {
             {heroSlides[activeSlide].title}
           </h1>
 
-          {/* ── MLS Search Bar ── */}
+          {/* ── BB SearchForm widget — same bar as the /search page ── */}
           <div style={{ width: '100%', maxWidth: 960 }}>
-            {/* Buy tab */}
-            <div style={{ display: 'flex', gap: 0, marginBottom: 0 }}>
-              <button
-                style={{
-                  fontFamily: C.body, fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600,
-                  padding: '12px 28px', border: 'none', cursor: 'default', transition: 'all 0.2s',
-                  backgroundColor: 'rgba(255,255,255,0.97)',
-                  color: C.navy,
-                  borderRadius: '8px 8px 0 0',
-                  backdropFilter: 'blur(8px)',
-                }}>
-                Buy
-              </button>
-            </div>
-
-            <div style={{ backgroundColor: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(16px)', borderRadius: '0 8px 8px 8px', overflow: 'hidden' }}>
-              <div className="resp-hero-search" style={{ display: 'flex', flexWrap: 'wrap' }}>
-                {/* Location */}
-                <div style={{ flex: '2 1 200px', display: 'flex', alignItems: 'center', padding: '0 20px', borderRight: '1px solid #E2E8F0', minHeight: 56 }}>
-                  <MapPin size={16} style={{ color: C.accent, marginRight: 10, flexShrink: 0 }} />
-                  <input type="text" placeholder="City, Neighborhood, or ZIP..."
-                    style={{ width: '100%', background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 14, color: C.slateDark, padding: '16px 0' }}
-                    value={mlsCity} onChange={e => setMlsCity(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleMlsSearch()} />
-                </div>
-                {/* Price Range */}
-                <div style={{ flex: '1 1 140px', display: 'flex', alignItems: 'center', padding: '0 12px', borderRight: '1px solid #E2E8F0', gap: 4 }}>
-                  <DollarSign size={14} style={{ color: C.accent, flexShrink: 0 }} />
-                  <select value={mlsMinPrice} onChange={e => setMlsMinPrice(e.target.value)}
-                    style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 13, color: C.slateDark, padding: '16px 0', cursor: 'pointer', appearance: 'none' }}>
-                    <option value="">Min Price</option>
-                    <option value="200000">$200k</option>
-                    <option value="400000">$400k</option>
-                    <option value="600000">$600k</option>
-                    <option value="800000">$800k</option>
-                    <option value="1000000">$1M</option>
-                    <option value="1500000">$1.5M</option>
-                    <option value="2000000">$2M+</option>
-                  </select>
-                  <span style={{ color: C.slateLight, fontSize: 12 }}>–</span>
-                  <select value={mlsMaxPrice} onChange={e => setMlsMaxPrice(e.target.value)}
-                    style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 13, color: C.slateDark, padding: '16px 0', cursor: 'pointer', appearance: 'none' }}>
-                    <option value="">Max</option>
-                    <option value="400000">$400k</option>
-                    <option value="600000">$600k</option>
-                    <option value="800000">$800k</option>
-                    <option value="1000000">$1M</option>
-                    <option value="1500000">$1.5M</option>
-                    <option value="2000000">$2M</option>
-                    <option value="5000000">$5M+</option>
-                  </select>
-                </div>
-                {/* Beds */}
-                <div style={{ flex: '0 1 110px', display: 'flex', alignItems: 'center', padding: '0 12px', borderRight: '1px solid #E2E8F0' }}>
-                  <Bed size={14} style={{ color: C.accent, marginRight: 8, flexShrink: 0 }} />
-                  <select value={mlsBeds} onChange={e => setMlsBeds(e.target.value)}
-                    style={{ width: '100%', background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 13, color: C.slateDark, padding: '16px 0', cursor: 'pointer', appearance: 'none' }}>
-                    <option value="">Beds</option>
-                    <option value="1">1+</option>
-                    <option value="2">2+</option>
-                    <option value="3">3+</option>
-                    <option value="4">4+</option>
-                    <option value="5">5+</option>
-                  </select>
-                </div>
-                {/* Baths */}
-                <div style={{ flex: '0 1 110px', display: 'flex', alignItems: 'center', padding: '0 12px', borderRight: '1px solid #E2E8F0' }}>
-                  <Bath size={14} style={{ color: C.accent, marginRight: 8, flexShrink: 0 }} />
-                  <select value={mlsBaths} onChange={e => setMlsBaths(e.target.value)}
-                    style={{ width: '100%', background: 'none', border: 'none', outline: 'none', fontFamily: C.body, fontSize: 13, color: C.slateDark, padding: '16px 0', cursor: 'pointer', appearance: 'none' }}>
-                    <option value="">Baths</option>
-                    <option value="1">1+</option>
-                    <option value="2">2+</option>
-                    <option value="3">3+</option>
-                    <option value="4">4+</option>
-                  </select>
-                </div>
-                <button onClick={handleMlsSearch}
-                  style={{ flex: '0 0 auto', backgroundColor: C.navy, color: C.white, padding: '0 32px', border: 'none', cursor: 'pointer', fontFamily: C.body, fontSize: 12, letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 8, transition: 'background 0.2s', minHeight: 56, borderRadius: '0 0 8px 0' }}
-                  onMouseEnter={e => e.currentTarget.style.backgroundColor = C.navyLight}
-                  onMouseLeave={e => e.currentTarget.style.backgroundColor = C.navy}>
-                  <Search size={16} /> Search
-                </button>
-              </div>
-            </div>
-
-            {/* Quick links */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
-              {[
-                { label: 'Denver', href: '/search?city=Denver' },
-                { label: 'Aurora', href: '/search?city=Aurora' },
-                { label: 'Cherry Creek', href: '/search?city=Cherry+Creek' },
-                { label: 'DIA', href: '/search?zip=80249' },
-                { label: 'DTC', href: '/search?city=Denver+Tech+Center' },
-                { label: 'Custom Search', href: '/search' },
-              ].map(q => (
-                <button key={q.label} onClick={() => { window.location.href = q.href; }}
-                  style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 20px', fontFamily: C.body, fontSize: 12, color: 'rgba(255,255,255,0.85)', cursor: 'pointer', borderRadius: 24, transition: 'all 0.2s', fontWeight: 500, backdropFilter: 'blur(6px)' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)'; e.currentTarget.style.color = '#fff'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = 'rgba(255,255,255,0.85)'; }}>
-                  {q.label}
-                </button>
-              ))}
+            <div style={{
+              backgroundColor: 'rgba(255,255,255,0.97)',
+              backdropFilter: 'blur(16px)',
+              borderRadius: 8,
+              overflow: 'hidden',
+              boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
+            }}>
+              <bb-widget data-type="SearchForm"></bb-widget>
             </div>
           </div>
 
