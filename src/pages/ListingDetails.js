@@ -1,11 +1,11 @@
-﻿import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { trackBehavior } from '../api';
 
-const SearchPage = () => {
+const ListingDetails = () => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    trackBehavior('PAGE_VIEW', { page: 'Search' });
+    trackBehavior('PAGE_VIEW', { page: 'ListingDetails' });
   }, []);
 
   useEffect(() => {
@@ -16,9 +16,9 @@ const SearchPage = () => {
 
   return (
     <div ref={containerRef} style={{ paddingTop: 70, minHeight: '100vh' }}>
-      <bb-widget data-type="ListingResults"></bb-widget>
+      <bb-widget data-type="SearchDetails"></bb-widget>
     </div>
   );
 };
 
-export default SearchPage;
+export default ListingDetails;

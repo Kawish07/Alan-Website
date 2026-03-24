@@ -1174,6 +1174,11 @@ const Footer = () => {
           </div>
         </div>
       </div>
+
+      {/* MLS Disclaimer — required by Buying Buddy / MLS compliance */}
+      <div style={{ backgroundColor: '#0a0a0a' }}>
+        <bb-widget data-type="Disclaimer"></bb-widget>
+      </div>
     </footer>
   );
 };

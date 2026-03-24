@@ -10,6 +10,7 @@ import { AuthContext } from './context/AuthContext';
 // Code-split all page components
 const Home = lazy(() => import('./pages/Home'));
 const Search = lazy(() => import('./pages/Search'));
+const ListingDetails = lazy(() => import('./pages/ListingDetails'));
 const PropertyDetails = lazy(() => import('./pages/PropertyDetails'));
 const Valuation = lazy(() => import('./pages/Valuation'));
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
@@ -66,6 +67,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/listings" element={<Search />} />
+          <Route path="/listing-results" element={<Search />} />
+          <Route path="/listing-details" element={<ListingDetails />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
