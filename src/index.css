@@ -333,6 +333,106 @@ bb-widget[data-type="SearchForm"] [class*="search-form"] {
   box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
 }
 
+/* ── Hero BB SearchForm: match old custom search bar exactly ── */
+.hero-bb-searchform bb-widget[data-type="SearchForm"],
+.hero-bb-searchform bb-widget[data-type="SearchForm"] > *,
+.hero-bb-searchform [class*="mbb-"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+/* Row: single horizontal strip, no wrapping */
+.hero-bb-searchform bb-widget[data-type="SearchForm"] form,
+.hero-bb-searchform bb-widget[data-type="SearchForm"] [class*="form"],
+.hero-bb-searchform bb-widget[data-type="SearchForm"] [class*="search-form"],
+.hero-bb-searchform [class*="mbb-"][class*="form"] {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: wrap !important;
+  align-items: stretch !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  gap: 0 !important;
+}
+
+/* Every input/select cell */
+.hero-bb-searchform bb-widget[data-type="SearchForm"] input[type="text"],
+.hero-bb-searchform bb-widget[data-type="SearchForm"] input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),
+.hero-bb-searchform bb-widget[data-type="SearchForm"] select {
+  height: 56px !important;
+  min-height: 56px !important;
+  padding: 0 16px !important;
+  border: none !important;
+  border-right: 1px solid #E2E8F0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 14px !important;
+  color: #1E293B !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.hero-bb-searchform bb-widget[data-type="SearchForm"] input[type="text"]:focus,
+.hero-bb-searchform bb-widget[data-type="SearchForm"] input:focus {
+  border-right-color: #C4956A !important;
+  background: rgba(196,149,106,0.04) !important;
+}
+
+/* View / submit button */
+.hero-bb-searchform bb-widget[data-type="SearchForm"] button[type="submit"],
+.hero-bb-searchform bb-widget[data-type="SearchForm"] button.mbb-btn-search,
+.hero-bb-searchform [class*="mbb-"] button[type="submit"],
+.hero-bb-searchform [class*="mbb-btn-search"] {
+  height: 56px !important;
+  min-height: 56px !important;
+  padding: 0 32px !important;
+  background-color: #1B2A4A !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 0 0 8px 0 !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: background 0.2s !important;
+  flex-shrink: 0 !important;
+}
+
+.hero-bb-searchform bb-widget[data-type="SearchForm"] button[type="submit"]:hover,
+.hero-bb-searchform [class*="mbb-btn-search"]:hover {
+  background-color: #243B6A !important;
+}
+
+/* Location pin icon — gold accent */
+.hero-bb-searchform [class*="mbb-"] svg,
+.hero-bb-searchform [class*="mbb-"] [class*="icon"],
+.hero-bb-searchform [class*="mbb-"] [class*="pin"] {
+  color: #C4956A !important;
+  fill: #C4956A !important;
+}
+
+/* Remove any inner card/panel wrappers BB adds */
+.hero-bb-searchform [class*="mbb-panel"],
+.hero-bb-searchform [class*="mbb-card"],
+.hero-bb-searchform [class*="mbb-box"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
 /* Pagination → match site style */
 bb-widget .pagination,
 bb-widget [class*="pagination"],

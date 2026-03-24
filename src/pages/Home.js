@@ -141,10 +141,25 @@ const Home = () => {
 
           {/* ── BB SearchForm widget — same bar as the /search page ── */}
           <div style={{ width: '100%', maxWidth: 960 }}>
+            {/* "Buy" tab accent */}
             <div style={{
+              display: 'inline-block',
+              backgroundColor: 'rgba(255,255,255,0.97)',
+              backdropFilter: 'blur(8px)',
+              borderRadius: '8px 8px 0 0',
+              padding: '10px 28px',
+              fontFamily: "'Inter', system-ui, sans-serif",
+              fontSize: 12,
+              fontWeight: 700,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: '#1B2A4A',
+              marginBottom: 0,
+            }}>Buy</div>
+            <div className="hero-bb-searchform" style={{
               backgroundColor: 'rgba(255,255,255,0.97)',
               backdropFilter: 'blur(16px)',
-              borderRadius: 8,
+              borderRadius: '0 8px 8px 8px',
               overflow: 'hidden',
               boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
             }}>
