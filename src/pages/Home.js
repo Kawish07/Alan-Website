@@ -140,9 +140,9 @@ const Home = () => {
           </h1>
 
           {/* ── BB SearchForm widget — same bar as the /search page ── */}
-          <div style={{ width: '100%', maxWidth: 960, boxSizing: 'border-box', padding: '0 32px' }}>
+          <div style={{ width: '100%', maxWidth: 960 }}>
             {/* "Buy" tab — anchored top-left, same as old custom bar */}
-            <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-start', marginLeft: 32, marginRight: 32 }}>
               <div style={{
                 backgroundColor: 'rgba(255,255,255,0.97)',
                 backdropFilter: 'blur(8px)',
@@ -162,6 +162,8 @@ const Home = () => {
               borderRadius: '0 8px 8px 8px',
               overflow: 'hidden',
               boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
+              marginLeft: 32,
+              marginRight: 32,
             }}>
               <bb-widget data-type="SearchForm"></bb-widget>
             </div>
