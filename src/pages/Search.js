@@ -93,29 +93,52 @@ const SearchPage = () => {
     trackBehavior('PAGE_VIEW', { page: 'Search' });
   }, []);
 
-  // Set BB search cookie DURING RENDER (before JSX return) so it's ready
-  // when bb-widget's connectedCallback fires during DOM commit.
-  // BB v5 ListingResults reads mbb-search-params cookie with bb-search flag
-  // as its primary search mechanism — this is higher priority than data-filter.
-  if (typeof window !== 'undefined' && window.MBB && typeof window.MBB.cookie === 'function') {
-    if (listingZips) {
-      // Neighborhood selected — filter by its zip codes
-      window.MBB.cookie('mbb-search-params', JSON.stringify({
-        zip_code: listingZips,
-        'bb-search': true
-      }), { path: '/', expires: 1 });
-    } else if (!hasFilters) {
-      // No neighborhood and no hero search filters — clear stale cookie
-      window.MBB.cookie('mbb-search-params', null, { path: '/', expires: -1 });
-    }
-  }
-
   // Signal BB that widgets are ready on page mount
   useEffect(() => {
     if (window.MBB && typeof window.MBB.loaded === 'function') {
       window.MBB.loaded();
     }
   }, []);
+
+  // When a neighborhood is selected, inject its zip codes into BB's
+  // SearchForm widget (top search bar) and click View — this is the same
+  // widget the hero search uses, and it controls ListingResults output.
+  useEffect(() => {
+    if (!listingZips) return;
+
+    let attempts = 0;
+    const injectNeighborhoodZips = () => {
+      attempts++;
+
+      // Target the SearchForm widget — it drives what ListingResults shows
+      const formWidget = document.querySelector('bb-widget[data-type="SearchForm"]');
+      if (!formWidget) {
+        if (attempts < 40) setTimeout(injectNeighborhoodZips, 500);
+        return;
+      }
+
+      const textInput = formWidget.querySelector('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
+      const viewBtn = formWidget.querySelector('button');
+
+      if (!textInput || !viewBtn) {
+        if (attempts < 40) setTimeout(injectNeighborhoodZips, 500);
+        return;
+      }
+
+      // Set the zip codes into BB's location input
+      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+      nativeSetter.call(textInput, listingZips.replace(/,/g, ', '));
+      textInput.dispatchEvent(new Event('input', { bubbles: true }));
+      textInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+      // Click View to trigger BB's filtered search
+      setTimeout(() => viewBtn.click(), 400);
+    };
+
+    // Wait for BB to fully render before injection
+    const timer = setTimeout(injectNeighborhoodZips, 1500);
+    return () => clearTimeout(timer);
+  }, [listingZips, searchNeighborhood]);
 
   // Pre-fill and submit BB's SearchForm using the URL params from the hero
   useEffect(() => {
@@ -322,7 +345,7 @@ const SearchPage = () => {
           </div>
         </div>
 
-        {/* BB ListingResults widget — filtered via mbb-search-params cookie */}
+        {/* BB ListingResults widget */}
         <div key={listingZips || 'all-denver'}>
           <bb-widget data-type="ListingResults"></bb-widget>
         </div>

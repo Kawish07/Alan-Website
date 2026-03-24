@@ -27,19 +27,31 @@ const C = {
 
 /* ─── Buying Buddy Search Form + Featured Listings ─── */
 const HomeMlsSection = () => {
-  // Set BB search cookie DURING RENDER so it's ready when bb-widget mounts.
-  // BB ListingResults reads mbb-search-params cookie with bb-search flag.
-  if (typeof window !== 'undefined' && window.MBB && typeof window.MBB.cookie === 'function') {
-    window.MBB.cookie('mbb-search-params', JSON.stringify({
-      zip_code: '80231,80014',
-      'bb-search': true
-    }), { path: '/', expires: 1 });
-  }
-
   useEffect(() => {
     if (window.MBB && typeof window.MBB.loaded === 'function') {
       window.MBB.loaded();
     }
+
+    // Auto-fill BB's search input with the target zip codes after it loads
+    let attempts = 0;
+    const fillZips = () => {
+      attempts++;
+      const widgets = document.querySelectorAll('bb-widget[data-type="ListingResults"]');
+      if (!widgets.length) { if (attempts < 30) setTimeout(fillZips, 500); return; }
+      const widget = widgets[0];
+      const inputs = widget.querySelectorAll('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
+      const viewBtns = widget.querySelectorAll('button');
+      const searchInput = Array.from(inputs).find(el => el.offsetParent !== null);
+      const viewBtn = Array.from(viewBtns).find(btn => btn.textContent.includes('View') && btn.offsetParent !== null);
+      if (!searchInput || !viewBtn) { if (attempts < 30) setTimeout(fillZips, 500); return; }
+      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+      nativeSetter.call(searchInput, '80231, 80014');
+      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+      searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+      setTimeout(() => viewBtn.click(), 400);
+    };
+    const timer = setTimeout(fillZips, 1500);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
