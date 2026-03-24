@@ -36,7 +36,7 @@ const HomeMlsSection = () => {
   return (
     <>
       {/* Live MLS Listings Preview */}
-      <section style={{ padding: '60px 0 80px', backgroundColor: C.coolWhite }}>
+      <section style={{ padding: '60px 0 80px', backgroundColor: C.white }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
           {/* Section header */}
           <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 12 }}>

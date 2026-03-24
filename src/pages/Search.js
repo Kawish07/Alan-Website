@@ -55,50 +55,42 @@ const SearchPage = () => {
     const tryFill = () => {
       attempts++;
 
-      // Use the exact placeholder text visible in BB's rendered SearchForm
-      // BB renders its HTML directly inside bb-widget (not shadow DOM)
-      const textInput =
-        document.querySelector('input[placeholder="Address, City, Neighborhood or Zip"]') ||
-        document.querySelector('[class*="mbb-"] input[type="text"]') ||
-        document.querySelector('bb-widget[data-type="SearchForm"] input[type="text"]') ||
-        document.querySelector('[class*="mbb-"] input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
-
-      if (!textInput) {
-        if (attempts < 40) setTimeout(tryFill, 500);
+      const formWidget = document.querySelector('bb-widget[data-type="SearchForm"]');
+      if (!formWidget) {
+        if (attempts < 30) setTimeout(tryFill, 400);
         return;
       }
 
-      // Inject query using native setter so BB's internal state tracks it
+      // Find BB's location text input
+      const textInput = formWidget.querySelector('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"])');
+      // Find BB's "View" / submit button
+      const viewBtn = formWidget.querySelector('button');
+
+      if (!textInput || !viewBtn) {
+        if (attempts < 30) setTimeout(tryFill, 400);
+        return;
+      }
+
+      // Inject query into the input in a way React/BB's internal state picks up
       if (query) {
         const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
         nativeSetter.call(textInput, query);
         textInput.dispatchEvent(new Event('input',  { bubbles: true }));
         textInput.dispatchEvent(new Event('change', { bubbles: true }));
-        textInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
       }
 
-      // Find View button by its text label (visible in the screenshot as "View")
-      const allBtns = Array.from(document.querySelectorAll('button'));
-      const viewBtn =
-        allBtns.find(b => b.textContent.trim() === 'View') ||
-        allBtns.find(b => /\bview\b/i.test(b.textContent));
-
-      if (!viewBtn) {
-        if (attempts < 40) setTimeout(tryFill, 500);
-        return;
-      }
-
-      setTimeout(() => viewBtn.click(), 400);
+      // Short delay then click View to trigger BB's search
+      setTimeout(() => viewBtn.click(), 300);
     };
 
-    // Give BB extra time to fetch and render its widget HTML before polling
-    setTimeout(tryFill, 2500);
+    // Wait for MBB to set up the widget DOM before polling
+    setTimeout(tryFill, 1200);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
   return (
-    <div ref={containerRef} style={{ minHeight: '100vh', backgroundColor: C.coolWhite, fontFamily: C.body }}>
+    <div ref={containerRef} style={{ minHeight: '100vh', backgroundColor: C.white, fontFamily: C.body }}>
 
       {/* ── Hero Banner ── */}
       <div style={{

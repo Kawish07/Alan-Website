@@ -151,6 +151,15 @@ bb-widget *,
   font-family: 'Inter', system-ui, sans-serif !important;
 }
 
+/* BB widget container — transparent so page bg shows through */
+bb-widget,
+.mbb-widget,
+[class*="mbb-container"],
+[class*="mbb-wrapper"],
+[class*="mbb-body"] {
+  background: transparent !important;
+}
+
 bb-widget h1,
 bb-widget h2,
 bb-widget h3,
