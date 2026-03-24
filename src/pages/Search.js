@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Search, MapPin, Home as HomeIcon } from 'lucide-react';
 import { trackBehavior } from '../api';
 
@@ -21,6 +21,26 @@ const C = {
 
 const SearchPage = () => {
   const containerRef = useRef(null);
+  const location = useLocation();
+
+  // Parse URL search params passed from the hero search bar
+  const urlParams = new URLSearchParams(location.search);
+  const searchCity    = urlParams.get('city') || '';
+  const searchZip     = urlParams.get('zip')  || '';
+  const searchMinPrice = urlParams.get('minPrice') || '';
+  const searchMaxPrice = urlParams.get('maxPrice') || '';
+  const searchBeds     = urlParams.get('beds')  || '';
+  const searchBaths    = urlParams.get('baths') || '';
+
+  // Build Buying Buddy data-options JSON to pre-filter widgets
+  const bbOptions = {};
+  if (searchCity)     bbOptions.city      = searchCity;
+  if (searchZip)      bbOptions.zip       = searchZip;
+  if (searchMinPrice) bbOptions.minPrice  = parseInt(searchMinPrice);
+  if (searchMaxPrice) bbOptions.maxPrice  = parseInt(searchMaxPrice);
+  if (searchBeds)     bbOptions.bedsMin   = parseInt(searchBeds);
+  if (searchBaths)    bbOptions.bathsMin  = parseInt(searchBaths);
+  const bbOptionsStr = Object.keys(bbOptions).length > 0 ? JSON.stringify(bbOptions) : undefined;
 
   useEffect(() => {
     trackBehavior('PAGE_VIEW', { page: 'Search' });
@@ -30,7 +50,7 @@ const SearchPage = () => {
     if (window.MBB && typeof window.MBB.loaded === 'function') {
       window.MBB.loaded();
     }
-  }, []);
+  }, [bbOptionsStr]);
 
   return (
     <div ref={containerRef} style={{ minHeight: '100vh', backgroundColor: C.coolWhite, fontFamily: C.body }}>
@@ -61,10 +81,12 @@ const SearchPage = () => {
                 fontFamily: C.display, fontSize: 'clamp(30px, 4.5vw, 52px)', fontWeight: 600,
                 color: C.white, margin: '0 0 14px', lineHeight: 1.1,
               }}>
-                Denver Metro Listings
+                {searchCity ? `Properties in ${searchCity}` : searchZip ? `Properties near ${searchZip}` : 'Denver Metro Listings'}
               </h1>
               <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 15, margin: 0, maxWidth: 520, lineHeight: 1.6 }}>
-                Browse live MLS properties across Denver, Aurora, Lakewood, Cherry Creek, and all of Colorado.
+                {searchCity || searchZip
+                  ? `Showing live MLS listings${searchBeds ? ` · ${searchBeds}+ beds` : ''}${searchMinPrice ? ` · $${parseInt(searchMinPrice).toLocaleString()}+` : ''}`
+                  : 'Browse live MLS properties across Denver, Aurora, Lakewood, Cherry Creek, and all of Colorado.'}
               </p>
             </div>
 
@@ -89,7 +111,7 @@ const SearchPage = () => {
             Search Properties
           </h2>
         </div>
-        <bb-widget data-type="SearchForm"></bb-widget>
+        <bb-widget data-type="SearchForm" data-options={bbOptionsStr}></bb-widget>
       </div>
 
       {/* ── Listings Section ── */}
@@ -110,7 +132,7 @@ const SearchPage = () => {
           </p>
         </div>
 
-        <bb-widget data-type="ListingResults"></bb-widget>
+        <bb-widget data-type="ListingResults" data-options={bbOptionsStr}></bb-widget>
       </div>
 
     </div>

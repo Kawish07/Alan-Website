@@ -131,8 +131,18 @@ const Home = () => {
   }, [heroSlides.length]);
 
   const handleMlsSearch = () => {
-    trackBehavior('SEARCH_FILTER', { query: mlsCity.trim(), minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, baths: mlsBaths });
-    window.location.href = '/search';
+    const params = new URLSearchParams();
+    const q = mlsCity.trim();
+    if (q) {
+      if (/^\d{5}$/.test(q)) params.set('zip', q);
+      else params.set('city', q);
+    }
+    if (mlsMinPrice) params.set('minPrice', mlsMinPrice);
+    if (mlsMaxPrice) params.set('maxPrice', mlsMaxPrice);
+    if (mlsBeds) params.set('beds', mlsBeds);
+    if (mlsBaths) params.set('baths', mlsBaths);
+    trackBehavior('SEARCH_FILTER', { query: q, minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, baths: mlsBaths });
+    window.location.href = `/search?${params.toString()}`;
   };
 
   return (
@@ -251,11 +261,11 @@ const Home = () => {
             {/* Quick links */}
             <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
               {[
-                { label: 'Denver', href: '/search' },
-                { label: 'Aurora', href: '/search' },
-                { label: 'Cherry Creek', href: '/search' },
-                { label: 'DIA', href: '/search' },
-                { label: 'DTC', href: '/search' },
+                { label: 'Denver', href: '/search?city=Denver' },
+                { label: 'Aurora', href: '/search?city=Aurora' },
+                { label: 'Cherry Creek', href: '/search?city=Cherry+Creek' },
+                { label: 'DIA', href: '/search?zip=80249' },
+                { label: 'DTC', href: '/search?city=Denver+Tech+Center' },
                 { label: 'Custom Search', href: '/search' },
               ].map(q => (
                 <button key={q.label} onClick={() => { window.location.href = q.href; }}
