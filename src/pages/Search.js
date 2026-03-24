@@ -93,29 +93,29 @@ const SearchPage = () => {
     trackBehavior('PAGE_VIEW', { page: 'Search' });
   }, []);
 
+  // Set BB search cookie DURING RENDER (before JSX return) so it's ready
+  // when bb-widget's connectedCallback fires during DOM commit.
+  // BB v5 ListingResults reads mbb-search-params cookie with bb-search flag
+  // as its primary search mechanism — this is higher priority than data-filter.
+  if (typeof window !== 'undefined' && window.MBB && typeof window.MBB.cookie === 'function') {
+    if (listingZips) {
+      // Neighborhood selected — filter by its zip codes
+      window.MBB.cookie('mbb-search-params', JSON.stringify({
+        zip_code: listingZips,
+        'bb-search': true
+      }), { path: '/', expires: 1 });
+    } else if (!hasFilters) {
+      // No neighborhood and no hero search filters — clear stale cookie
+      window.MBB.cookie('mbb-search-params', null, { path: '/', expires: -1 });
+    }
+  }
+
   // Signal BB that widgets are ready on page mount
   useEffect(() => {
     if (window.MBB && typeof window.MBB.loaded === 'function') {
       window.MBB.loaded();
     }
   }, []);
-
-  // When a neighborhood is selected, clear BB's stale search cookie so the
-  // data-filter attribute on the ListingResults widget takes effect.
-  // BB v5 reads data-filter="zip_code:80013,80014" on initialization —
-  // but only if no "bb-search" flag exists in the cookie.
-  useEffect(() => {
-    if (window.MBB && typeof window.MBB.cookie === 'function') {
-      window.MBB.cookie('mbb-search-params', null, { path: '/', expires: -1 });
-    }
-    // After React remounts the bb-widget (key change), signal BB to init it
-    const timer = setTimeout(() => {
-      if (window.MBB && typeof window.MBB.loaded === 'function') {
-        window.MBB.loaded();
-      }
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [listingZips, searchNeighborhood]);
 
   // Pre-fill and submit BB's SearchForm using the URL params from the hero
   useEffect(() => {
@@ -322,9 +322,9 @@ const SearchPage = () => {
           </div>
         </div>
 
-        {/* BB ListingResults widget — data-filter tells BB to filter by zip */}
+        {/* BB ListingResults widget — filtered via mbb-search-params cookie */}
         <div key={listingZips || 'all-denver'}>
-          <bb-widget data-type="ListingResults" data-filter={listingZips ? `zip_code:${listingZips}` : undefined}></bb-widget>
+          <bb-widget data-type="ListingResults"></bb-widget>
         </div>
 
         {/* ═══ LISTING ALERT SIGN-UP ═══ */}

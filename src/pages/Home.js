@@ -27,11 +27,16 @@ const C = {
 
 /* ─── Buying Buddy Search Form + Featured Listings ─── */
 const HomeMlsSection = () => {
+  // Set BB search cookie DURING RENDER so it's ready when bb-widget mounts.
+  // BB ListingResults reads mbb-search-params cookie with bb-search flag.
+  if (typeof window !== 'undefined' && window.MBB && typeof window.MBB.cookie === 'function') {
+    window.MBB.cookie('mbb-search-params', JSON.stringify({
+      zip_code: '80231,80014',
+      'bb-search': true
+    }), { path: '/', expires: 1 });
+  }
+
   useEffect(() => {
-    // Clear any stale BB search cookie so data-filter attribute takes effect
-    if (window.MBB && typeof window.MBB.cookie === 'function') {
-      window.MBB.cookie('mbb-search-params', null, { path: '/', expires: -1 });
-    }
     if (window.MBB && typeof window.MBB.loaded === 'function') {
       window.MBB.loaded();
     }
@@ -76,7 +81,7 @@ const HomeMlsSection = () => {
 
           {/* Contain BB widget to ~12 listings height, with fade-out at bottom */}
           <div style={{ position: 'relative', maxHeight: 1600, overflow: 'hidden' }}>
-            <bb-widget data-type="ListingResults" data-filter="zip_code:80231,80014"></bb-widget>
+            <bb-widget data-type="ListingResults"></bb-widget>
             {/* Gradient fade to signal more content */}
             <div style={{
               position: 'absolute', bottom: 0, left: 0, right: 0, height: 180,
