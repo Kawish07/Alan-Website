@@ -137,6 +137,266 @@ h1, h2, h3, h4, h5, h6 {
   background-color: #C4956A;
 }
 
+/* ═══════════════════════════════════════════════════════════
+   Buying Buddy Widget Overrides — match site's design system
+   ═══════════════════════════════════════════════════════════ */
+
+/* Force all widget text to use the site fonts */
+bb-widget,
+bb-widget *,
+.mbb-widget,
+.mbb-widget *,
+[class*="mbb-"],
+[class*="mbb-"] * {
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+bb-widget h1,
+bb-widget h2,
+bb-widget h3,
+bb-widget h4,
+.mbb-widget h1,
+.mbb-widget h2,
+.mbb-widget h3,
+.mbb-widget h4,
+[class*="mbb-"] h1,
+[class*="mbb-"] h2,
+[class*="mbb-"] h3,
+[class*="mbb-"] h4 {
+  font-family: 'Montserrat', system-ui, sans-serif !important;
+  color: #1E293B !important;
+}
+
+/* Primary buttons → match site navy + gold */
+bb-widget button,
+bb-widget .btn,
+bb-widget input[type="submit"],
+bb-widget input[type="button"],
+.mbb-widget button,
+.mbb-widget .btn,
+[class*="mbb-"] button,
+[class*="mbb-"] .btn,
+[class*="mbb-"] input[type="submit"] {
+  background-color: #1B2A4A !important;
+  border-color: #1B2A4A !important;
+  color: #ffffff !important;
+  border-radius: 6px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.2s ease !important;
+  text-transform: none !important;
+}
+
+bb-widget button:hover,
+bb-widget .btn:hover,
+.mbb-widget button:hover,
+.mbb-widget .btn:hover,
+[class*="mbb-"] button:hover,
+[class*="mbb-"] .btn:hover {
+  background-color: #243B6A !important;
+  border-color: #243B6A !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(27, 42, 74, 0.3) !important;
+}
+
+/* Links → accent gold */
+bb-widget a,
+.mbb-widget a,
+[class*="mbb-"] a {
+  color: #1B2A4A !important;
+  transition: color 0.2s ease !important;
+}
+
+bb-widget a:hover,
+.mbb-widget a:hover,
+[class*="mbb-"] a:hover {
+  color: #C4956A !important;
+}
+
+/* Input fields → match site styling */
+bb-widget input[type="text"],
+bb-widget input[type="email"],
+bb-widget input[type="number"],
+bb-widget select,
+bb-widget textarea,
+.mbb-widget input[type="text"],
+.mbb-widget select,
+[class*="mbb-"] input[type="text"],
+[class*="mbb-"] input[type="email"],
+[class*="mbb-"] select,
+[class*="mbb-"] textarea {
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 6px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+  font-size: 14px !important;
+  color: #1E293B !important;
+  background-color: #ffffff !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  padding: 10px 14px !important;
+}
+
+bb-widget input:focus,
+bb-widget select:focus,
+bb-widget textarea:focus,
+.mbb-widget input:focus,
+.mbb-widget select:focus,
+[class*="mbb-"] input:focus,
+[class*="mbb-"] select:focus {
+  border-color: #C4956A !important;
+  box-shadow: 0 0 0 3px rgba(196, 149, 106, 0.15) !important;
+  outline: none !important;
+}
+
+/* Listing cards → rounded, shadow, hover lift */
+bb-widget .listing,
+bb-widget .property,
+bb-widget [class*="listing"],
+bb-widget [class*="property-card"],
+.mbb-widget .listing,
+[class*="mbb-"] .listing,
+[class*="mbb-listing"],
+[class*="mbb-property"] {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  border: 1px solid #E2E8F0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  background: #ffffff !important;
+}
+
+bb-widget .listing:hover,
+bb-widget .property:hover,
+bb-widget [class*="listing"]:hover,
+.mbb-widget .listing:hover,
+[class*="mbb-"] .listing:hover,
+[class*="mbb-listing"]:hover,
+[class*="mbb-property"]:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12) !important;
+}
+
+/* Listing images → rounded top */
+bb-widget img,
+.mbb-widget img,
+[class*="mbb-"] img {
+  border-radius: 8px 8px 0 0 !important;
+}
+
+/* Price text → navy + bold */
+bb-widget .price,
+bb-widget [class*="price"],
+.mbb-widget .price,
+[class*="mbb-"] .price,
+[class*="mbb-price"] {
+  color: #1B2A4A !important;
+  font-family: 'Montserrat', system-ui, sans-serif !important;
+  font-weight: 700 !important;
+}
+
+/* Address / location text */
+bb-widget .address,
+bb-widget [class*="address"],
+.mbb-widget .address,
+[class*="mbb-"] .address,
+[class*="mbb-address"] {
+  color: #475569 !important;
+  font-size: 13px !important;
+}
+
+/* Hide any "Powered by" branding */
+bb-widget [class*="powered"],
+bb-widget [class*="branding"],
+bb-widget [class*="credit"],
+.mbb-widget [class*="powered"],
+[class*="mbb-"] [class*="powered"],
+[class*="mbb-powered"],
+[class*="mbb-branding"],
+[class*="mbb-credit"] {
+  display: none !important;
+}
+
+/* Search form layout cleanup */
+bb-widget[data-type="SearchForm"] {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+bb-widget[data-type="SearchForm"] form,
+bb-widget[data-type="SearchForm"] [class*="form"],
+bb-widget[data-type="SearchForm"] [class*="search-form"] {
+  background: #ffffff !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  padding: 24px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04) !important;
+}
+
+/* Pagination → match site style */
+bb-widget .pagination,
+bb-widget [class*="pagination"],
+bb-widget [class*="paging"],
+.mbb-widget [class*="pagination"],
+[class*="mbb-"] [class*="pagination"],
+[class*="mbb-pagination"] {
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+bb-widget .pagination a,
+bb-widget [class*="pagination"] a,
+[class*="mbb-pagination"] a {
+  border-radius: 6px !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #1B2A4A !important;
+  padding: 8px 14px !important;
+  transition: all 0.2s !important;
+}
+
+bb-widget .pagination a:hover,
+bb-widget [class*="pagination"] a:hover {
+  background-color: #1B2A4A !important;
+  color: #ffffff !important;
+}
+
+bb-widget .pagination .active,
+bb-widget [class*="pagination"] .active,
+[class*="mbb-pagination"] .active {
+  background-color: #1B2A4A !important;
+  color: #ffffff !important;
+  border-color: #1B2A4A !important;
+}
+
+/* Tab / filter pills */
+bb-widget .tab,
+bb-widget [class*="tab"],
+bb-widget [class*="filter"],
+.mbb-widget [class*="tab"],
+[class*="mbb-tab"],
+[class*="mbb-filter"] {
+  border-radius: 6px !important;
+  font-family: 'Inter', system-ui, sans-serif !important;
+}
+
+/* Disclaimer widget — blend with footer */
+bb-widget[data-type="Disclaimer"] {
+  font-size: 11px !important;
+  color: rgba(255,255,255,0.4) !important;
+  padding: 20px 0 !important;
+}
+
+/* Details page specific */
+bb-widget[data-type="SearchDetails"] {
+  background: transparent !important;
+}
+
+/* Remove widget borders/backgrounds globally */
+bb-widget {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
 /* Gradient Overlays */
 .gradient-overlay {
   background: linear-gradient(

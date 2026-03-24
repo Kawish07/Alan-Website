@@ -47,20 +47,40 @@ const HomeMlsSection = () => {
       </section>
 
       {/* Live MLS Listings Preview */}
-      <section style={{ padding: '40px 0 80px', backgroundColor: C.coolWhite }}>
+      <section style={{ padding: '60px 0 80px', backgroundColor: C.coolWhite }}>
         <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 32, flexWrap: 'wrap', gap: 16 }}>
+          {/* Section header */}
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 12 }}>
             <div>
-              <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, marginBottom: 8, fontWeight: 600 }}>Live MLS Listings</p>
-              <h2 style={{ fontFamily: C.display, fontSize: 'clamp(24px, 3vw, 38px)', fontWeight: 600, color: C.slateDark, lineHeight: 1.2, margin: 0 }}>
-                Denver Properties
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                <div style={{ width: 36, height: 3, backgroundColor: C.accent, borderRadius: 2 }} />
+                <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, margin: 0, fontWeight: 600 }}>Real-Time MLS</p>
+              </div>
+              <h2 style={{ fontFamily: C.display, fontSize: 'clamp(26px, 3.2vw, 42px)', fontWeight: 600, color: C.slateDark, lineHeight: 1.15, margin: 0 }}>
+                Denver Metro Properties
               </h2>
+              <p style={{ fontFamily: C.body, fontSize: 14, color: C.slateMed, marginTop: 8, marginBottom: 0, maxWidth: 500 }}>
+                Live listings from Colorado MLS, updated in real time.
+              </p>
             </div>
             <a href="/listing-results"
-              style={{ fontFamily: C.body, fontSize: 13, fontWeight: 600, color: C.navy, textDecoration: 'none', border: `1px solid ${C.navy}`, padding: '10px 24px', borderRadius: 6, letterSpacing: '0.05em' }}>
+              className="chf-cta"
+              style={{
+                fontFamily: C.body, fontSize: 13, fontWeight: 600, color: C.white,
+                textDecoration: 'none', backgroundColor: C.navy, padding: '12px 28px',
+                borderRadius: 8, letterSpacing: '0.04em', display: 'inline-flex',
+                alignItems: 'center', gap: 8, transition: 'all 0.2s',
+                boxShadow: '0 2px 8px rgba(27,42,74,0.15)',
+              }}
+              onMouseEnter={e => { e.target.style.backgroundColor = C.navyLight; e.target.style.transform = 'translateY(-1px)'; }}
+              onMouseLeave={e => { e.target.style.backgroundColor = C.navy; e.target.style.transform = 'translateY(0)'; }}>
               View All Listings →
             </a>
           </div>
+
+          {/* Divider */}
+          <div style={{ width: '100%', height: 1, backgroundColor: C.slateBorder, marginBottom: 32 }} />
+
           <bb-widget data-type="ListingResults"></bb-widget>
         </div>
       </section>
