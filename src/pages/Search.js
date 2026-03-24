@@ -100,52 +100,45 @@ const SearchPage = () => {
     }
   }, []);
 
-  // When a neighborhood is selected, wait for BB to render then
-  // programmatically inject the zip codes into BB's own search input and click View
+  // When a neighborhood is selected, inject its zip codes into BB's
+  // SearchForm widget (top search bar) and click View — this is the same
+  // widget the hero search uses, and it controls ListingResults output.
   useEffect(() => {
-    // Re-init BB widgets after React remount
-    const initTimer = setTimeout(() => {
-      if (window.MBB && typeof window.MBB.loaded === 'function') {
-        window.MBB.loaded();
-      }
-    }, 300);
-
-    if (!listingZips) return () => clearTimeout(initTimer);
+    if (!listingZips) return;
 
     let attempts = 0;
-    const injectZips = () => {
+    const injectNeighborhoodZips = () => {
       attempts++;
-      const section = document.getElementById('listings-section');
-      if (!section) { if (attempts < 40) setTimeout(injectZips, 500); return; }
 
-      // Find all text inputs inside the listings section (BB renders its own search bar)
-      const inputs = section.querySelectorAll('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
-      const viewBtns = section.querySelectorAll('button');
-
-      // Pick the first visible text input and the View button
-      const searchInput = Array.from(inputs).find(el => el.offsetParent !== null);
-      const viewBtn = Array.from(viewBtns).find(btn => btn.textContent.includes('View') && btn.offsetParent !== null);
-
-      if (!searchInput || !viewBtn) {
-        if (attempts < 40) setTimeout(injectZips, 500);
+      // Target the SearchForm widget — it drives what ListingResults shows
+      const formWidget = document.querySelector('bb-widget[data-type="SearchForm"]');
+      if (!formWidget) {
+        if (attempts < 40) setTimeout(injectNeighborhoodZips, 500);
         return;
       }
 
-      // Use native setter so BB's internal state picks up the change
-      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-      nativeSetter.call(searchInput, listingZips.replace(/,/g, ', '));
-      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-      searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+      const textInput = formWidget.querySelector('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
+      const viewBtn = formWidget.querySelector('button');
 
-      // Click View after a short delay
+      if (!textInput || !viewBtn) {
+        if (attempts < 40) setTimeout(injectNeighborhoodZips, 500);
+        return;
+      }
+
+      // Set the zip codes into BB's location input
+      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+      nativeSetter.call(textInput, listingZips.replace(/,/g, ', '));
+      textInput.dispatchEvent(new Event('input', { bubbles: true }));
+      textInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+      // Click View to trigger BB's filtered search
       setTimeout(() => viewBtn.click(), 400);
     };
 
-    // Wait for BB to fully render before attempting injection
-    const fillTimer = setTimeout(injectZips, 1500);
-
-    return () => { clearTimeout(initTimer); clearTimeout(fillTimer); };
-  }, [listingZips]);
+    // Wait for BB to fully render before injection
+    const timer = setTimeout(injectNeighborhoodZips, 1500);
+    return () => clearTimeout(timer);
+  }, [listingZips, searchNeighborhood]);
 
   // Pre-fill and submit BB's SearchForm using the URL params from the hero
   useEffect(() => {
