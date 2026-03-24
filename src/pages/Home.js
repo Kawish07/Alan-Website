@@ -131,26 +131,8 @@ const Home = () => {
   }, [heroSlides.length]);
 
   const handleMlsSearch = () => {
-    const params = new URLSearchParams();
-    const q = mlsCity.trim();
-    if (q) {
-      if (/^\d{5}$/.test(q)) {
-        // 5-digit zip code
-        params.set('zip', q);
-      } else if (/^\d+\s/.test(q) || /\b(st|ave|dr|blvd|rd|ln|way|ct|pl|pkwy|hwy)\b/i.test(q)) {
-        // Street address (starts with number or contains street suffix)
-        params.set('address', q);
-      } else {
-        // City / neighborhood name
-        params.set('city', q);
-      }
-    }
-    if (mlsMinPrice) params.set('minPrice', mlsMinPrice);
-    if (mlsMaxPrice) params.set('maxPrice', mlsMaxPrice);
-    if (mlsBeds) params.set('beds', mlsBeds);
-    if (mlsBaths) params.set('baths', mlsBaths);
-    trackBehavior('SEARCH_FILTER', { query: q, minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, baths: mlsBaths });
-    window.location.href = `/search?${params.toString()}`;
+    trackBehavior('SEARCH_FILTER', { query: mlsCity.trim(), minPrice: mlsMinPrice, maxPrice: mlsMaxPrice, beds: mlsBeds, baths: mlsBaths });
+    window.location.href = '/search';
   };
 
   return (
@@ -269,11 +251,11 @@ const Home = () => {
             {/* Quick links */}
             <div style={{ display: 'flex', justifyContent: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
               {[
-                { label: 'Denver', href: '/search?city=Denver' },
-                { label: 'Aurora', href: '/search?city=Aurora' },
-                { label: 'Cherry Creek', href: '/search?city=Cherry+Creek' },
-                { label: 'DIA', href: '/search?zip=80019%2C80022%2C80249' },
-                { label: 'DTC', href: '/search?city=Denver+Tech+Center' },
+                { label: 'Denver', href: '/search' },
+                { label: 'Aurora', href: '/search' },
+                { label: 'Cherry Creek', href: '/search' },
+                { label: 'DIA', href: '/search' },
+                { label: 'DTC', href: '/search' },
                 { label: 'Custom Search', href: '/search' },
               ].map(q => (
                 <button key={q.label} onClick={() => { window.location.href = q.href; }}

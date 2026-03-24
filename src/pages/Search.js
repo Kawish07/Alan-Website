@@ -81,6 +81,17 @@ const SearchPage = () => {
         </div>
       </div>
 
+      {/* ── Search Form Section ── */}
+      <div style={{ maxWidth: 1320, margin: '0 auto', padding: '40px 32px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+          <div style={{ width: 4, height: 28, backgroundColor: C.accent, borderRadius: 2 }} />
+          <h2 style={{ fontFamily: C.display, fontSize: 20, fontWeight: 600, color: C.slateDark, margin: 0 }}>
+            Search Properties
+          </h2>
+        </div>
+        <bb-widget data-type="SearchForm"></bb-widget>
+      </div>
+
       {/* ── Listings Section ── */}
       <div style={{ maxWidth: 1320, margin: '0 auto', padding: '40px 32px 80px' }}>
         {/* Section title bar */}
