@@ -142,7 +142,7 @@ const Home = () => {
           {/* ── BB SearchForm widget — same bar as the /search page ── */}
           <div style={{ width: '100%', maxWidth: 960 }}>
             {/* Single inner wrapper that enforces left+right margin on both BUY tab and white bar */}
-            <div style={{ margin: '0 40px' }}>
+            <div style={{ margin: '0 80px' }}>
               {/* "Buy" tab — anchored top-left */}
               <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
                 <div style={{
