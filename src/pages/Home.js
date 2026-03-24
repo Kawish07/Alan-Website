@@ -28,30 +28,13 @@ const C = {
 /* ─── Buying Buddy Search Form + Featured Listings ─── */
 const HomeMlsSection = () => {
   useEffect(() => {
+    // Clear any stale BB search cookie so data-filter attribute takes effect
+    if (window.MBB && typeof window.MBB.cookie === 'function') {
+      window.MBB.cookie('mbb-search-params', null, { path: '/', expires: -1 });
+    }
     if (window.MBB && typeof window.MBB.loaded === 'function') {
       window.MBB.loaded();
     }
-
-    // Auto-fill BB's search input with the target zip codes after it loads
-    let attempts = 0;
-    const fillZips = () => {
-      attempts++;
-      const widgets = document.querySelectorAll('bb-widget[data-type="ListingResults"]');
-      if (!widgets.length) { if (attempts < 30) setTimeout(fillZips, 500); return; }
-      const widget = widgets[0];
-      const inputs = widget.querySelectorAll('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
-      const viewBtns = widget.querySelectorAll('button');
-      const searchInput = Array.from(inputs).find(el => el.offsetParent !== null);
-      const viewBtn = Array.from(viewBtns).find(btn => btn.textContent.includes('View') && btn.offsetParent !== null);
-      if (!searchInput || !viewBtn) { if (attempts < 30) setTimeout(fillZips, 500); return; }
-      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-      nativeSetter.call(searchInput, '80231, 80014');
-      searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-      searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-      setTimeout(() => viewBtn.click(), 400);
-    };
-    const timer = setTimeout(fillZips, 1500);
-    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -93,7 +76,7 @@ const HomeMlsSection = () => {
 
           {/* Contain BB widget to ~12 listings height, with fade-out at bottom */}
           <div style={{ position: 'relative', maxHeight: 1600, overflow: 'hidden' }}>
-            <bb-widget data-type="ListingResults"></bb-widget>
+            <bb-widget data-type="ListingResults" data-filter="zip_code:80231,80014"></bb-widget>
             {/* Gradient fade to signal more content */}
             <div style={{
               position: 'absolute', bottom: 0, left: 0, right: 0, height: 180,

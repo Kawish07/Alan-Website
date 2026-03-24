@@ -100,43 +100,20 @@ const SearchPage = () => {
     }
   }, []);
 
-  // When a neighborhood is selected, inject its zip codes into BB's
-  // SearchForm widget (top search bar) and click View — this is the same
-  // widget the hero search uses, and it controls ListingResults output.
+  // When a neighborhood is selected, clear BB's stale search cookie so the
+  // data-filter attribute on the ListingResults widget takes effect.
+  // BB v5 reads data-filter="zip_code:80013,80014" on initialization —
+  // but only if no "bb-search" flag exists in the cookie.
   useEffect(() => {
-    if (!listingZips) return;
-
-    let attempts = 0;
-    const injectNeighborhoodZips = () => {
-      attempts++;
-
-      // Target the SearchForm widget — it drives what ListingResults shows
-      const formWidget = document.querySelector('bb-widget[data-type="SearchForm"]');
-      if (!formWidget) {
-        if (attempts < 40) setTimeout(injectNeighborhoodZips, 500);
-        return;
+    if (window.MBB && typeof window.MBB.cookie === 'function') {
+      window.MBB.cookie('mbb-search-params', null, { path: '/', expires: -1 });
+    }
+    // After React remounts the bb-widget (key change), signal BB to init it
+    const timer = setTimeout(() => {
+      if (window.MBB && typeof window.MBB.loaded === 'function') {
+        window.MBB.loaded();
       }
-
-      const textInput = formWidget.querySelector('input[type="text"], input:not([type="submit"]):not([type="hidden"]):not([type="checkbox"]):not([type="radio"])');
-      const viewBtn = formWidget.querySelector('button');
-
-      if (!textInput || !viewBtn) {
-        if (attempts < 40) setTimeout(injectNeighborhoodZips, 500);
-        return;
-      }
-
-      // Set the zip codes into BB's location input
-      const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-      nativeSetter.call(textInput, listingZips.replace(/,/g, ', '));
-      textInput.dispatchEvent(new Event('input', { bubbles: true }));
-      textInput.dispatchEvent(new Event('change', { bubbles: true }));
-
-      // Click View to trigger BB's filtered search
-      setTimeout(() => viewBtn.click(), 400);
-    };
-
-    // Wait for BB to fully render before injection
-    const timer = setTimeout(injectNeighborhoodZips, 1500);
+    }, 300);
     return () => clearTimeout(timer);
   }, [listingZips, searchNeighborhood]);
 
@@ -345,9 +322,9 @@ const SearchPage = () => {
           </div>
         </div>
 
-        {/* BB ListingResults widget */}
+        {/* BB ListingResults widget — data-filter tells BB to filter by zip */}
         <div key={listingZips || 'all-denver'}>
-          <bb-widget data-type="ListingResults"></bb-widget>
+          <bb-widget data-type="ListingResults" data-filter={listingZips ? `zip_code:${listingZips}` : undefined}></bb-widget>
         </div>
 
         {/* ═══ LISTING ALERT SIGN-UP ═══ */}
