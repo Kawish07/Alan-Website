@@ -5,8 +5,8 @@ import {
   Star, Quote, Square,DollarSign,
   Home as HomeIcon, BarChart3, Key
 } from 'lucide-react';
-import API from '../api';
-import { trackPhoneClick, trackPageView } from '../api';
+import API, { trackPhoneClick, trackPageView, submitLead, trackBehavior } from '../api';
+import ListingAlertForm from '../components/ListingAlertForm';
 
 /* ─── style constants — Modern Denver Suburbs palette ─── */
 const C = {
@@ -21,8 +21,8 @@ const C = {
   slateLight: '#94A3B8',
   slateBorder: '#E2E8F0',
   white: '#ffffff',
-  display: "'Montserrat', system-ui, sans-serif",
-  body: "'Inter', system-ui, sans-serif",
+  display: "'Playfair Display', Georgia, serif",
+  body: "'Nunito Sans', system-ui, sans-serif",
 };
 
 /* ─── Buying Buddy Search Form + Featured Listings ─── */
@@ -70,7 +70,7 @@ const HomeMlsSection = () => {
           {/* Divider */}
           <div style={{ width: '100%', height: 1, backgroundColor: C.slateBorder, marginBottom: 32 }} />
 
-          <bb-widget data-type="ListingResults" data-count="6"></bb-widget>
+          <bb-widget data-type="ListingResults" data-count="12" data-zip="80231,80014"></bb-widget>
         </div>
       </section>
     </>
@@ -80,6 +80,17 @@ const HomeMlsSection = () => {
 const Home = () => {
   const [featuredListings, setFeaturedListings] = useState([]);
   const [activeSlide, setActiveSlide] = useState(0);
+  const [inlineForm, setInlineForm] = useState({ name: '', phone: '', email: '' });
+  const [inlineSubmitted, setInlineSubmitted] = useState(false);
+
+  const handleInlineLead = async (e) => {
+    e.preventDefault();
+    try {
+      await submitLead({ ...inlineForm, source: 'Home Inline CTA', intent: 'Buyer' });
+      trackBehavior('FORM_SUBMIT', { source: 'Home Inline CTA' });
+    } catch {}
+    setInlineSubmitted(true);
+  };
 
   useEffect(() => { trackPageView('Home'); }, []);
 
@@ -118,7 +129,7 @@ const Home = () => {
     <div style={{ fontFamily: C.body, backgroundColor: C.white, color: C.slateDark }}>
 
       {/* ═══ HERO ═══ */}
-      <section style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+      <section style={{ position: 'relative', height: '72vh', minHeight: 520, overflow: 'hidden' }}>
         {/* Background image slideshow */}
         <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
           {heroSlides.map((slide, i) => (
@@ -128,46 +139,45 @@ const Home = () => {
                 opacity: i === activeSlide ? 1 : 0, transition: 'opacity 1.2s ease-in-out',
               }} />
           ))}
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(15,23,42,0.35) 0%, rgba(15,23,42,0.55) 50%, rgba(15,23,42,0.7) 100%)' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(15,23,42,0.45) 0%, rgba(15,23,42,0.60) 45%, rgba(15,23,42,0.82) 100%)' }} />
         </div>
 
-        <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '0 24px' }}>
-          <p style={{ fontFamily: C.body, fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.accentLight, marginBottom: 20, fontWeight: 500 }}>
-            {heroSlides[activeSlide].label}
-          </p>
-          <h1 style={{ fontFamily: C.display, fontSize: 'clamp(36px, 6vw, 72px)', fontWeight: 600, color: C.white, lineHeight: 1.15, marginBottom: 40, whiteSpace: 'pre-line' }}>
-            {heroSlides[activeSlide].title}
+        <div style={{ position: 'relative', zIndex: 10, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '80px 24px 40px' }}>
+
+          {/* Eyebrow tag */}
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, backgroundColor: 'rgba(196,149,106,0.18)', border: '1px solid rgba(196,149,106,0.35)', borderRadius: 100, padding: '5px 16px', marginBottom: 18 }}>
+            <div style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: C.accentLight }} />
+            <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.16em', textTransform: 'uppercase', color: C.accentLight, margin: 0, fontWeight: 700 }}>Denver Metro MLS — Updated Daily</p>
+          </div>
+
+          {/* Headline — compact, user-focused */}
+          <h1 style={{ fontFamily: C.display, fontSize: 'clamp(26px, 3.8vw, 48px)', fontWeight: 600, color: C.white, lineHeight: 1.2, marginBottom: 28, fontStyle: 'italic', maxWidth: 640 }}>
+            Find Your Home in Colorado —<br />
+            <span style={{ fontStyle: 'normal', fontWeight: 700 }}>Search 10,000+ Live Listings</span>
           </h1>
 
-          {/* ── BB SearchForm widget ── */}
-          <div style={{
-            width: '100%',
-            maxWidth: 960,
-            paddingLeft: 80,
-            paddingRight: 80,
-            boxSizing: 'border-box',
-          }}>
-            {/* "Buy" tab — anchored top-left */}
+          {/* ── BB SearchForm widget — the star of the show ── */}
+          <div style={{ width: '100%', maxWidth: 820, boxSizing: 'border-box', padding: '0 16px' }}>
+            {/* "Buy" tab */}
             <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
               <div style={{
                 backgroundColor: 'rgba(255,255,255,0.97)',
-                backdropFilter: 'blur(8px)',
                 borderRadius: '8px 8px 0 0',
-                padding: '10px 28px',
-                fontFamily: "'Inter', system-ui, sans-serif",
-                fontSize: 12,
+                padding: '8px 24px',
+                fontFamily: C.body,
+                fontSize: 11,
                 fontWeight: 700,
-                letterSpacing: '0.1em',
+                letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#1B2A4A',
-              }}>Buy</div>
+                color: C.navy,
+              }}>Search Homes</div>
             </div>
             <div className="hero-bb-searchform" style={{
-              backgroundColor: 'rgba(255,255,255,0.97)',
+              backgroundColor: 'rgba(255,255,255,0.98)',
               backdropFilter: 'blur(16px)',
               borderRadius: '0 8px 8px 8px',
               overflow: 'hidden',
-              boxShadow: '0 8px 40px rgba(0,0,0,0.18)',
+              boxShadow: '0 12px 48px rgba(0,0,0,0.28)',
               width: '100%',
               boxSizing: 'border-box',
             }}>
@@ -175,11 +185,30 @@ const Home = () => {
             </div>
           </div>
 
+          {/* Quick-action links below search */}
+          <div style={{ display: 'flex', gap: 20, marginTop: 18, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {[
+              { label: 'Free Home Valuation', href: '/valuation' },
+              { label: 'Cash Offer in 24hrs', href: '/cash-offer' },
+              { label: 'First-Time Buyers', href: '/first-time-buyers' },
+            ].map(({ label, href }) => (
+              <a key={href} href={href} style={{
+                fontFamily: C.body, fontSize: 12, color: 'rgba(255,255,255,0.80)',
+                textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5,
+                fontWeight: 600, letterSpacing: '0.02em', transition: 'color 0.2s',
+              }}
+                onMouseEnter={e => e.currentTarget.style.color = C.accentLight}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.80)'}>
+                <ArrowRight size={12} /> {label}
+              </a>
+            ))}
+          </div>
+
           {/* Slide dots */}
-          <div style={{ position: 'absolute', bottom: 36, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 10 }}>
+          <div style={{ position: 'absolute', bottom: 18, left: '50%', transform: 'translateX(-50%)', display: 'flex', gap: 8 }}>
             {heroSlides.map((_, i) => (
               <button key={i} onClick={() => setActiveSlide(i)}
-                style={{ width: i === activeSlide ? 40 : 10, height: 4, backgroundColor: i === activeSlide ? C.white : 'rgba(255,255,255,0.35)', border: 'none', cursor: 'pointer', borderRadius: 4, transition: 'all 0.4s', padding: 0 }} />
+                style={{ width: i === activeSlide ? 28 : 8, height: 3, backgroundColor: i === activeSlide ? C.white : 'rgba(255,255,255,0.3)', border: 'none', cursor: 'pointer', borderRadius: 4, transition: 'all 0.4s', padding: 0 }} />
             ))}
           </div>
         </div>
@@ -189,6 +218,175 @@ const Home = () => {
 
       {/* ═══ LIVE MLS LISTINGS (IDX) ═══ */}
       <HomeMlsSection />
+
+      {/* ═══ INLINE LEAD CAPTURE STRIP ═══ */}
+      <section style={{
+        background: `linear-gradient(135deg, ${C.navyDark} 0%, ${C.navy} 60%, ${C.navyLight} 100%)`,
+        padding: '56px 32px',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        {/* subtle background pattern */}
+        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 80% 50%, rgba(196,149,106,0.08) 0%, transparent 60%)', pointerEvents: 'none' }} />
+        <div style={{ maxWidth: 1100, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+          {inlineSubmitted ? (
+            <div style={{ textAlign: 'center', padding: '8px 0' }}>
+              <p style={{ fontFamily: C.display, fontSize: 26, fontWeight: 600, color: C.white, margin: '0 0 8px' }}>
+                Thank You! ✓
+              </p>
+              <p style={{ fontFamily: C.body, fontSize: 14, color: 'rgba(255,255,255,0.65)', margin: 0 }}>
+                Alan will be in touch with you shortly.
+              </p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 48, flexWrap: 'wrap', justifyContent: 'space-between' }}>
+              {/* Left copy */}
+              <div style={{ flex: '1 1 260px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                  <div style={{ width: 32, height: 3, backgroundColor: C.accent, borderRadius: 2 }} />
+                  <p style={{ fontFamily: C.body, fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', color: C.accentLight, margin: 0, fontWeight: 600 }}>Free Consultation</p>
+                </div>
+                <h3 style={{ fontFamily: C.display, fontSize: 'clamp(22px, 2.8vw, 32px)', fontWeight: 600, color: C.white, margin: '0 0 10px', lineHeight: 1.25 }}>
+                  Get Exclusive Listings &amp;<br />Off-Market Deals
+                </h3>
+                <p style={{ fontFamily: C.body, fontSize: 14, color: 'rgba(255,255,255,0.60)', margin: 0, lineHeight: 1.7 }}>
+                  Tell us what you're looking for and Alan will send you matching properties — including listings not yet on Zillow.
+                </p>
+              </div>
+
+              {/* Right form */}
+              <form onSubmit={handleInlineLead} style={{
+                flex: '2 1 400px', display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center',
+              }}>
+                {[
+                  { type: 'text',  key: 'name',  ph: 'Your Name' },
+                  { type: 'tel',   key: 'phone', ph: 'Phone Number' },
+                  { type: 'email', key: 'email', ph: 'Email Address' },
+                ].map(({ type, key, ph }) => (
+                  <input key={key}
+                    type={type} placeholder={ph} required
+                    value={inlineForm[key]}
+                    onChange={e => setInlineForm({ ...inlineForm, [key]: e.target.value })}
+                    style={{
+                      flex: '1 1 140px', padding: '13px 16px',
+                      border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8,
+                      fontFamily: C.body, fontSize: 13, color: C.white,
+                      backgroundColor: 'rgba(255,255,255,0.09)',
+                      outline: 'none', transition: 'border-color 0.2s, background 0.2s',
+                    }}
+                    onFocus={e => { e.target.style.borderColor = C.accent; e.target.style.background = 'rgba(255,255,255,0.14)'; }}
+                    onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.15)'; e.target.style.background = 'rgba(255,255,255,0.09)'; }}
+                  />
+                ))}
+                <button type="submit" style={{
+                  padding: '13px 28px', backgroundColor: C.accent, color: C.white,
+                  border: 'none', borderRadius: 8, fontFamily: C.body, fontSize: 12,
+                  fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
+                  whiteSpace: 'nowrap', boxShadow: '0 4px 16px rgba(196,149,106,0.35)',
+                  transition: 'background 0.2s, transform 0.15s',
+                }}
+                  onMouseEnter={e => { e.currentTarget.style.background = C.accentLight; e.currentTarget.style.transform = 'translateY(-1px)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = C.accent; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                  Send Me Listings <ArrowRight size={14} />
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ═══ BROWSE BY NEIGHBORHOOD ═══ */}
+      <section style={{ backgroundColor: C.coolWhite, padding: '72px 0', borderTop: `1px solid ${C.slateBorder}` }}>
+        <div style={{ maxWidth: 1320, margin: '0 auto', padding: '0 32px' }}>
+          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 40 }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                <div style={{ width: 36, height: 3, backgroundColor: C.accent, borderRadius: 2 }} />
+                <p style={{ fontFamily: C.body, fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: C.accent, margin: 0, fontWeight: 600 }}>Find by Location</p>
+              </div>
+              <h2 style={{ fontFamily: C.display, fontSize: 'clamp(24px, 3vw, 38px)', fontWeight: 600, color: C.slateDark, lineHeight: 1.2, margin: 0 }}>
+                Browse by Neighborhood
+              </h2>
+            </div>
+            <Link to="/search" style={{
+              fontFamily: C.body, fontSize: 12, fontWeight: 600, color: C.navy,
+              textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6,
+              borderBottom: `1px solid ${C.navy}`, paddingBottom: 2, letterSpacing: '0.04em',
+            }}>
+              View all Denver Metro <ArrowRight size={13} />
+            </Link>
+          </div>
+
+          {[
+            {
+              area: 'Aurora',
+              hoods: [
+                { name: 'Aurora Southeast',   zips: '80013,80014,80015,80016' },
+                { name: 'Aurora Central',     zips: '80010,80011,80012' },
+                { name: 'Green Valley Ranch', zips: '80019,80239' },
+              ],
+            },
+            {
+              area: 'Denver',
+              hoods: [
+                { name: 'Cherry Creek',       zips: '80206,80209,80246' },
+                { name: 'Washington Park',    zips: '80209,80210' },
+                { name: 'Highlands / LoHi',   zips: '80211,80212' },
+                { name: 'Central Park',       zips: '80238' },
+                { name: 'Downtown Denver',    zips: '80202,80203,80204' },
+              ],
+            },
+            {
+              area: 'South Metro',
+              hoods: [
+                { name: 'Centennial',         zips: '80112,80121,80122' },
+                { name: 'Highlands Ranch',    zips: '80126,80129,80130' },
+                { name: 'Lone Tree',          zips: '80124' },
+                { name: 'Parker',             zips: '80134,80138' },
+              ],
+            },
+            {
+              area: 'West Metro',
+              hoods: [
+                { name: 'Lakewood',           zips: '80214,80226,80227,80228' },
+                { name: 'Arvada',             zips: '80002,80003,80004,80005' },
+                { name: 'Westminster',        zips: '80021,80023,80030,80031' },
+              ],
+            },
+          ].map(({ area, hoods }) => (
+            <div key={area} style={{ marginBottom: 32 }}>
+              <p style={{ fontFamily: C.body, fontSize: 10, fontWeight: 700, color: C.slateLight, letterSpacing: '0.16em', textTransform: 'uppercase', margin: '0 0 12px', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ display: 'inline-block', width: 20, height: 1, backgroundColor: C.slateBorder }} /> {area}
+              </p>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                {hoods.map(h => (
+                  <Link key={h.name}
+                    to={`/search?neighborhood=${encodeURIComponent(h.name)}`}
+                    style={{
+                      fontFamily: C.body, fontSize: 13, fontWeight: 500, color: C.slateDark,
+                      textDecoration: 'none', padding: '8px 18px', borderRadius: 24,
+                      border: `1px solid ${C.slateBorder}`, backgroundColor: C.white,
+                      display: 'inline-flex', alignItems: 'center', gap: 6,
+                      transition: 'all 0.18s',
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = C.navy; e.currentTarget.style.color = C.navy; e.currentTarget.style.backgroundColor = '#EEF2FF'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = C.slateBorder; e.currentTarget.style.color = C.slateDark; e.currentTarget.style.backgroundColor = C.white; }}>
+                    <span style={{ fontSize: 10, color: C.slateLight, fontWeight: 400 }}>{h.zips.split(',')[0]}+</span>
+                    {h.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══ DAILY LISTING ALERTS ═══ */}
+      <section style={{ backgroundColor: C.navy, padding: '80px 0' }}>
+        <div style={{ maxWidth: 800, margin: '0 auto', padding: '0 32px' }}>
+          <ListingAlertForm source="Home Page Alert Section" />
+        </div>
+      </section>
 
       {/* ═══ ABOUT ═══ */}
       <section style={{ backgroundColor: C.white, padding: '96px 0' }}>

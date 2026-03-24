@@ -13,7 +13,7 @@ if (typeof document !== 'undefined' && !document.getElementById('spears-fonts'))
   link.id = 'spears-fonts';
   link.rel = 'stylesheet';
   link.href =
-    'https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap';
+    'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Nunito+Sans:wght@300;400;500;600;700&display=swap';
   document.head.appendChild(link);
 }
 
@@ -53,7 +53,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     /* logo */
     .chf-logo { text-decoration: none; display: flex; align-items: center; gap: 8px; margin-right: 16px; }
     .chf-logo-text {
-      font-family: 'Montserrat', sans-serif; font-weight: 600;
+      font-family: 'Playfair Display', serif; font-weight: 600;
       font-size: 17px; letter-spacing: 0.08em; color: #ffffff;
       transition: color .45s ease !important;
       white-space: nowrap;
@@ -72,7 +72,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
 
     /* individual nav link */
     .nav-link {
-      font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.06em;
+      font-family: 'Nunito Sans', sans-serif; font-size: 10.5px; letter-spacing: 0.06em;
       text-transform: uppercase; font-weight: 500; text-decoration: none;
       position: relative; padding: 6px 2px;
       color: rgba(255,255,255,0.9);
@@ -101,7 +101,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
       position: relative;
     }
     .nav-dropdown-trigger {
-      font-family: 'Inter', sans-serif; font-size: 10.5px; letter-spacing: 0.06em;
+      font-family: 'Nunito Sans', sans-serif; font-size: 10.5px; letter-spacing: 0.06em;
       text-transform: uppercase; font-weight: 500; text-decoration: none;
       position: relative; padding: 6px 2px;
       color: rgba(255,255,255,0.9);
@@ -153,7 +153,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .nav-dropdown-item {
       display: flex; align-items: center; gap: 8px;
       padding: 12px 22px;
-      font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 500;
+      font-family: 'Nunito Sans', sans-serif; font-size: 12.5px; font-weight: 500;
       letter-spacing: 0.03em; color: rgba(255,255,255,0.75); text-decoration: none;
       transition: all .22s cubic-bezier(.22,1,.36,1);
       position: relative;
@@ -177,7 +177,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
       border-radius: 8px; padding: 8px 18px; display: inline-flex; gap: 8px;
       align-items: center; border: 2px solid rgba(255,255,255,0.7);
       background: transparent; color: #ffffff; text-decoration: none;
-      font-family: 'Inter', sans-serif; font-size: 10.5px;
+      font-family: 'Nunito Sans', sans-serif; font-size: 10.5px;
       letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600;
       transition: all .35s cubic-bezier(.22,1,.36,1) !important;
       white-space: nowrap;
@@ -197,7 +197,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     }
     .chf-login-btn {
       display: inline-flex; gap: 8px; align-items: center; padding: 8px 16px;
-      border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 10.5px;
+      border-radius: 8px; font-family: 'Nunito Sans', sans-serif; font-size: 10.5px;
       letter-spacing: 0.08em; text-transform: uppercase;
       border: 1.5px solid rgba(255,255,255,0.5); text-decoration: none; color: #ffffff; font-weight: 600;
       transition: all .35s cubic-bezier(.22,1,.36,1) !important;
@@ -231,7 +231,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     }
     .chf-login-menu-item {
       display: flex; align-items: center; gap: 10px; padding: 12px 20px;
-      font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 500;
+      font-family: 'Nunito Sans', sans-serif; font-size: 12.5px; font-weight: 500;
       letter-spacing: 0.03em; color: rgba(255,255,255,0.75); text-decoration: none;
       transition: all .22s cubic-bezier(.22,1,.36,1);
       position: relative;
@@ -251,7 +251,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     /* legacy login link (for authenticated state) */
     .chf-admin-link {
       display: inline-flex; gap: 8px; align-items: center; padding: 8px 12px;
-      border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 10.5px;
+      border-radius: 8px; font-family: 'Nunito Sans', sans-serif; font-size: 10.5px;
       letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.9;
       border: 1px solid transparent; text-decoration: none; color: #ffffff; font-weight: 500;
       transition: all .35s cubic-bezier(.22,1,.36,1) !important; white-space: nowrap;
@@ -317,7 +317,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .chf-drawer-body { flex: 1; padding: 24px 28px; }
     .chf-drawer-link {
       display: flex; align-items: center; justify-content: space-between;
-      font-family: 'Inter', sans-serif; font-size: 13px; letter-spacing: 0.1em;
+      font-family: 'Nunito Sans', sans-serif; font-size: 13px; letter-spacing: 0.1em;
       text-transform: uppercase; color: rgba(255,255,255,0.7); text-decoration: none;
       font-weight: 500;
       padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
@@ -348,7 +348,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .chf-drawer.open .chf-drawer-footer { opacity: 1; transform: translateY(0); }
     .chf-drawer-cta {
       display: block; text-align: center; padding: 16px 0;
-      font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.1em;
+      font-family: 'Nunito Sans', sans-serif; font-size: 12px; letter-spacing: 0.1em;
       text-transform: uppercase; font-weight: 600; color: #ffffff;
       background: #1B2A4A; text-decoration: none;
       border-radius: 8px; margin-bottom: 16px;
@@ -358,7 +358,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .chf-drawer-login {
       display: flex; align-items: center; justify-content: center; gap: 10px;
       padding: 14px 0; color: rgba(255,255,255,0.5);
-      font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.1em;
+      font-family: 'Nunito Sans', sans-serif; font-size: 12px; letter-spacing: 0.1em;
       text-transform: uppercase; text-decoration: none; font-weight: 500;
       transition: color .22s;
     }
@@ -380,12 +380,12 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .chf-footer-link:hover { color: #ffffff !important; transform: translateX(6px) !important; }
     .chf-footer-link::after { content:''; position:absolute; bottom:0; left:0; width:0; height:1px; background:rgba(255,255,255,0.3); transition: width .3s ease; }
     .chf-footer-link:hover::after { width:100%; }
-    .chf-mobile-link { display:block; font-family:'Inter', sans-serif; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:#ffffff; text-decoration:none; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08); transition: color .22s; font-weight:500; }
+    .chf-mobile-link { display:block; font-family:'Nunito Sans', sans-serif; font-size:13px; letter-spacing:0.1em; text-transform:uppercase; color:#ffffff; text-decoration:none; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.08); transition: color .22s; font-weight:500; }
     .chf-mobile-link:hover { color: var(--accent); }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
 
     /* ── Global interactive helpers ── */
-    .chf-btn { display:inline-flex; align-items:center; gap:10px; cursor:pointer; font-family:'Inter',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; border:none; text-decoration:none; transition: background-color .3s, color .3s, transform .3s, box-shadow .3s; position:relative; overflow:hidden; border-radius:8px; }
+    .chf-btn { display:inline-flex; align-items:center; gap:10px; cursor:pointer; font-family:'Nunito Sans',sans-serif; font-size:12px; letter-spacing:0.1em; text-transform:uppercase; font-weight:600; border:none; text-decoration:none; transition: background-color .3s, color .3s, transform .3s, box-shadow .3s; position:relative; overflow:hidden; border-radius:8px; }
     .chf-btn-primary { background:#1B2A4A; color:#ffffff; padding:16px 36px; }
     .chf-btn-primary:hover { background:#243B6A; transform:translateY(-3px); box-shadow:0 12px 32px rgba(27,42,74,0.25); }
     .chf-btn-outline { background:transparent; border:1px solid #1B2A4A; color:#1B2A4A; padding:14px 36px; }
@@ -399,11 +399,11 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     .chf-img-zoom:hover img { transform:scale(1.05); }
     .chf-link { color:inherit; text-decoration:none; transition: color .22s; }
     .chf-link:hover { color:var(--accent); }
-    .chf-underline-link { display:inline-flex; align-items:center; gap:8px; font-family:'Inter',sans-serif; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#1B2A4A; text-decoration:none; border-bottom:1px solid #1B2A4A; padding-bottom:4px; transition: color .25s, border-color .25s, transform .25s; font-weight:600; }
+    .chf-underline-link { display:inline-flex; align-items:center; gap:8px; font-family:'Nunito Sans',sans-serif; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#1B2A4A; text-decoration:none; border-bottom:1px solid #1B2A4A; padding-bottom:4px; transition: color .25s, border-color .25s, transform .25s; font-weight:600; }
     .chf-underline-link:hover { color:var(--accent); border-color:var(--accent); transform:translateX(4px); }
-    .chf-input { font-family:'Inter',sans-serif; font-size:13px; color:#1E293B; border:none; border-bottom:1px solid #E2E8F0; outline:none; padding:12px 0; background:transparent; width:100%; transition: border-color .25s; }
+    .chf-input { font-family:'Nunito Sans',sans-serif; font-size:13px; color:#1E293B; border:none; border-bottom:1px solid #E2E8F0; outline:none; padding:12px 0; background:transparent; width:100%; transition: border-color .25s; }
     .chf-input:focus { border-color:#C4956A; }
-    .chf-input-dark { font-family:'Inter',sans-serif; font-size:13px; color:#ffffff; border:none; border-bottom:1px solid rgba(255,255,255,0.15); outline:none; padding:12px 0; background:transparent; width:100%; transition: border-color .25s; }
+    .chf-input-dark { font-family:'Nunito Sans',sans-serif; font-size:13px; color:#ffffff; border:none; border-bottom:1px solid rgba(255,255,255,0.15); outline:none; padding:12px 0; background:transparent; width:100%; transition: border-color .25s; }
     .chf-input-dark:focus { border-color:#C4956A; }
 
     /* ── Smooth auto transitions for form elements + buttons ── */
@@ -451,7 +451,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     }
     .chf-sticky-btn {
       display: inline-flex; align-items: center; gap: 6px;
-      font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 600;
+      font-family: 'Nunito Sans', sans-serif; font-size: 10.5px; font-weight: 600;
       letter-spacing: 0.03em; text-transform: uppercase; text-decoration: none;
       padding: 9px 16px; border-radius: 10px; border: none; cursor: pointer;
       transition: all .25s cubic-bezier(.22,1,.36,1) !important;
@@ -533,7 +533,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
 
     /* logo with shimmer */
     .chf-loader-logo {
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Playfair Display', serif;
       font-size: 24px; font-weight: 700; letter-spacing: 0.12em;
       color: #ffffff; margin-bottom: 10px; position: relative;
       opacity: 0; transform: translateY(14px);
@@ -546,7 +546,7 @@ if (typeof document !== 'undefined' && !document.getElementById('layout-styles')
     }
 
     .chf-loader-sub {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Nunito Sans', sans-serif;
       font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase;
       color: rgba(255,255,255,0.35); margin-bottom: 44px;
       opacity: 0; transform: translateY(8px);
@@ -723,7 +723,7 @@ const Layout = ({ children }) => {
   }, [location.pathname]);
 
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", backgroundColor: '#ffffff' }}>
+    <div style={{ fontFamily: "'Nunito Sans', sans-serif", backgroundColor: '#ffffff' }}>
 
       {/* PAGE LOADER */}
       <PageLoader show={pageLoading} loaderKey={loaderKey} />
@@ -820,8 +820,8 @@ const Layout = ({ children }) => {
           <div className={`chf-drawer${mobileMenuOpen ? ' open' : ''}`}>
             <div className="chf-drawer-header">
               <div>
-                <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 16, fontWeight: 700, letterSpacing: '0.1em', color: '#ffffff' }}>COLORADO HOME FINDER</span>
-                <span style={{ display: 'block', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginTop: 2, fontFamily: "'Inter', sans-serif" }}>Denver Real Estate</span>
+                <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, fontWeight: 700, letterSpacing: '0.1em', color: '#ffffff' }}>COLORADO HOME FINDER</span>
+                <span style={{ display: 'block', fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.35)', marginTop: 2, fontFamily: "'Nunito Sans', sans-serif" }}>Denver Real Estate</span>
               </div>
               <button className="chf-drawer-close" onClick={() => setMobileMenuOpen(false)}>
                 <X size={18} />
@@ -968,10 +968,10 @@ const InlineLeadForm = () => {
     return (
       <div style={{ textAlign: 'center', padding: '24px 0' }}>
         <div style={{ width: 48, height: 48, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
-          <span style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 22, color: '#ffffff' }}>✓</span>
+          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: '#ffffff' }}>✓</span>
         </div>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#ffffff', marginBottom: 4 }}>Thank you!</p>
-        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>We'll be in touch within 24 hours.</p>
+        <p style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 14, color: '#ffffff', marginBottom: 4 }}>Thank you!</p>
+        <p style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 12, color: 'rgba(255,255,255,0.5)' }}>We'll be in touch within 24 hours.</p>
       </div>
     );
   }
@@ -980,26 +980,26 @@ const InlineLeadForm = () => {
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <input type="text" placeholder="Full Name" required value={form.name}
         onChange={e => setForm({ ...form, name: e.target.value })}
-        style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+        style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
       <input type="tel" placeholder="Phone Number" required value={form.phone}
         onChange={e => setForm({ ...form, phone: e.target.value })}
-        style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+        style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
       <input type="email" placeholder="Email" required value={form.email}
         onChange={e => setForm({ ...form, email: e.target.value })}
-        style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
+        style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box' }} />
       <textarea placeholder="Message (optional)" value={form.message} rows={3}
         onChange={e => setForm({ ...form, message: e.target.value })}
-        style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box', resize: 'vertical', minHeight: 60 }} />
+        style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, padding: '12px 16px', border: '1px solid rgba(255,255,255,0.12)', backgroundColor: 'rgba(255,255,255,0.04)', color: '#ffffff', outline: 'none', width: '100%', boxSizing: 'border-box', resize: 'vertical', minHeight: 60 }} />
       <div style={{ display: 'flex', gap: 8 }}>
         {['Buyer', 'Seller'].map(opt => (
           <button key={opt} type="button" onClick={() => setForm({ ...form, intent: opt })}
-            style={{ flex: 1, padding: '10px', border: `1px solid ${form.intent === opt ? '#C4956A' : 'rgba(255,255,255,0.12)'}`, backgroundColor: form.intent === opt ? '#C4956A' : 'transparent', color: form.intent === opt ? '#ffffff' : 'rgba(255,255,255,0.6)', fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s', borderRadius: 6 }}>
+            style={{ flex: 1, padding: '10px', border: `1px solid ${form.intent === opt ? '#C4956A' : 'rgba(255,255,255,0.12)'}`, backgroundColor: form.intent === opt ? '#C4956A' : 'transparent', color: form.intent === opt ? '#ffffff' : 'rgba(255,255,255,0.6)', fontFamily: "'Nunito Sans', sans-serif", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', cursor: 'pointer', transition: 'all 0.2s', borderRadius: 6 }}>
             {opt}
           </button>
         ))}
       </div>
       <button type="submit"
-        style={{ padding: '14px', backgroundColor: '#1B2A4A', color: '#ffffff', border: 'none', cursor: 'pointer', fontFamily: "'Inter', sans-serif", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s', borderRadius: 8 }}>
+        style={{ padding: '14px', backgroundColor: '#1B2A4A', color: '#ffffff', border: 'none', cursor: 'pointer', fontFamily: "'Nunito Sans', sans-serif", fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.2s', borderRadius: 8 }}>
         Send Message <ArrowRight size={13} />
       </button>
     </form>
@@ -1031,7 +1031,7 @@ const Footer = () => {
 
           {/* Brand */}
           <div>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 22, fontWeight: 700, letterSpacing: '0.08em', marginBottom: 16 }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, fontWeight: 700, letterSpacing: '0.08em', marginBottom: 16 }}>
               COLORADO<br />HOME FINDER
             </p>
             <p style={{ fontSize: 13, lineHeight: 1.8, color: 'rgba(255,255,255,0.5)', marginBottom: 16 }}>
@@ -1052,7 +1052,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20, fontWeight: 600 }}>Quick Links</p>
+            <p style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20, fontWeight: 600 }}>Quick Links</p>
             {footerQuickLinks.map(link => (
               <Link key={link.name} to={link.path} className="chf-footer-link" style={{ fontSize: 13, padding: '6px 0', letterSpacing: '0.05em' }}>
                 {link.name}
@@ -1062,7 +1062,7 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20, fontWeight: 600 }}>Services</p>
+            <p style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20, fontWeight: 600 }}>Services</p>
             {[['First-Time Buyers', '/first-time-buyers'], ['Cash Offers', '/cash-offer'], ['Sell Before You Buy', '/sell-before-you-buy'], ['Home Valuation', '/valuation'], ['Loan Application', '/loan-application'], ['Book a Showing', '/book-showing']].map(([name, path]) => (
               <Link key={name} to={path} className="chf-footer-link" style={{ fontSize: 13, padding: '6px 0', letterSpacing: '0.05em' }}>
                 {name}
@@ -1072,7 +1072,7 @@ const Footer = () => {
 
           {/* Lead Form (on every page) */}
           <div>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20, fontWeight: 600 }}>Get in Touch</p>
+            <p style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20, fontWeight: 600 }}>Get in Touch</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14, marginBottom: 24 }}>
               {[
                 [MapPin, 'Denver, Colorado'],
@@ -1091,11 +1091,11 @@ const Footer = () => {
 
         {/* ── Global CTA Buttons ── */}
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 40, paddingBottom: 40 }}>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20, fontWeight: 600, textAlign: 'center' }}>Quick Actions</p>
+          <p style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 10, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', marginBottom: 20, fontWeight: 600, textAlign: 'center' }}>Quick Actions</p>
           <div className="resp-footer-cta" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: 12 }}>
             {globalCtaButtons.map(({ label, path, icon: Icon }) => (
               <Link key={path} to={path}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: "'Inter', sans-serif", fontSize: 12, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', textDecoration: 'none', padding: '12px 24px', borderRadius: 50, color: '#ffffff', border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'rgba(255,255,255,0.04)', transition: 'all 0.25s', whiteSpace: 'nowrap' }}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontFamily: "'Nunito Sans', sans-serif", fontSize: 12, fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase', textDecoration: 'none', padding: '12px 24px', borderRadius: 50, color: '#ffffff', border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'rgba(255,255,255,0.04)', transition: 'all 0.25s', whiteSpace: 'nowrap' }}
                 onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#C4956A'; e.currentTarget.style.borderColor = '#C4956A'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(196,149,106,0.3)'; }}
                 onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 <Icon size={15} /> {label}
@@ -1116,22 +1116,22 @@ const Footer = () => {
             { name: 'Realtor.com', url: 'https://www.realtor.com/realestateagents/66287142c789e4cbc7224e7b' },
             { name: 'SOLD.com', url: 'https://www.sold.com/agent-profile/Alain-Ramirez-228234' },
           ].map((logo, i) => logo.url ? (
-            <a key={i} href={logo.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 10, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif", textDecoration: 'none', transition: 'color 0.2s', fontWeight: 600 }}
+            <a key={i} href={logo.url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 10, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase', fontFamily: "'Nunito Sans', sans-serif", textDecoration: 'none', transition: 'color 0.2s', fontWeight: 600 }}
               onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
               onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.55)'}>{logo.name}</a>
           ) : (
-            <span key={i} style={{ fontSize: 10, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase', fontFamily: "'Inter', sans-serif", fontWeight: 600 }}>{logo.name}</span>
+            <span key={i} style={{ fontSize: 10, letterSpacing: '0.15em', color: 'rgba(255,255,255,0.55)', textTransform: 'uppercase', fontFamily: "'Nunito Sans', sans-serif", fontWeight: 600 }}>{logo.name}</span>
           ))}
         </div>
 
         {/* Newsletter Signup */}
         <div className="resp-newsletter" style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 48, paddingBottom: 48, marginBottom: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
           <div>
-            <p style={{ fontFamily: "'Montserrat', sans-serif", fontSize: 28, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>Stay Connected</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>Stay Connected</p>
             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>Get early access to new listings & market insights.</p>
           </div>
           {subStatus === 'done' ? (
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 14, color: '#4ade80', fontWeight: 500 }}>✓ You're subscribed! Alan will be in touch.</p>
+            <p style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 14, color: '#4ade80', fontWeight: 500 }}>✓ You're subscribed! Alan will be in touch.</p>
           ) : (
             <form onSubmit={handleSubscribe} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
               <div style={{ display: 'flex', gap: 0 }}>
@@ -1141,16 +1141,16 @@ const Footer = () => {
                   value={subEmail}
                   onChange={e => setSubEmail(e.target.value)}
                   required
-                  style={{ fontFamily: "'Inter', sans-serif", fontSize: 13, padding: '14px 20px', border: '1px solid rgba(255,255,255,0.15)', borderRight: 'none', backgroundColor: 'transparent', color: '#ffffff', outline: 'none', minWidth: 260, borderRadius: '8px 0 0 8px' }}
+                  style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 13, padding: '14px 20px', border: '1px solid rgba(255,255,255,0.15)', borderRight: 'none', backgroundColor: 'transparent', color: '#ffffff', outline: 'none', minWidth: 260, borderRadius: '8px 0 0 8px' }}
                 />
                 <button
                   type="submit"
                   disabled={subStatus === 'loading'}
-                  style={{ fontFamily: "'Inter', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, padding: '14px 28px', backgroundColor: '#C4956A', color: '#ffffff', border: 'none', cursor: 'pointer', transition: 'background 0.2s', borderRadius: '0 8px 8px 0', opacity: subStatus === 'loading' ? 0.7 : 1 }}>
+                  style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, padding: '14px 28px', backgroundColor: '#C4956A', color: '#ffffff', border: 'none', cursor: 'pointer', transition: 'background 0.2s', borderRadius: '0 8px 8px 0', opacity: subStatus === 'loading' ? 0.7 : 1 }}>
                   {subStatus === 'loading' ? '...' : 'Subscribe'}
                 </button>
               </div>
-              {subStatus === 'error' && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: 12, color: '#f87171', margin: 0 }}>Something went wrong. Please try again.</p>}
+              {subStatus === 'error' && <p style={{ fontFamily: "'Nunito Sans', sans-serif", fontSize: 12, color: '#f87171', margin: 0 }}>Something went wrong. Please try again.</p>}
             </form>
           )}
         </div>

@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useLocation } from 'react-router-dom';
 import { X, Home, ArrowRight } from 'lucide-react';
 import { submitLead, trackBehavior } from '../api';
 
 const C = {
   black: '#0a0a0a', cream: '#f5f3ef', gold: '#c9a96e', muted: '#8a8078',
   white: '#ffffff',
-  display: "'Cormorant Garamond', Georgia, serif",
-  body: "'Jost', sans-serif",
+  display: "'Playfair Display', Georgia, serif",
+  body: "'Nunito Sans', system-ui, sans-serif",
 };
 
 const Popup = () => {
@@ -14,27 +15,35 @@ const Popup = () => {
     const [popupType, setPopupType] = useState('timed'); // 'timed' or 'exit'
     const [form, setForm] = useState({ name: '', email: '', phone: '', intent: 'Buyer' });
     const [submitted, setSubmitted] = useState(false);
+    const location = useLocation();
 
-    // Timed popup: 60 seconds
+    // Timed popup: 30 seconds, fires once per route per session
     useEffect(() => {
-        if (localStorage.getItem('popupClosed') && localStorage.getItem('exitPopupClosed')) return;
+        const path = location.pathname;
+        // Skip admin and auth pages
+        if (/^\/admin|^\/login|^\/register/.test(path)) return;
+        // Skip if already shown on this path this session
+        const shownKey = `popup_shown_${path}`;
+        if (sessionStorage.getItem(shownKey)) return;
 
         const timer = setTimeout(() => {
-            if (!localStorage.getItem('popupClosed')) {
+            if (!sessionStorage.getItem(shownKey)) {
                 setPopupType('timed');
                 setIsOpen(true);
-                trackBehavior('POPUP_VIEW', { type: 'timed' });
+                sessionStorage.setItem(shownKey, 'true');
+                trackBehavior('POPUP_VIEW', { type: 'timed', path });
             }
-        }, 60000);
+        }, 30000);
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [location.pathname]);
 
     // Exit intent popup: triggered on mouse leaving viewport (desktop)
     const handleMouseLeave = useCallback((e) => {
-        if (e.clientY <= 0 && !localStorage.getItem('exitPopupClosed')) {
+        if (e.clientY <= 0 && !sessionStorage.getItem('exitPopupShown')) {
             setPopupType('exit');
             setIsOpen(true);
+            sessionStorage.setItem('exitPopupShown', 'true');
             trackBehavior('POPUP_VIEW', { type: 'exit' });
             document.removeEventListener('mouseleave', handleMouseLeave);
         }
@@ -42,14 +51,15 @@ const Popup = () => {
 
     // Exit intent: back button / popstate (mobile)
     useEffect(() => {
-        if (localStorage.getItem('exitPopupClosed')) return;
+        if (sessionStorage.getItem('exitPopupShown')) return;
 
         document.addEventListener('mouseleave', handleMouseLeave);
 
         const handlePopState = () => {
-            if (!localStorage.getItem('exitPopupClosed')) {
+            if (!sessionStorage.getItem('exitPopupShown')) {
                 setPopupType('exit');
                 setIsOpen(true);
+                sessionStorage.setItem('exitPopupShown', 'true');
                 // Push state back so user doesn't actually leave
                 window.history.pushState(null, '', window.location.href);
             }
@@ -67,16 +77,11 @@ const Popup = () => {
     const closePopup = () => {
         setIsOpen(false);
         setSubmitted(false);
-        if (popupType === 'timed') {
-            localStorage.setItem('popupClosed', 'true');
-        } else {
-            localStorage.setItem('exitPopupClosed', 'true');
-        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const source = popupType === 'timed' ? 'Timed Popup (60s)' : 'Exit Intent Popup';
+        const source = popupType === 'timed' ? 'Timed Popup (30s)' : 'Exit Intent Popup';
         await submitLead({ ...form, source, intent: form.intent });
         trackBehavior('FORM_SUBMIT', { source, intent: form.intent });
         setSubmitted(true);

@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import ScrollToTop from './components/ScrollToTop';
 import Layout from './components/Layout';
 import Popup from './components/Popup';
+import StickyLeadBar from './components/StickyLeadBar';
 import { trackListingAlertClick } from './api';
 import { AuthContext } from './context/AuthContext';
 
@@ -60,7 +61,8 @@ function App() {
     <Router>
       <ScrollToTop />
       <Layout>
-        <Popup /> 
+        <Popup />
+        <StickyLeadBar />
         <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0F172A' }} />}>
         <Routes>
           {/* Public Core */}

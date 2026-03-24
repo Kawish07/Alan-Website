@@ -129,6 +129,19 @@ export const submitLead = async (formData) => {
     return res;
 };
 
+// Listing Alert Subscription — subscribe to daily listing emails
+export const subscribeListingAlert = async (data) => {
+    const res = await API.post('/listing-alerts', data);
+    trackBehavior('LISTING_ALERT_SUBSCRIBE', { source: data.source });
+    if (window.fbq) {
+        window.fbq('track', 'Lead', { content_name: 'Listing Alert Signup' });
+    }
+    if (window.gtag) {
+        window.gtag('event', 'generate_lead', { event_category: 'listing_alert', event_label: data.source });
+    }
+    return res;
+};
+
 export const getLeads = () => API.get('/leads');
 
 // ── Saved Homes ──
